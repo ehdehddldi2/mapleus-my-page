@@ -1,226 +1,168 @@
-
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>메이플어스 | 나만의 공략집</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#101725;color:#eef2ff;font-family:Arial,"Malgun Gothic",sans-serif}
-header{background:#1d2940;padding:22px;text-align:center;border-bottom:2px solid #f5a623}
-h1{color:#ffbd59;margin:0}
-header p{color:#aebbd2}
-nav{display:flex;flex-wrap:wrap;gap:8px;padding:14px;justify-content:center;background:#172136}
-button{cursor:pointer;border:0;border-radius:9px;padding:11px 15px;background:#30415e;color:white}
-button:hover,.active{background:#e69a29;color:#101725}
-main{max-width:1050px;margin:auto;padding:20px}
-section{display:none}
-section.show{display:block}
-.card{background:#1d2940;padding:20px;border-radius:14px;margin-bottom:16px}
-h2{color:#ffbd59}
-h3{color:#dce8ff}
-input,textarea,select{background:#111b2e;color:white;border:1px solid #485b78;border-radius:8px;padding:11px;max-width:100%;margin:5px}
-input[type=checkbox]{accent-color:#ffbd59}
-textarea{width:100%;min-height:80px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-small,.muted{color:#aebbd2}
-a{color:#ffbd59}
-.task{display:block;padding:10px;border-bottom:1px solid #39465e}
-img{max-width:100%;border-radius:10px}
-</style>
-</head>
-<body>
-<header>
-<h1>🍁 MAPLE US MY PAGE</h1>
-<p>나만의 메이플어스 성장 기록 & 공략집</p>
-</header>
+*{box-sizing:border-box}body{margin:0;background:#101725;color:#eef2ff;font-family:Arial,"Malgun Gothic",sans-serif}
+header{background:#1d2940;padding:22px;text-align:center;border-bottom:2px solid #f5a623}h1{color:#ffbd59;margin:0}header p{color:#aebbd2}
+nav{display:flex;flex-wrap:wrap;gap:8px;padding:14px;justify-content:center;background:#172136}button{cursor:pointer;border:0;border-radius:9px;padding:11px 15px;background:#30415e;color:white}button:hover,.active{background:#e69a29;color:#101725}
+main{max-width:1050px;margin:auto;padding:20px}section{display:none}section.show{display:block}.card{background:#1d2940;padding:20px;border-radius:14px;margin-bottom:16px}
+h2{color:#ffbd59}h3{color:#dce8ff}input,textarea,select{background:#111b2e;color:white;border:1px solid #485b78;border-radius:8px;padding:11px;max-width:100%;margin:5px}input[type=checkbox]{accent-color:#ffbd59}textarea{width:100%;min-height:80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}small,.muted{color:#aebbd2}a{color:#ffbd59}.task{display:block;padding:10px;border-bottom:1px solid #39465e}img{max-width:100%;border-radius:10px}.status{padding:12px;background:#111b2e;border-radius:9px;margin-bottom:15px;white-space:pre-wrap}.hidden{display:none}.wide{width:min(100%,520px)}.danger{background:#743844}
+</style></head><body>
+<header><h1>🍁 MAPLE US MY PAGE</h1><p>나만의 메이플어스 성장 기록 & 공략집</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button>
-<button onclick="tab('gear',this)">🛡️ 템셋팅</button>
-<button onclick="tab('daily',this)">✅ 메할일</button>
-<button onclick="tab('guide',this)">📚 공략집</button>
-<button onclick="tab('meso',this)">💰 메소</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
-<main>
-<section id="home" class="show">
-<h2>내 캐릭터</h2>
-<div class="card">
+<main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
+<section id="home" class="show"><h2>내 캐릭터</h2><div class="card">
 <p>직업: 데몬어벤져</p>
 <label>닉네임 <input id="nickname" placeholder="닉네임"></label>
-<label>레벨 <input id="level" type="number" placeholder="레벨"></label>
-<label>HP <input id="hp" type="number" placeholder="최대 HP"></label>
-<label>스공 <input id="power" placeholder="스공"></label>
-<h3>현재 성장 목표</h3>
-<textarea id="goal">사자성 길뚫 진행, 원킬 사냥 스펙 확보</textarea>
-<button onclick="save()">캐릭터 정보 저장</button>
-</div>
-<div class="card">
-<h3>🍁 공식 메이플어스</h3>
-<p><a href="https://mapleus.co.kr" target="_blank">공식 홈페이지 방문</a></p>
-<p><a href="https://mapleus.co.kr/site/auction/" target="_blank">공식 경매장 확인</a></p>
-</div>
-</section>
-
-<section id="gear">
-<h2>🛡️ 나의 템셋팅</h2>
-<div class="card">
+<label>레벨 <input id="level" type="number" min="1" max="300" placeholder="레벨"></label>
+<label>HP <input id="hp" type="number" min="0" placeholder="최대 HP"></label>
+<label>스공 <input id="power" type="number" min="0" placeholder="스공"></label>
+<h3>현재 성장 목표</h3><textarea id="goal">사자성 길뚫 진행, 원킬 사냥 스펙 확보</textarea>
+<button onclick="saveCharacter()">캐릭터 정보 저장</button></div>
+<div class="card"><h3>🍁 공식 메이플어스</h3><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">공식 홈페이지 방문</a></p><p><a href="https://mapleus.co.kr/site/auction/" target="_blank" rel="noopener noreferrer">공식 경매장 확인</a></p></div></section>
+<section id="gear"><h2>🛡️ 나의 템셋팅</h2><div class="card">
 <p>장비별 잠재옵션과 강화 상태를 기록해 보세요.</p>
-<select id="slot">
-<option>무기</option><option>보조무기</option>
-<option>엠블렘</option><option>모자</option>
-<option>상의</option><option>하의</option>
-<option>장갑</option><option>신발</option>
-<option>망토</option><option>어깨장식</option>
-<option>반지</option><option>귀고리</option>
-<option>목걸이</option><option>벨트</option>
-</select>
-<input id="itemname" placeholder="장비 이름">
-<input id="potential" placeholder="잠재옵션">
-<input id="stars" type="number" placeholder="스타포스">
-<p>장비 스크린샷 첨부</p>
-<input id="gearphoto" type="file" accept="image/*">
-<p><small>사진은 미리보기만 지원합니다. AI 자동 판독은 아직 연결 전입니다.</small></p>
-<img id="preview" style="display:none;max-height:250px">
-<p><button onclick="addGear()">장비 기록 저장</button></p>
-</div>
-<div id="gearlist" class="grid"></div>
-</section>
-
-<section id="daily">
-<h2>✅ 오늘의 메할일</h2>
-<div class="card">
-<p id="today"></p>
-<div id="tasks"></div>
-</div>
-<div class="card">
-<h3>추가 메할일</h3>
-<input id="newtask" placeholder="예: 사자성 길뚫">
-<button onclick="addTask()">추가하기</button>
-</div>
-<p class="muted">체크 기록은 날짜별로 저장됩니다. 보스 완료 여부를 게임에서 자동 확인하는 기능은 아직 없습니다.</p>
-</section>
-
-<section id="guide">
-<h2>📚 메이플어스 공략 도서관</h2>
-<div class="grid">
-<div class="card">
-<h3>🔨 토드의 망치</h3>
-<p>장비 레벨, 부위, 잠재옵션과 스타포스 전승 규칙을 확인하는 공략.</p>
-<p class="muted">메이플어스 전용 세부 규칙 검증 예정</p>
-</div>
-<div class="card">
-<h3>🏰 필수 퀘스트</h3>
-<p>사자성 길뚫, 보스 선행퀘, 장비 획득 관련 퀘스트를 정리할 공간.</p>
-</div>
-<div class="card">
-<h3>⚔️ 레벨별 사냥터</h3>
-<p>원킬 여부, 경험치 효율, 몬스터 레벨에 따른 추천 사냥터.</p>
-<p class="muted">추천 데이터 업데이트 예정</p>
-</div>
-<div class="card">
-<h3>⚒️ 마이스터빌</h3>
-<p>채집·채광·연금술·장비 제작·장신구 제작·합성 공략.</p>
-<p>제작 비용과 경매장 판매 가격을 비교하는 수익 계산 기능 추가 예정.</p>
-</div>
-<div class="card">
-<h3>🩸 데몬어벤져 육성</h3>
-<p>HP 중심 장비 세팅, 잠재옵션 우선순위, 스킬과 장비 교체 로드맵.</p>
-</div>
-<div class="card">
-<h3>📜 업데이트 기록</h3>
-<p>2014~2016년 원작 자료와 현재 메이플어스 패치를 구분해 정리할 공간.</p>
-<a href="https://mapleus.co.kr" target="_blank">공식 정보 확인</a>
-</div>
-</div>
-</section>
-
-<section id="meso">
-<h2>💰 메소 & 쌀먹 계산기</h2>
-<div class="card">
-<p>1통 = 100만 메소</p>
-<label>시세(원/통) <input id="rate" type="number" value="370"></label>
-<label>통 수 <input id="amount" type="number" value="30"></label>
-<button onclick="calculate()">계산하기</button>
-<h2 id="result"></h2>
-</div>
-</section>
+<select id="slot"><option>무기</option><option>보조무기</option><option>엠블렘</option><option>모자</option><option>상의</option><option>하의</option><option>장갑</option><option>신발</option><option>망토</option><option>어깨장식</option><option>반지</option><option>귀고리</option><option>목걸이</option><option>벨트</option></select>
+<input id="itemname" placeholder="장비 이름"><input id="potential" placeholder="잠재옵션"><input id="stars" type="number" min="0" max="30" placeholder="스타포스">
+<p>장비 스크린샷 첨부 (미리보기만 가능)</p><input id="gearphoto" type="file" accept="image/*"><p><small>AI 자동 판독 및 사진 클라우드 저장은 아직 연결 전입니다.</small></p><img id="preview" style="display:none;max-height:250px" alt="장비 사진 미리보기">
+<p><button onclick="addGear()">장비 기록 저장</button></p></div><div id="gearlist" class="grid"></div></section>
+<section id="daily"><h2>✅ 오늘의 메할일</h2><div class="card"><p id="today"></p><div id="tasks"></div></div><div class="card"><h3>추가 메할일</h3><input id="newtask" placeholder="예: 사자성 길뚫"><button onclick="addTask()">추가하기</button></div><p class="muted">로그인 후 체크 기록이 날짜별로 저장됩니다. 게임에서 자동 확인되지는 않습니다.</p></section>
+<section id="guide"><h2>📚 메이플어스 공략 도서관</h2><div class="grid">
+<div class="card"><h3>🔨 토드의 망치</h3><p>장비 레벨, 부위, 잠재옵션과 스타포스 전승 규칙을 확인하는 공략.</p><p class="muted">메이플어스 전용 세부 규칙 검증 예정</p></div>
+<div class="card"><h3>🏰 필수 퀘스트</h3><p>사자성 길뚫, 보스 선행퀘, 장비 획득 관련 퀘스트를 정리할 공간.</p></div>
+<div class="card"><h3>⚔️ 레벨별 사냥터</h3><p>원킬 여부, 경험치 효율, 몬스터 레벨에 따른 추천 사냥터.</p><p class="muted">추천 데이터 업데이트 예정</p></div>
+<div class="card"><h3>⚒️ 마이스터빌</h3><p>채집·채광·연금술·장비 제작·장신구 제작·합성 공략.</p><p>제작 비용과 경매장 판매 가격 비교 기능 추가 예정.</p></div>
+<div class="card"><h3>🩸 데몬어벤져 육성</h3><p>HP 중심 장비 세팅, 잠재옵션 우선순위, 스킬과 장비 교체 로드맵.</p></div>
+<div class="card"><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 패치를 구분해 정리할 공간.</p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">공식 정보 확인</a></div></div></section>
+<section id="meso"><h2>💰 메소 & 쌀먹 계산기</h2><div class="card"><p>1통 = 100만 메소</p><label>시세(원/통) <input id="rate" type="number" value="370"></label><label>통 수 <input id="amount" type="number" value="30"></label><button onclick="calculate()">계산하기</button><h2 id="result"></h2></div></section>
+<section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
+<p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
+<label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
+<label>Publishable key<br><input class="wide" id="publishableKey" placeholder="sb_publishable_..."></label><br>
+<button onclick="connect()">연결 설정 저장</button><p class="muted">연결 정보는 현재 브라우저에 저장됩니다. 로그인한 데이터만 Supabase에 기록됩니다.</p></div>
+<div class="card"><p id="loginState">로그인되지 않았습니다.</p>
+<label>이메일<br><input class="wide" id="email" type="email" autocomplete="email"></label><br>
+<label>비밀번호<br><input class="wide" id="password" type="password" autocomplete="current-password"></label><br>
+<button onclick="signUp()">회원가입</button> <button onclick="signIn()">로그인</button> <button onclick="signOut()">로그아웃</button>
+<p class="muted">회원가입 후 인증 이메일이 도착하면 인증을 완료하고 로그인하세요.</p></div>
+<div class="card"><h3>기존 기록 가져오기</h3><p>이전 홈페이지에서 저장한 브라우저 기록을 로그인한 계정으로 <b>수동 가져오기</b> 합니다. 기존 기록은 삭제하지 않습니다.</p><button onclick="importLegacy()">이전 기록 가져오기</button><p class="muted">이미 온라인 기록이 있다면 중복될 수 있습니다. 한 번만 실행하세요.</p></div></section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-const key="mapleus_v1_";
-function tab(id,btn){
-document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));
-document.getElementById(id).classList.add("show");
-document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
+"use strict";
+const $=id=>document.getElementById(id), legacy="mapleus_v1_";
+let client=null,user=null,characterId=null,gears=[],taskRows=[],custom=[],dateKey="";
+const defaults=["현재 레벨 육성 목표 확인","장비 강화·잠재옵션 확인","경매장 시세 확인","진행 중인 길뚫 확인"];
+function status(message){$("globalStatus").textContent=message;}
+function errorMessage(e){status("오류: "+(e?.message||String(e)));}
+function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
+function requireLogin(){if(!client||!user){status("먼저 로그인 및 연결 메뉴에서 연결하고 로그인해 주세요.");return false;}return true;}
+function localDate(){let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
+function validNumber(id,defaultValue=0){const v=$(id).value.trim();const n=Number(v||defaultValue);if(!Number.isSafeInteger(n)||n<0)throw Error(id+"에는 0 이상의 정수를 입력해 주세요.");return n;}
+async function connect(){
+ try{
+ const url=$("projectUrl").value.trim().replace(/\/+$/,""),k=$("publishableKey").value.trim();
+ if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(url)||!k.startsWith("sb_publishable_"))throw Error("Supabase URL과 Publishable key를 확인해 주세요.");
+ if(!window.supabase)throw Error("Supabase 라이브러리를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.");
+ client=window.supabase.createClient(url,k,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ localStorage.setItem("mapleus_supabase_config",JSON.stringify({url,key:k}));
+ const {data,error}=await client.auth.getUser();if(error&&error.name!=="AuthSessionMissingError")throw error;
+ user=data?.user||null;updateLogin();if(user)await loadAll();else status("연결 설정 완료! 이메일로 회원가입하거나 로그인해 주세요.");
+ }catch(e){errorMessage(e);}
 }
-function save(){
-["nickname","level","hp","power","goal"].forEach(id=>
-localStorage.setItem(key+id,document.getElementById(id).value));
-alert("저장 완료!");
+function updateLogin(){$("loginState").textContent=user?"로그인: "+user.email:"로그인되지 않았습니다.";}
+async function signUp(){
+ try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {error}=await client.auth.signUp({email:$("email").value.trim(),password:$("password").value,emailRedirectTo:location.origin+location.pathname});if(error)throw error;status("회원가입 요청 완료. 이메일 인증 안내를 확인해 주세요. 기존 계정 여부에 따라 안내가 달라질 수 있어요.");}catch(e){errorMessage(e);}
 }
-["nickname","level","hp","power","goal"].forEach(id=>{
-let v=localStorage.getItem(key+id);
-if(v!==null)document.getElementById(id).value=v;
-});
-let gears=JSON.parse(localStorage.getItem(key+"gears")||"[]");
-function addGear(){
-gears.push({
-slot:slot.value,name:itemname.value,
-potential:potential.value,stars:stars.value
-});
-localStorage.setItem(key+"gears",JSON.stringify(gears));
-renderGear();
+async function signIn(){
+ try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
+}
+async function signOut(){
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];updateLogin();clearInputs();renderGear();renderTasks();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+}
+function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
+async function loadAll(){
+ if(!requireLogin())return;
+ const [c,g,t]=await Promise.all([
+ client.from("characters").select("*").eq("user_id",user.id).order("created_at",{ascending:true}).limit(1),
+ client.from("equipment").select("*").eq("user_id",user.id).order("created_at",{ascending:false}),
+ client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",dateKey).order("created_at",{ascending:true})
+ ]);
+ for(const r of [c,g,t])if(r.error)throw r.error;
+ const character=c.data[0];characterId=character?.id||null;
+ if(character){$("nickname").value=character.nickname;$("level").value=character.level;$("hp").value=character.hp;$("power").value=character.combat_power;$("goal").value=character.goal||"";}else clearInputs();
+ gears=g.data||[];taskRows=t.data||[];renderGear();renderTasks();
+}
+async function saveCharacter(){
+ try{if(!requireLogin())return;const nickname=$("nickname").value.trim();if(!nickname)throw Error("닉네임을 입력해 주세요.");
+ const level=validNumber("level",1);if(level<1||level>300)throw Error("레벨은 1~300으로 입력해 주세요.");
+ const row={user_id:user.id,nickname,job:"데몬어벤져",level,hp:validNumber("hp"),combat_power:validNumber("power"),goal:$("goal").value};
+ const q=characterId?client.from("characters").update(row).eq("id",characterId).eq("user_id",user.id).select().single():client.from("characters").insert(row).select().single();
+ const {data,error}=await q;if(error)throw error;characterId=data.id;status("캐릭터 정보가 Supabase에 저장됐어요.");
+ }catch(e){errorMessage(e);}
+}
+async function addGear(){
+ try{if(!requireLogin())return;const name=$("itemname").value.trim();if(!name)throw Error("장비 이름을 입력해 주세요.");const stars=validNumber("stars");if(stars>30)throw Error("스타포스는 0~30으로 입력해 주세요.");
+ const row={user_id:user.id,character_id:characterId,slot:$("slot").value,item_name:name,potential:$("potential").value,stars};
+ const {error}=await client.from("equipment").insert(row);if(error)throw error;
+ $("itemname").value="";$("potential").value="";$("stars").value="";await loadAll();status("장비 기록이 온라인에 저장됐어요. 사진은 저장되지 않았습니다.");
+ }catch(e){errorMessage(e);}
 }
 function renderGear(){
-gearlist.innerHTML=gears.map((g,i)=>`
-<div class="card"><h3>${safe(g.slot)}</h3>
-<p>${safe(g.name)}</p>
-<p>잠재: ${safe(g.potential)}</p>
-<p>스타포스: ${safe(g.stars)}성</p>
-<button onclick="removeGear(${i})">삭제</button></div>`).join("");
+ $("gearlist").innerHTML=gears.map(g=>`<div class="card"><h3>${safe(g.slot)}</h3><p>${safe(g.item_name)}</p><p>잠재: ${safe(g.potential)}</p><p>스타포스: ${safe(g.stars)}성</p><button data-delete-gear="${safe(g.id)}" class="danger">삭제</button></div>`).join("");
 }
-function safe(v){
-return String(v||"").replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",
-'"':"&quot;","'":"&#39;"
-})[c]);
-}
-function removeGear(i){
-gears.splice(i,1);
-localStorage.setItem(key+"gears",JSON.stringify(gears));
-renderGear();
-}
-gearphoto.onchange=e=>{
-const f=e.target.files[0];if(!f)return;
-preview.src=URL.createObjectURL(f);
-preview.style.display="block";
-};
-renderGear();
-const date=new Date().toLocaleDateString("sv-SE");
-today.textContent="오늘: "+date;
-let custom=JSON.parse(localStorage.getItem(key+"customTasks")||"[]");
-let defaults=["현재 레벨 육성 목표 확인","장비 강화·잠재옵션 확인","경매장 시세 확인","진행 중인 길뚫 확인"];
+$("gearlist").addEventListener("click",async e=>{
+ const id=e.target.closest("[data-delete-gear]")?.dataset.deleteGear;if(!id||!requireLogin())return;
+ try{const {error}=await client.from("equipment").delete().eq("id",id).eq("user_id",user.id);if(error)throw error;await loadAll();status("장비 기록을 삭제했어요.");}catch(err){errorMessage(err);}
+});
+$("gearphoto").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);$("preview").onload=()=>URL.revokeObjectURL(url);$("preview").src=url;$("preview").style.display="block";});
 function renderTasks(){
-tasks.innerHTML=[...defaults,...custom].map((t,i)=>{
-let id=key+"done_"+date+"_"+i;
-return `<label class="task"><input type="checkbox" ${localStorage.getItem(id)==="1"?"checked":""}
-onchange="localStorage.setItem('${id}',this.checked?'1':'0')"> ${safe(t)}</label>`;
-}).join("");
+ const items=[...defaults,...new Set(taskRows.map(t=>t.title).filter(t=>!defaults.includes(t)))];
+ $("tasks").innerHTML=items.map(t=>{const row=taskRows.find(x=>x.title===t);return `<label class="task"><input type="checkbox" data-task="${safe(t)}" ${row?.completed?"checked":""} ${!user?"disabled":""}> ${safe(t)}</label>`;}).join("");
 }
-function addTask(){
-if(!newtask.value.trim())return;
-custom.push(newtask.value.trim());
-localStorage.setItem(key+"customTasks",JSON.stringify(custom));
-newtask.value="";
-renderTasks();
+$("tasks").addEventListener("change",async e=>{
+ const input=e.target.closest("[data-task]");if(!input||!requireLogin())return;const title=input.dataset.task;
+ try{
+ const old=taskRows.find(t=>t.title===title);
+ const q=old?client.from("tasks").update({completed:input.checked}).eq("id",old.id).eq("user_id",user.id):
+ client.from("tasks").insert({user_id:user.id,title,category:"daily",task_date:dateKey,completed:input.checked});
+ const {error}=await q;if(error)throw error;await loadAll();status("메할일 체크가 온라인에 저장됐어요.");
+ }catch(err){input.checked=!input.checked;errorMessage(err);}
+});
+async function addTask(){
+ try{if(!requireLogin())return;const title=$("newtask").value.trim();if(!title)return;
+ if(taskRows.some(t=>t.title===title)||defaults.includes(title))throw Error("이미 있는 메할일이에요.");
+ const {error}=await client.from("tasks").insert({user_id:user.id,title,category:"daily",task_date:dateKey,completed:false});if(error)throw error;
+ $("newtask").value="";await loadAll();status("추가 메할일을 저장했어요.");
+ }catch(e){errorMessage(e);}
 }
-renderTasks();
-function calculate(){
-let r=Number(rate.value),a=Number(amount.value);
-result.textContent=`${(r*a).toLocaleString()}원 / ${(a*1000000).toLocaleString()}메소`;
+async function importLegacy(){
+ try{
+ if(!requireLogin())return;
+ if(!confirm("현재 브라우저의 이전 기록을 온라인 계정에 가져올까요? 중복 기록이 생길 수 있습니다."))return;
+ const nickname=localStorage.getItem(legacy+"nickname");
+ if(nickname&&!characterId){
+ $("nickname").value=nickname;["level","hp","power","goal"].forEach(id=>{const v=localStorage.getItem(legacy+id);if(v!==null)$(id).value=v;});
+ await saveCharacter();if(!characterId)throw Error("캐릭터 저장에 실패했습니다.");
+ }
+ const oldGears=JSON.parse(localStorage.getItem(legacy+"gears")||"[]");
+ for(const g of oldGears){const {error}=await client.from("equipment").insert({user_id:user.id,character_id:characterId,slot:String(g.slot||"기타"),item_name:String(g.name||"이름 없음"),potential:String(g.potential||""),stars:Math.max(0,Math.min(30,Number(g.stars)||0))});if(error)throw error;}
+ const oldTasks=JSON.parse(localStorage.getItem(legacy+"customTasks")||"[]");
+ for(const title of [...defaults,...oldTasks]){
+ const index=[...defaults,...oldTasks].indexOf(title),completed=localStorage.getItem(legacy+"done_"+dateKey+"_"+index)==="1";
+ if(!taskRows.some(t=>t.title===title)){const {error}=await client.from("tasks").insert({user_id:user.id,title,category:"daily",task_date:dateKey,completed});if(error)throw error;}
+ }
+ await loadAll();status("이전 기록 가져오기 완료! 기존 브라우저 기록은 유지됐어요. 다시 실행하면 장비가 중복될 수 있습니다.");
+ }catch(e){errorMessage(e);}
 }
-calculate();
-</script>
-</body>
-</html>
+function calculate(){const r=Number($("rate").value),a=Number($("amount").value);$("result").textContent=Number.isFinite(r*a)?`${(r*a).toLocaleString()}원 / ${(a*1000000).toLocaleString()}메소`:"숫자를 입력해 주세요.";}
+async function init(){
+ dateKey=localDate();$("today").textContent="오늘: "+dateKey;renderTasks();calculate();
+ const config=localStorage.getItem("mapleus_supabase_config");if(config){try{const c=JSON.parse(config);$("projectUrl").value=c.url;$("publishableKey").value=c.key;await connect();}catch(e){errorMessage(e);}}
+}
+init();
+</script></body></html>
