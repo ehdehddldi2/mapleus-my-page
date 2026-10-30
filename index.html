@@ -2,19 +2,46 @@
 <html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>메이플어스 | 나만의 공략집</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#101725;color:#eef2ff;font-family:Arial,"Malgun Gothic",sans-serif}
-header{background:#1d2940;padding:22px;text-align:center;border-bottom:2px solid #f5a623}h1{color:#ffbd59;margin:0}header p{color:#aebbd2}
-nav{display:flex;flex-wrap:wrap;gap:8px;padding:14px;justify-content:center;background:#172136}button{cursor:pointer;border:0;border-radius:9px;padding:11px 15px;background:#30415e;color:white}button:hover,.active{background:#e69a29;color:#101725}
-main{max-width:1050px;margin:auto;padding:20px}section{display:none}section.show{display:block}.card{background:#1d2940;padding:20px;border-radius:14px;margin-bottom:16px}
-h2{color:#ffbd59}h3{color:#dce8ff}input,textarea,select{background:#111b2e;color:white;border:1px solid #485b78;border-radius:8px;padding:11px;max-width:100%;margin:5px}input[type=checkbox]{accent-color:#ffbd59}textarea{width:100%;min-height:80px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}small,.muted{color:#aebbd2}a{color:#ffbd59}.task{display:block;padding:10px;border-bottom:1px solid #39465e}img{max-width:100%;border-radius:10px}.status{padding:12px;background:#111b2e;border-radius:9px;margin-bottom:15px;white-space:pre-wrap}.hidden{display:none}.wide{width:min(100%,520px)}.danger{background:#743844}
+:root{--bg:#0b1120;--panel:#18243a;--panel2:#202e48;--line:#33435e;--text:#eef3ff;--muted:#a7b7d3;--accent:#ffbc62;--green:#71dfba}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 80% 0%,#243454 0,transparent 37%),var(--bg);color:var(--text);font-family:"Malgun Gothic",Pretendard,Arial,sans-serif;line-height:1.55}
+header{padding:35px 22px 27px;background:linear-gradient(115deg,#243650,#152137);border-bottom:1px solid #52617a;text-align:center}
+header .eyebrow{font-size:12px;letter-spacing:.2em;color:#ffcd8b;font-weight:700}h1{font-size:clamp(25px,4vw,39px);margin:5px 0;color:var(--accent);letter-spacing:.025em}header p{color:var(--muted);margin:4px}
+nav{position:sticky;top:0;z-index:4;display:flex;gap:7px;padding:12px max(12px,calc((100vw - 1100px)/2));overflow-x:auto;background:#101b2dec;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+button{cursor:pointer;border:1px solid transparent;border-radius:10px;padding:10px 15px;background:#30425f;color:white;font:inherit;transition:.15s}
+button:hover,button.active{background:#e9a848;color:#121c2d}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+nav button{flex:0 0 auto;white-space:nowrap;font-size:13px}
+main{max-width:1120px;margin:auto;padding:22px 18px 55px}section{display:none}section.show{display:block}
+.card{background:linear-gradient(150deg,#1d2a43,#17243a);padding:21px;border:1px solid var(--line);border-radius:16px;margin-bottom:16px;box-shadow:0 8px 22px #070c1720}
+h2{color:var(--accent);font-size:24px;margin:0 0 16px}h3{color:#e0eaff;margin:4px 0 12px}
+input,textarea,select{background:#111c30;color:white;border:1px solid #536581;border-radius:9px;padding:10px;max-width:100%;margin:5px}
+input[type=checkbox]{accent-color:#eeb055;width:17px;height:17px;vertical-align:middle}textarea{width:100%;min-height:90px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}.grid .card{margin-bottom:0}
+small,.muted{color:var(--muted)}a{color:var(--accent)}.task{display:block;padding:11px;border-bottom:1px solid #39465e}
+img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a40;border:1px solid #34546c;border-radius:10px;margin-bottom:20px;white-space:pre-wrap;font-size:13px}
+.hidden{display:none}.wide{width:min(100%,520px)}.danger{background:#713e51}
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:18px}.hero .card{margin:0}
+.hero-title{font-size:24px;font-weight:800;color:#fff;margin:5px 0}.pill{display:inline-block;background:#384b68;color:#dceaff;border-radius:50px;padding:4px 10px;font-size:12px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.metric{background:#101d32;border:1px solid #354966;border-radius:12px;padding:13px}.metric strong{display:block;font-size:22px;color:#ffcb7e}.metric span{font-size:12px;color:#b2c0d8}
+.progress{height:10px;border-radius:20px;background:#0b1729;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:linear-gradient(90deg,#eaa84c,#73e1bd);transition:width .2s}
+.section-note{color:#b9c7dd;font-size:13px;margin-top:-8px;margin-bottom:18px}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar input{flex:1;min-width:160px}
+.guide-card{position:relative}.guide-card .tag{font-size:11px;color:#f4c98b;letter-spacing:.03em}
+.guide-card p{font-size:14px;color:#c1cee2}.guide-card details{margin-top:12px;border-top:1px solid #3a4a64;padding-top:10px}
+.guide-card summary{cursor:pointer;color:#ffd28d;font-weight:700}
+.guide-card li{margin:6px 0;font-size:13px;color:#c9d4e8}
+.mini{font-size:12px;color:#a8b9d3}.notice{padding:12px;background:#132d37;border:1px solid #315b60;border-radius:10px;font-size:13px}
+@media(max-width:730px){.hero{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}.metric strong{font-size:17px}main{padding:14px 12px 45px}.card{padding:16px}nav{padding:9px}}
 </style></head><body>
-<header><h1>🍁 MAPLE US MY PAGE</h1><p>나만의 메이플어스 성장 기록 & 공략집</p></header>
+<header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
 <button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
-<section id="home" class="show"><h2>내 캐릭터</h2><div class="card">
+<section id="home" class="show">
+<div class="hero"><div class="card"><span class="pill">🩸 데몬어벤져 육성 중</span><div class="hero-title">오늘도 한 단계 성장 🍁</div><p class="muted">캐릭터와 장비 정보를 안전하게 기록하고, 오늘의 목표를 확인해 보세요.</p><button onclick="tab('daily',document.querySelectorAll('#menu button')[2])">오늘의 메할일 보기 →</button></div>
+<div class="card"><h3>📊 성장 대시보드</h3><div class="metrics"><div class="metric"><strong id="dashLevel">—</strong><span>현재 레벨</span></div><div class="metric"><strong id="dashGear">0</strong><span>등록 장비</span></div><div class="metric"><strong id="dashTasks">0/4</strong><span>오늘 완료</span></div></div><div class="progress"><div id="dashProgress" style="width:0%"></div></div><span class="mini" id="dashHint">로그인하면 온라인 기록을 표시합니다.</span></div></div>
+<h2>내 캐릭터</h2><div class="card">
 <p>직업: 데몬어벤져</p>
 <label>닉네임 <input id="nickname" placeholder="닉네임"></label>
 <label>레벨 <input id="level" type="number" min="1" max="300" placeholder="레벨"></label>
@@ -23,21 +50,24 @@ h2{color:#ffbd59}h3{color:#dce8ff}input,textarea,select{background:#111b2e;color
 <h3>현재 성장 목표</h3><textarea id="goal">사자성 길뚫 진행, 원킬 사냥 스펙 확보</textarea>
 <button onclick="saveCharacter()">캐릭터 정보 저장</button></div>
 <div class="card"><h3>🍁 공식 메이플어스</h3><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">공식 홈페이지 방문</a></p><p><a href="https://mapleus.co.kr/site/auction/" target="_blank" rel="noopener noreferrer">공식 경매장 확인</a></p></div></section>
-<section id="gear"><h2>🛡️ 나의 템셋팅</h2><div class="card">
+<section id="gear"><h2>🛡️ 나의 템셋팅</h2><p class="section-note">장비는 로그인 계정의 Supabase에 저장됩니다. 사진은 현재 미리보기만 지원해요.</p><div class="card">
 <p>장비별 잠재옵션과 강화 상태를 기록해 보세요.</p>
 <select id="slot"><option>무기</option><option>보조무기</option><option>엠블렘</option><option>모자</option><option>상의</option><option>하의</option><option>장갑</option><option>신발</option><option>망토</option><option>어깨장식</option><option>반지</option><option>귀고리</option><option>목걸이</option><option>벨트</option></select>
 <input id="itemname" placeholder="장비 이름"><input id="potential" placeholder="잠재옵션"><input id="stars" type="number" min="0" max="30" placeholder="스타포스">
 <p>장비 스크린샷 첨부 (미리보기만 가능)</p><input id="gearphoto" type="file" accept="image/*"><p><small>AI 자동 판독 및 사진 클라우드 저장은 아직 연결 전입니다.</small></p><img id="preview" style="display:none;max-height:250px" alt="장비 사진 미리보기">
-<p><button onclick="addGear()">장비 기록 저장</button></p></div><div id="gearlist" class="grid"></div></section>
-<section id="daily"><h2>✅ 오늘의 메할일</h2><div class="card"><p id="today"></p><div id="tasks"></div></div><div class="card"><h3>추가 메할일</h3><input id="newtask" placeholder="예: 사자성 길뚫"><button onclick="addTask()">추가하기</button></div><p class="muted">로그인 후 체크 기록이 날짜별로 저장됩니다. 게임에서 자동 확인되지는 않습니다.</p></section>
-<section id="guide"><h2>📚 메이플어스 공략 도서관</h2><div class="grid">
-<div class="card"><h3>🔨 토드의 망치</h3><p>장비 레벨, 부위, 잠재옵션과 스타포스 전승 규칙을 확인하는 공략.</p><p class="muted">메이플어스 전용 세부 규칙 검증 예정</p></div>
-<div class="card"><h3>🏰 필수 퀘스트</h3><p>사자성 길뚫, 보스 선행퀘, 장비 획득 관련 퀘스트를 정리할 공간.</p></div>
-<div class="card"><h3>⚔️ 레벨별 사냥터</h3><p>원킬 여부, 경험치 효율, 몬스터 레벨에 따른 추천 사냥터.</p><p class="muted">추천 데이터 업데이트 예정</p></div>
-<div class="card"><h3>⚒️ 마이스터빌</h3><p>채집·채광·연금술·장비 제작·장신구 제작·합성 공략.</p><p>제작 비용과 경매장 판매 가격 비교 기능 추가 예정.</p></div>
-<div class="card"><h3>🩸 데몬어벤져 육성</h3><p>HP 중심 장비 세팅, 잠재옵션 우선순위, 스킬과 장비 교체 로드맵.</p></div>
-<div class="card"><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 패치를 구분해 정리할 공간.</p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">공식 정보 확인</a></div></div></section>
-<section id="meso"><h2>💰 메소 & 쌀먹 계산기</h2><div class="card"><p>1통 = 100만 메소</p><label>시세(원/통) <input id="rate" type="number" value="370"></label><label>통 수 <input id="amount" type="number" value="30"></label><button onclick="calculate()">계산하기</button><h2 id="result"></h2></div></section>
+<p><button onclick="addGear()">장비 기록 저장</button></p></div><div class="toolbar"><input id="gearSearch" placeholder="🔎 장비명·부위·잠재 검색" oninput="renderGear()"><span id="gearCount" class="pill">0개 장비</span></div><div id="gearlist" class="grid"></div></section>
+<section id="daily"><h2>✅ 오늘의 메할일</h2><div class="card"><p id="today"></p><div class="toolbar"><strong id="taskProgressText">0 / 4 완료</strong><span class="mini">일일 기록은 날짜별로 보관돼요</span></div><div class="progress"><div id="taskProgressBar" style="width:0%"></div></div><div id="tasks"></div></div><div class="card"><h3>추가 메할일</h3><input id="newtask" placeholder="예: 사자성 길뚫"><button onclick="addTask()">추가하기</button></div><p class="muted">로그인 후 체크 기록이 날짜별로 저장됩니다. 게임에서 자동 확인되지는 않습니다.</p></section>
+<section id="guide"><h2>📚 메이플어스 공략 도서관</h2><p class="section-note">현재는 핵심 개념과 체크 포인트를 정리했어요. 메이플어스 서버별 적용 여부와 정확한 수치는 공식 정보로 검증 후 확정합니다.</p>
+<div class="toolbar"><input id="guideSearch" placeholder="🔎 토드, 사냥터, 마빌, 퀘스트 검색" oninput="filterGuides()"><button onclick="document.getElementById('guideSearch').value='';filterGuides()">전체 보기</button></div>
+<div class="grid" id="guideCards">
+<div class="card guide-card" data-search="토드 망치 전승 잠재 스타포스"><span class="tag">장비 강화</span><h3>🔨 토드의 망치</h3><p>장비를 교체할 때 잠재능력과 강화 상태를 어떻게 이어갈지 계획해요.</p><details><summary>준비 체크리스트</summary><ul><li>출발·도착 장비의 레벨과 부위 확인</li><li>잠재 등급과 옵션 확인</li><li>스타포스 및 전승 후 변화 확인</li><li>재료 가격과 완제품 가격 비교</li></ul><p class="mini">실제 전승 가능 레벨 간격과 계승 규칙은 메이플어스에서 확인 필요</p></details></div>
+<div class="card guide-card" data-search="필수 퀘스트 사자성 반레온 길뚫"><span class="tag">성장 동선</span><h3>🏰 필수 퀘스트</h3><p>진행 중인 사자성 길뚫과 보스 선행 퀘스트를 정리해요.</p><details><summary>길뚫 기록 가이드</summary><ul><li>시작 레벨과 선행 조건 확인</li><li>현재 진행 단계 메모</li><li>완료 보상과 보스 입장 조건 확인</li><li>메할일에 다음 진행 단계 추가</li></ul></details></div>
+<div class="card guide-card" data-search="레벨 사냥터 원킬 경험치 몬스터"><span class="tag">레벨업</span><h3>⚔️ 레벨별 사냥터</h3><p>레벨뿐 아니라 원킬 여부와 이동 편의성까지 비교해요.</p><details><summary>사냥터 선택 기준</summary><ul><li>몬스터 레벨과 캐릭터 레벨 차이</li><li>원킬·투킬 여부</li><li>지형, 이동 동선, 리젠 속도</li><li>물약 소모량과 메소 수급</li></ul><p class="mini">레벨별 실제 추천 지도 목록은 서버 정보 검증 후 추가 예정</p></details></div>
+<div class="card guide-card" data-search="마빌 마이스터빌 채집 채광 장신구 제작 연금술 합성"><span class="tag">전문기술</span><h3>⚒️ 마이스터빌(마빌)</h3><p>채집·채광·제작·합성으로 장비 성장과 메소 수익을 함께 관리해요.</p><details><summary>초보자 시작 순서</summary><ul><li>현재 서버에서 가능한 전문기술 확인</li><li>채집·채광 재료와 경매장 가격 비교</li><li>제작 재료비 + 수수료 + 완제품 시세 계산</li><li>제작 성공률·숙련도·피로도 등 서버 규칙 확인</li></ul><p class="mini">실제 수익은 서버 시세에 따라 달라집니다.</p></details></div>
+<div class="card guide-card" data-search="데몬어벤져 HP 공격력 잠재 장비"><span class="tag">직업 육성</span><h3>🩸 데몬어벤져</h3><p>HP 기반 육성에 맞춰 장비 옵션과 성장 우선순위를 기록해요.</p><details><summary>장비 점검 순서</summary><ul><li>무기 공격력 및 잠재옵션</li><li>HP 관련 잠재옵션 효율</li><li>장비 레벨과 강화 비용</li><li>사냥 원킬 달성 여부</li></ul></details></div>
+<div class="card guide-card" data-search="패치 업데이트 공지 2014 2015 2016"><span class="tag">패치노트</span><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 정보를 구분해서 관리해요.</p><details><summary>공식 정보</summary><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">메이플어스 공식 홈페이지 열기</a></p><p class="mini">현재 자동 수집 기능은 연결되지 않았습니다.</p></details></div>
+</div></section>
+<section id="meso"><h2>💰 메소 & 쌀먹 계산기</h2><div class="card"><p>1통 = 100만 메소</p><p class="mini">시세는 직접 입력한 값으로 계산합니다. 실시간 시세 연동은 아직 없습니다.</p><label>시세(원/통) <input id="rate" type="number" value="370"></label><label>통 수 <input id="amount" type="number" value="30"></label><button onclick="calculate()">계산하기</button><h2 id="result"></h2></div></section>
 <section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
 <p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
 <label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
@@ -82,7 +112,7 @@ async function signIn(){
  try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
 }
 async function signOut(){
- try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];updateLogin();clearInputs();renderGear();renderTasks();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
 }
 function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
 async function loadAll(){
@@ -95,14 +125,14 @@ async function loadAll(){
  for(const r of [c,g,t])if(r.error)throw r.error;
  const character=c.data[0];characterId=character?.id||null;
  if(character){$("nickname").value=character.nickname;$("level").value=character.level;$("hp").value=character.hp;$("power").value=character.combat_power;$("goal").value=character.goal||"";}else clearInputs();
- gears=g.data||[];taskRows=t.data||[];renderGear();renderTasks();
+ gears=g.data||[];taskRows=t.data||[];renderGear();renderTasks();updateDashboard();
 }
 async function saveCharacter(){
  try{if(!requireLogin())return;const nickname=$("nickname").value.trim();if(!nickname)throw Error("닉네임을 입력해 주세요.");
  const level=validNumber("level",1);if(level<1||level>300)throw Error("레벨은 1~300으로 입력해 주세요.");
  const row={user_id:user.id,nickname,job:"데몬어벤져",level,hp:validNumber("hp"),combat_power:validNumber("power"),goal:$("goal").value};
  const q=characterId?client.from("characters").update(row).eq("id",characterId).eq("user_id",user.id).select().single():client.from("characters").insert(row).select().single();
- const {data,error}=await q;if(error)throw error;characterId=data.id;status("캐릭터 정보가 Supabase에 저장됐어요.");
+ const {data,error}=await q;if(error)throw error;characterId=data.id;updateDashboard();status("캐릭터 정보가 Supabase에 저장됐어요.");
  }catch(e){errorMessage(e);}
 }
 async function addGear(){
@@ -113,7 +143,10 @@ async function addGear(){
  }catch(e){errorMessage(e);}
 }
 function renderGear(){
- $("gearlist").innerHTML=gears.map(g=>`<div class="card"><h3>${safe(g.slot)}</h3><p>${safe(g.item_name)}</p><p>잠재: ${safe(g.potential)}</p><p>스타포스: ${safe(g.stars)}성</p><button data-delete-gear="${safe(g.id)}" class="danger">삭제</button></div>`).join("");
+ const query=($("gearSearch")?.value||"").trim().toLowerCase();
+ const visible=gears.filter(g=>[g.slot,g.item_name,g.potential].join(" ").toLowerCase().includes(query));
+ if($("gearCount"))$("gearCount").textContent=visible.length+"개 장비";
+ $("gearlist").innerHTML=visible.map(g=>`<div class="card"><h3>${safe(g.slot)}</h3><p>${safe(g.item_name)}</p><p>잠재: ${safe(g.potential)}</p><p>스타포스: ${safe(g.stars)}성</p><button data-delete-gear="${safe(g.id)}" class="danger">삭제</button></div>`).join("");
 }
 $("gearlist").addEventListener("click",async e=>{
  const id=e.target.closest("[data-delete-gear]")?.dataset.deleteGear;if(!id||!requireLogin())return;
@@ -122,6 +155,10 @@ $("gearlist").addEventListener("click",async e=>{
 $("gearphoto").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);$("preview").onload=()=>URL.revokeObjectURL(url);$("preview").src=url;$("preview").style.display="block";});
 function renderTasks(){
  const items=[...defaults,...new Set(taskRows.map(t=>t.title).filter(t=>!defaults.includes(t)))];
+ const completed=items.filter(t=>taskRows.find(x=>x.title===t)?.completed).length;
+ const ratio=items.length?Math.round(completed/items.length*100):0;
+ if($("taskProgressText"))$("taskProgressText").textContent=completed+" / "+items.length+" 완료";
+ if($("taskProgressBar"))$("taskProgressBar").style.width=ratio+"%";
  $("tasks").innerHTML=items.map(t=>{const row=taskRows.find(x=>x.title===t);return `<label class="task"><input type="checkbox" data-task="${safe(t)}" ${row?.completed?"checked":""} ${!user?"disabled":""}> ${safe(t)}</label>`;}).join("");
 }
 $("tasks").addEventListener("change",async e=>{
@@ -159,9 +196,22 @@ async function importLegacy(){
  await loadAll();status("이전 기록 가져오기 완료! 기존 브라우저 기록은 유지됐어요. 다시 실행하면 장비가 중복될 수 있습니다.");
  }catch(e){errorMessage(e);}
 }
+function updateDashboard(){
+ const items=[...defaults,...new Set(taskRows.map(t=>t.title).filter(t=>!defaults.includes(t)))];
+ const done=items.filter(t=>taskRows.find(x=>x.title===t)?.completed).length;
+ $("dashLevel").textContent=user?($("level").value||"—"):"—";
+ $("dashGear").textContent=user?gears.length:"0";
+ $("dashTasks").textContent=user?(done+"/"+items.length):"0/4";
+ $("dashProgress").style.width=(user&&items.length?Math.round(done/items.length*100):0)+"%";
+ $("dashHint").textContent=user?"오늘 메할일 달성률을 표시합니다.":"로그인하면 온라인 기록을 표시합니다.";
+}
+function filterGuides(){
+ const q=$("guideSearch").value.trim().toLowerCase();
+ document.querySelectorAll(".guide-card").forEach(el=>el.style.display=el.textContent.toLowerCase().includes(q)||el.dataset.search.includes(q)?"":"none");
+}
 function calculate(){const r=Number($("rate").value),a=Number($("amount").value);$("result").textContent=Number.isFinite(r*a)?`${(r*a).toLocaleString()}원 / ${(a*1000000).toLocaleString()}메소`:"숫자를 입력해 주세요.";}
 async function init(){
- dateKey=localDate();$("today").textContent="오늘: "+dateKey;renderTasks();calculate();
+ dateKey=localDate();$("today").textContent="오늘: "+dateKey;renderTasks();calculate();updateDashboard();
  const config=localStorage.getItem("mapleus_supabase_config");if(config){try{const c=JSON.parse(config);$("projectUrl").value=c.url;$("publishableKey").value=c.key;await connect();}catch(e){errorMessage(e);}}
 }
 init();
