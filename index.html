@@ -46,10 +46,19 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 .job-tile small{display:block;font-size:11px;margin-top:3px}.job-detail{background:#101c30;border:1px solid #405572;padding:18px;border-radius:14px;margin-top:15px}
 .job-detail h3{color:#ffcd8b}.job-detail .grid{margin-top:12px}.job-detail .card{padding:14px;background:#1c2a42}
 .job-detail ul{padding-left:19px}.job-detail li{margin:5px 0}.job-tag{display:inline-block;padding:4px 9px;border-radius:20px;background:#364b67;color:#d7e6fb;font-size:12px;margin-right:6px}
+
+/* 3.1 장비 비교 및 토드 계산기 */
+.calc-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px}
+.calc-fields label{display:flex;flex-direction:column;font-size:12px;color:#c0cee3}
+.calc-fields input,.calc-fields select{width:100%;margin:5px 0}
+.calc-result{padding:16px;border:1px solid #50627d;border-radius:13px;background:#101d32;margin:13px 0}
+.calc-result strong{color:#ffcc85;font-size:20px}
+.calc-table{width:100%;border-collapse:collapse}.calc-table th,.calc-table td{border-bottom:1px solid #3b4b65;padding:9px;text-align:left;font-size:13px}
+.calc-hint{font-size:12px;color:#b7c7df}.calc-good{color:#78e5bd}.calc-warn{color:#ffd087}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 계산</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
 <section id="home" class="show">
@@ -93,6 +102,32 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <div class="card guide-card" data-search="데몬어벤져 HP 공격력 잠재 장비"><span class="tag">직업 육성</span><h3>🩸 데몬어벤져</h3><p>HP 기반 육성에 맞춰 장비 옵션과 성장 우선순위를 기록해요.</p><details><summary>장비 점검 순서</summary><ul><li>무기 공격력 및 잠재옵션</li><li>HP 관련 잠재옵션 효율</li><li>장비 레벨과 강화 비용</li><li>사냥 원킬 달성 여부</li></ul></details></div>
 <div class="card guide-card" data-search="패치 업데이트 공지 2014 2015 2016"><span class="tag">패치노트</span><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 정보를 구분해서 관리해요.</p><details><summary>공식 정보</summary><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">메이플어스 공식 홈페이지 열기</a></p><p class="mini">현재 자동 수집 기능은 연결되지 않았습니다.</p></details></div>
 </div></section>
+
+<section id="compare"><h2>⚖️ 장비 비교 · 토드 계산기 3.1</h2>
+<p class="section-note">실제 메이플어스 서버 옵션 효율·토드 가능 여부는 확인되지 않았어요. 아래 계산은 입력값 비교와 비용 합산용입니다.</p>
+<div class="card"><h3>🛡️ 장비 A vs 장비 B</h3><p class="calc-hint">장비의 표시 수치를 직접 입력해 주세요. HP%와 MP%는 절대 합산하지 않으며, 공격력·HP%의 실제 스공 환산은 하지 않아요.</p>
+<div class="grid"><div><h3>장비 A · 현재/후보</h3><div class="calc-fields">
+<label>장비 이름<input id="c_a_name" value="현재 장비" maxlength="80"></label><label>가격 (만 메소)<input id="c_a_price" type="number" min="0" value="0"></label>
+<label>공격력 +<input id="c_a_att" type="number" value="0"></label><label>마력 +<input id="c_a_matt" type="number" value="0"></label>
+<label>HP %<input id="c_a_hp" type="number" value="0"></label><label>MP %<input id="c_a_mp" type="number" value="0"></label>
+<label>올스탯 %<input id="c_a_all" type="number" value="0"></label><label>스타포스 (성)<input id="c_a_star" type="number" min="0" max="30" value="0"></label>
+</div></div><div><h3>장비 B · 비교 매물</h3><div class="calc-fields">
+<label>장비 이름<input id="c_b_name" value="경매장 매물" maxlength="80"></label><label>가격 (만 메소)<input id="c_b_price" type="number" min="0" value="0"></label>
+<label>공격력 +<input id="c_b_att" type="number" value="0"></label><label>마력 +<input id="c_b_matt" type="number" value="0"></label>
+<label>HP %<input id="c_b_hp" type="number" value="0"></label><label>MP %<input id="c_b_mp" type="number" value="0"></label>
+<label>올스탯 %<input id="c_b_all" type="number" value="0"></label><label>스타포스 (성)<input id="c_b_star" type="number" min="0" max="30" value="0"></label>
+</div></div></div><div id="c_compare_result" class="calc-result" aria-live="polite"></div>
+<button type="button" id="c_swap">A ↔ B 교환</button><button type="button" id="c_reset">입력 초기화</button>
+<p class="calc-hint">※ 장비 공격력과 잠재 공격력%는 서로 다른 수치입니다. 여기에 입력하는 공격력은 표시된 고정 수치(+), HP%·MP%는 퍼센트 수치예요. 스탯별 가치 판단은 직접 해 주세요.</p></div>
+<div class="card"><h3>🔨 토드·잠재 제작비 vs 완제품</h3><p class="calc-hint">토드 가능 여부·잠재 전승 규칙·옵션 등급은 서버에서 직접 확인해야 해요. 큐브는 개당 가격 × 예상 개수로만 계산하며 성공 확률을 가정하지 않아요.</p>
+<div class="calc-fields">
+<label>재료 장비 (만 메소)<input id="c_material" type="number" min="0" value="0"></label><label>토드용 중간 장비 (만 메소)<input id="c_middle" type="number" min="0" value="0"></label>
+<label>최종 장비 (만 메소)<input id="c_target" type="number" min="0" value="0"></label><label>큐브 1개 가격 (만 메소)<input id="c_cubeprice" type="number" min="0" value="10"></label>
+<label>예상 큐브 개수<input id="c_cubes" type="number" min="0" step="1" value="0"></label><label>강화·기타 비용 (만 메소)<input id="c_upgrade" type="number" min="0" value="0"></label>
+<label>완제품 경매장 가격 (만 메소)<input id="c_finished" type="number" min="0" value="0"></label>
+</div><div id="c_todd_result" class="calc-result" aria-live="polite"></div>
+<p class="calc-hint">※ 입력한 예상 큐브 개수에 따라 제작비가 달라집니다. 확률형 결과를 보장하지 않으며, 거래 수수료·토드 관련 실제 비용은 강화·기타 비용에 추가하세요.</p></div>
+</section>
 <section id="meso"><h2>💰 쌀먹 계산기 3.0</h2><p class="muted">1통 = 100만 메소 · 시세 370:1 = 1통당 370원 · 메이플어스 게임 내 실제 수수료율은 확인되지 않아 직접 설정합니다.</p><div class="card"><h2>💰 거래 계산</h2><div class="grid"><label>거래 유형<select id="m_type"><option value="sell">판매자</option><option value="buy">구매자</option></select></label><label>거래 방식<select id="m_method"><option>택배</option><option>경매장</option><option>직접거래</option></select></label><label>시세 (원/통)<input id="m_rate" min="0" type="number" value="370"/></label><label>거래량 (통)<input id="m_amount" min="0" step="any" type="number" value="100"/></label><label>게임 수수료 (%)<input id="m_fee" max="99" min="0" step="any" type="number" value="0"/></label><label>수수료 부담<select id="m_payer"><option value="seller">판매자 부담 (구매자 정량 수령)</option><option value="buyer">구매자 부담 (보낸 금액에서 차감)</option></select></label><label>별도 현금 수수료 (원)<input id="m_cashFee" min="0" type="number" value="0"/></label><label>거래 상대 / 메모<input id="m_memo" placeholder="선택 사항"/></label></div><div class="result" id="m_out"></div><button id="m_copy">계산 결과 복사</button><button id="m_save">거래 완료 기록</button><p class="muted">계산은 게임 수수료를 비율로 차감한다고 가정합니다. 게임의 반올림·최소 수수료·최대 송금액 규칙이 다르면 실제 결과와 차이가 날 수 있습니다.</p></div><div class="card"><h2>🏦 보유 메소 관리</h2><label>현재 보유 메소 (통)<input id="m_balance" min="0" step="any" type="number" value="0"/></label><div class="result" id="m_balanceOut"></div><p class="muted">보유 메소는 로그인 계정에 저장됩니다. 거래 기록을 저장해도 보유량은 자동 차감되지 않습니다.</p></div><div class="card"><h2>📊 시세 비교</h2><label>비교 시세 (쉼표 구분)<input id="m_rates" value="350,370,400,450,500"/></label><div class="scroll" id="m_compare"></div></div><div class="card"><h2>📒 거래 내역</h2><div class="result" id="m_stats"></div><div class="scroll"><table><thead><tr><th>일시</th><th>유형/방식</th><th>시세</th><th>통</th><th>현금</th><th>보낸 메소</th><th>수수료 메소</th><th>메모</th><th></th></tr></thead><tbody id="m_history"></tbody></table></div><button id="m_csv">CSV 내보내기</button><button id="m_clear">거래 기록 전체 삭제</button><p class="muted">거래 내역과 보유 메소는 로그인한 계정의 Supabase에 저장됩니다. 처음 한 번 아래 SQL 설정이 필요합니다.</p></div></section>
 <section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
 <p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
@@ -363,6 +398,30 @@ $('jobSearch').addEventListener('input',renderJobAtlas);
 $('jobGroups').addEventListener('click',e=>{const b=e.target.closest('[data-job-group]');if(!b)return;selectedJobGroup=b.dataset.jobGroup;renderJobAtlas();});
 $('jobList').addEventListener('click',e=>{const b=e.target.closest('[data-job-name]');if(!b)return;selectedJob=b.dataset.jobName;renderJobAtlas();$('jobDetail').scrollIntoView({behavior:'smooth',block:'nearest'});});
 renderJobAtlas();
+
+
+// 3.1: 입력값 기반 독립 계산기. 기존 Supabase 테이블과 데이터는 변경하지 않습니다.
+const calcFmt=n=>Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2}):'—';
+const calcValue=id=>{const x=Number($(id).value);return Number.isFinite(x)?x:0;};
+function calcEquipment(){
+ const fields=[['price','가격','만 메소'],['att','공격력 +',''],['matt','마력 +',''],['hp','HP','%'],['mp','MP','%'],['all','올스탯','%'],['star','스타포스','성']];
+ const a=$('c_a_name').value.trim()||'장비 A',b=$('c_b_name').value.trim()||'장비 B';
+ const rows=fields.map(([key,label,unit])=>{const av=calcValue('c_a_'+key),bv=calcValue('c_b_'+key),delta=bv-av;return `<tr><th>${label}</th><td>${calcFmt(av)}${unit}</td><td>${calcFmt(bv)}${unit}</td><td class="${delta>0?'calc-good':delta<0?'calc-warn':''}">${delta>0?'+':''}${calcFmt(delta)}${unit}</td></tr>`;}).join('');
+ const priceA=calcValue('c_a_price'),priceB=calcValue('c_b_price');
+ const bad=['a','b'].some(k=>['price','star'].some(f=>calcValue('c_'+k+'_'+f)<0))||['a','b'].some(k=>calcValue('c_'+k+'_star')>30);
+ $('c_compare_result').innerHTML=`<h3>${safe(a)} ↔ ${safe(b)}</h3>${bad?'<p class="calc-warn">가격은 0 이상, 스타포스는 0~30으로 입력해 주세요.</p>':''}<div style="overflow-x:auto"><table class="calc-table"><thead><tr><th>항목</th><th>A</th><th>B</th><th>B−A</th></tr></thead><tbody>${rows}</tbody></table></div><p>가격 차이: <strong>${calcFmt(priceB-priceA)}만 메소</strong> (B − A)</p><p class="calc-hint">각 수치의 차이만 보여 줍니다. 실제 전투력·효율 우열 판정은 하지 않아요.</p>`;
+}
+function calcTodd(){
+ const ids=['material','middle','target','cubeprice','cubes','upgrade','finished'];const vals=Object.fromEntries(ids.map(k=>[k,calcValue('c_'+k)]));
+ const invalid=ids.some(k=>vals[k]<0)||!Number.isInteger(vals.cubes);
+ const cube=vals.cubeprice*vals.cubes,build=vals.material+vals.middle+vals.target+cube+vals.upgrade,diff=vals.finished-build;
+ const msg=diff>0?`입력값 기준 직접 제작이 ${calcFmt(diff)}만 메소 저렴`:diff<0?`입력값 기준 완제품 구매가 ${calcFmt(-diff)}만 메소 저렴`:'입력값 기준 비용이 같아요';
+ $('c_todd_result').innerHTML=`${invalid?'<p class="calc-warn">비용은 0 이상, 큐브 개수는 0 이상의 정수로 입력해 주세요.</p>':''}<p>큐브 비용: <b>${calcFmt(cube)}만 메소</b></p><p>직접 제작 예상 합계: <strong>${calcFmt(build)}만 메소</strong></p><p>완제품 구매가: <strong>${calcFmt(vals.finished)}만 메소</strong></p><p class="calc-good">${msg}</p><p class="calc-hint">재료 장비 + 중간 장비 + 최종 장비 + 큐브 + 강화·기타 비용의 단순 합계입니다.</p>`;
+}
+for(const el of document.querySelectorAll('#compare input'))el.addEventListener('input',()=>{calcEquipment();calcTodd();});
+$('c_swap').addEventListener('click',()=>{for(const k of ['name','price','att','matt','hp','mp','all','star']){const a=$('c_a_'+k),b=$('c_b_'+k),v=a.value;a.value=b.value;b.value=v;}calcEquipment();});
+$('c_reset').addEventListener('click',()=>{for(const k of ['a','b'])for(const f of ['price','att','matt','hp','mp','all','star'])$('c_'+k+'_'+f).value='0';$('c_a_name').value='현재 장비';$('c_b_name').value='경매장 매물';calcEquipment();});
+calcEquipment();calcTodd();
 
 async function init(){
   dateKey=localDate();
