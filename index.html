@@ -113,10 +113,18 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 
 /* 3.7 boss & quest planner */
 #bosses .b37-tools{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}#bosses .b37-tools>*{flex:1;min-width:135px}#bosses .b37-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#bosses .b37-summary>div{background:#17283f;border:1px solid #334963;border-radius:12px;padding:14px}#bosses .b37-summary b{display:block;font-size:23px;color:#ffd08a;margin-top:5px}#bosses .b37-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:11px}#bosses .b37-item{background:#14243a;border:1px solid #34475f;border-radius:13px;padding:14px}#bosses .b37-head{display:flex;align-items:start;justify-content:space-between;gap:8px}#bosses .b37-head strong{font-size:16px}#bosses .b37-item select{margin:8px 0;width:100%}#bosses .b37-actions{display:flex;gap:8px;align-items:center;justify-content:space-between}#bosses .b37-actions label{display:flex;align-items:center;gap:7px;font-size:13px}#bosses .b37-actions input{width:auto}#bosses .b37-tag{font-size:11px;color:#adc1dc}#bosses .b37-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}#bosses .b37-tabs button{background:#22364e}#bosses .b37-tabs button.on{background:#f3b766;color:#152137}#bosses .b37-quest{border:1px solid #354a62;border-radius:12px;padding:15px;margin:10px 0;background:#14243a}#bosses .b37-quest summary{cursor:pointer;font-weight:750}#bosses .b37-quest p{margin:9px 0;color:#b9cbe0;font-size:13px}#bosses .b37-quest label{display:inline-flex;align-items:center;gap:7px;font-size:13px}#bosses .b37-quest input[type=checkbox]{width:auto}#bosses .b37-note{color:#aebfda;font-size:12px;line-height:1.6}#bosses .b37-empty{padding:25px;text-align:center;color:#adc1dc}#bosses input,#bosses select{max-width:100%}@media(max-width:580px){#bosses .b37-summary{grid-template-columns:1fr 1fr 1fr}#bosses .b37-summary b{font-size:18px}}
+
+/* 3.8 사냥터 연구소 */
+#hunt38 .h38-hero{background:linear-gradient(125deg,#263a54,#17263c);border:1px solid #47617d;border-radius:18px;padding:22px;margin-bottom:16px}
+#hunt38 .h38-hero h2{margin:0 0 7px}#hunt38 .h38-hero p{color:#b9c9de;margin:0;line-height:1.65}
+#hunt38 .h38-controls{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:11px;margin:16px 0}#hunt38 label{font-size:12px;color:#c9d7e8;display:flex;flex-direction:column;gap:6px}#hunt38 input,#hunt38 select{width:100%;padding:12px;background:#101d30;border:1px solid #435b78;border-radius:10px;color:#edf4ff}
+#hunt38 .h38-chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 16px}#hunt38 .h38-chips button{padding:9px 13px;border:1px solid #465c76;background:#1a2b43;border-radius:20px;font-size:12px}#hunt38 .h38-chips button.on{background:#554333;border-color:#ffc47b;color:#ffe2b3}
+#hunt38 .h38-summary{font-size:13px;color:#c6d6e9;margin:14px 0}#hunt38 .h38-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}#hunt38 .h38-item{border:1px solid #3e536e;background:#192940;border-radius:15px;padding:18px;display:flex;flex-direction:column;gap:9px}#hunt38 .h38-item h3{margin:0;font-size:17px;color:#ffcf91}#hunt38 .h38-item p{font-size:13px;color:#c2d1e6;line-height:1.6;margin:0}#hunt38 .h38-tags{display:flex;gap:6px;flex-wrap:wrap}#hunt38 .h38-tags span{background:#2b405d;border-radius:16px;padding:4px 9px;font-size:11px;color:#d8e8fa}#hunt38 .h38-actions{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}#hunt38 .h38-actions button{font-size:12px;padding:9px 11px}#hunt38 .h38-star{background:#473c32;color:#ffd899}#hunt38 .h38-note{font-size:12px;color:#b5c7de;line-height:1.6}#hunt38 details{margin-top:18px}#hunt38 summary{cursor:pointer;font-weight:700}#hunt38 .h38-add{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:14px}#hunt38 .h38-add .full{grid-column:1/-1}#hunt38 .h38-empty{padding:26px;text-align:center;color:#b9c9de;border:1px dashed #50637c;border-radius:14px}
+@media(max-width:650px){#hunt38 .h38-controls{grid-template-columns:1fr 1fr}#hunt38 .h38-controls label:last-child{grid-column:1/-1}#hunt38 .h38-add{grid-template-columns:1fr}#hunt38 .h38-add .full{grid-column:auto}}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('characters',this)">👥 캐릭터 관리</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('bosses',this)">👹 보스·길뚫</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('characters',this)">👥 캐릭터 관리</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('bosses',this)">👹 보스·길뚫</button><button onclick="tab('hunt38',this)">⚔️ 사냥터 추천</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
 <section id="home" class="show">
@@ -228,6 +236,12 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <div id="b37-boss-list" class="b37-list"></div><div class="b37-tools"><input id="b37-new-name" placeholder="직접 보스 추가"><select id="b37-new-cycle"><option value="other">기타</option><option value="daily">일간</option><option value="weekly">주간</option></select><button onclick="b37AddBoss()">＋ 보스 추가</button></div></div>
 <div id="b37-quest-panel" style="display:none"><p class="b37-note">보상은 경험치·메소 같은 일반 퀘스트 보상이 아니라, 확인 가능한 주요 해금·이용 혜택 위주로 표시해요. 서버별 세부 보상과 퀘스트 이름은 다를 수 있어요.</p><div class="b37-tools"><input id="b37-quest-search" placeholder="🔎 길뚫 / 지역 / 보스 검색" oninput="b37RenderQuests()"><select id="b37-quest-filter" onchange="b37RenderQuests()"><option value="all">전체 길뚫</option><option value="todo">미완료</option><option value="done">완료</option></select></div><div id="b37-quest-list"></div></div>
 </div></section>
+
+<section id="hunt38">
+<div class="h38-hero"><h2>⚔️ 사냥터 연구소 <span class="pill">3.8</span></h2><p>레벨에 맞는 사냥터 후보를 빠르게 찾아보고, 마음에 드는 곳은 즐겨찾기해요. 부캐릭터 육성용으로도 사용할 수 있어요.</p></div>
+<div class="card"><div class="h38-controls"><label>추천 기준 레벨<input id="h38-level" type="number" min="1" max="300" value="128" oninput="h38Render()"></label><label>레벨 범위<select id="h38-range" onchange="h38Render()"><option value="10">±10레벨</option><option value="20" selected>±20레벨</option><option value="40">±40레벨</option><option value="999">전체 보기</option></select></label><label>사냥터 이름 · 몬스터 · 지역 검색<input id="h38-search" placeholder="예: 사자왕의 성, 슬리피우드" oninput="h38Render()"></label></div><div class="h38-chips" id="h38-chips"><button class="on" onclick="h38Mode('recommended',this)">🎯 레벨 추천</button><button onclick="h38Mode('all',this)">📚 전체 목록</button><button onclick="h38Mode('favorite',this)">⭐ 즐겨찾기</button><button onclick="h38Mode('custom',this)">✍️ 내 사냥터</button></div><p class="h38-note">📌 <b>자료 상태:</b> 아래 기본 목록은 과거 메이플스토리 지역을 바탕으로 만든 <b>탐색용 후보</b>야. 메이플어스의 현재 몬스터 레벨·경험치·지형·접근 조건은 검증되지 않았으므로 최적 사냥터 순위나 정확한 효율을 뜻하지 않아. 직접 확인한 정보는 메모에 기록해 줘.</p><div class="h38-summary" id="h38-summary"></div><div class="h38-grid" id="h38-results"></div></div>
+<details class="card"><summary>＋ 직접 확인한 사냥터 추가하기</summary><form class="h38-add" onsubmit="h38Add(event)"><label>사냥터 이름<input id="h38-add-name" maxlength="70" required placeholder="예: 내가 찾은 사냥터"></label><label>지역<input id="h38-add-region" maxlength="60" placeholder="지역명"></label><label>추천 시작 레벨<input id="h38-add-min" type="number" min="1" max="300" required></label><label>추천 끝 레벨<input id="h38-add-max" type="number" min="1" max="300" required></label><label class="full">몬스터 / 특징 / 경험치 메모<input id="h38-add-note" maxlength="300" placeholder="실제 확인한 정보만 적어주세요"></label><div class="full"><button type="submit">사냥터 추가</button></div></form><p class="h38-note">내 사냥터와 즐겨찾기·메모는 현재 브라우저에 저장돼. Supabase의 기존 데이터는 변경하지 않아.</p></details>
+</section>
 <section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
 <p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
 <label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
@@ -255,7 +269,7 @@ let taskTemplates=[],weeklyRows=[],weekKey="";
 function status(message){$("globalStatus").textContent=message;}
 function errorMessage(e){status("오류: "+(e?.message||String(e)));}
 function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(id==="bosses")b37Render();}
+function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(id==="bosses")b37Render();if(id==="hunt38"){h38SyncLevel();h38Render();}}
 function requireLogin(){if(!client||!user){status("먼저 로그인 및 연결 메뉴에서 연결하고 로그인해 주세요.");return false;}return true;}
 function localDate(){let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
 function mondayKey(){const d=new Date();d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
@@ -723,6 +737,52 @@ function b37AddBoss(){const input=document.getElementById('b37-new-name'),n=inpu
 document.getElementById('b37-boss-list').addEventListener('change',e=>{const n=e.target.dataset.b37Cycle||e.target.dataset.b37Done;if(!n)return;const s=b37Read();if(e.target.dataset.b37Cycle){s.cycle={...(s.cycle||{}),[n]:e.target.value};}else{const c=b37BossCycle(s,n),stamp=c==='daily'?localDate():c==='weekly'?b37Week():'permanent';s.done=s.done||{};s.done[n]=s.done[n]||{};s.done[n][stamp]=e.target.checked;}b37Save(s);b37Render();});
 document.getElementById('b37-boss-list').addEventListener('click',e=>{const n=e.target.closest('[data-b37-hide]')?.dataset.b37Hide;if(!n)return;const s=b37Read();s.hidden=s.hidden||{};s.hidden[n]=!s.hidden[n];b37Save(s);b37Render();});
 document.getElementById('b37-quest-list').addEventListener('change',e=>{const id=e.target.dataset.b37Quest;if(!id)return;const s=b37Read();s.quests={...(s.quests||{}),[id]:e.target.checked};b37Save(s);b37RenderQuests();});
+
+
+// 3.8: 사냥터 후보 탐색. 실제 MapleUS 몬스터 레벨/경험치 수치로 오인하지 않도록 추정 범위만 사용.
+const H38_PLACES=[
+['엘리니아 북쪽 숲','엘리니아',10,25,'초반 육성 후보. 몬스터와 동선은 서버에서 확인'],
+['헤네시스 사냥터','헤네시스',10,30,'초반 이동이 편한 지역 후보'],
+['커닝시티 주변','커닝시티',20,40,'초반 사냥 후보. 정확한 몬스터 배치는 확인 필요'],
+['개미굴','슬리피우드',25,50,'좁은 동선이 특징인 옛 사냥 지역'],
+['와일드보어의 땅','페리온',30,55,'전통적인 저레벨 사냥터 후보'],
+['불타버린 땅','페리온',40,65,'직업별 이동기·사냥 범위를 고려'],
+['드레이크의 영역','슬리피우드',50,75,'드레이크 계열 몬스터 지역 후보'],
+['하늘계단','오르비스',65,90,'지형과 몬스터 분포를 확인해 비교'],
+['사헬지대','아리안트',75,105,'사막 지역 사냥 후보'],
+['관계자 외 출입금지','마가티아',85,115,'연구소 지역. 입장 및 사냥 효율 확인 필요'],
+['빨간코 해적단 소굴','백초마을',95,125,'해적 몬스터 지역 후보'],
+['루디브리엄 시계탑','루디브리엄',100,130,'시계탑 내부 지형별로 효율이 다름'],
+['잊혀진 회랑','루디브리엄',110,140,'몬스터·레벨 차이 확인 후 방문'],
+['사자왕의 성','엘나스',115,145,'선행 퀘스트·입장 조건 확인 필요'],
+['아랫마을','아랫마을',120,150,'현 서버의 퀘스트 및 몬스터 구성 확인'],
+['폐광','엘나스',120,155,'이동 거리와 물약 소모도 함께 비교'],
+['시간의 신전 추억의 길','시간의 신전',140,165,'신전 퀘스트 진행 상태 확인'],
+['시간의 신전 후회의 길','시간의 신전',150,175,'선행 퀘스트와 이동 동선 확인'],
+['시간의 신전 망각의 길','시간의 신전',160,185,'선행 퀘스트 진행 후 검토'],
+['기사단 요새','미래의 문',165,195,'미래의 문 콘텐츠 존재 여부 확인'],
+['황혼의 페리온','미래의 문',180,210,'서버 구현 여부 및 몬스터 레벨 확인'],
+['기계무덤','헤이븐',190,220,'후기 콘텐츠로 서버 구현 여부 확인'],
+['타락한 세계수','버려진 야영지',190,220,'후기 콘텐츠로 서버 구현 여부 확인'],
+['소멸의 여로','아케인 리버',200,220,'현대 메이플 콘텐츠. 메이플어스 구현 미확인'],
+['츄츄 아일랜드','아케인 리버',210,230,'현대 메이플 콘텐츠. 메이플어스 구현 미확인'],
+['레헬른','아케인 리버',220,245,'현대 메이플 콘텐츠. 메이플어스 구현 미확인'],
+['아르카나','아케인 리버',225,250,'현대 메이플 콘텐츠. 메이플어스 구현 미확인'],
+['모라스','아케인 리버',230,255,'현대 메이플 콘텐츠. 메이플어스 구현 미확인'],
+['에스페라','아케인 리버',235,260,'현대 메이플 콘텐츠. 메이플어스 구현 미확인']
+].map((r,i)=>({id:'base'+i,name:r[0],region:r[1],min:r[2],max:r[3],note:r[4],custom:false}));
+let h38CurrentMode='recommended';
+const h38Key='mapleus_hunting_38';
+function h38Data(){try{const d=JSON.parse(localStorage.getItem(h38Key)||'{}');return {favorites:d.favorites||{},notes:d.notes||{},custom:Array.isArray(d.custom)?d.custom:[]};}catch{return {favorites:{},notes:{},custom:[]};}}
+function h38Save(d){localStorage.setItem(h38Key,JSON.stringify(d));}
+function h38Safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function h38SyncLevel(){const active=(typeof activeCharacter==='function'?activeCharacter():null);const lvl=active?.level||$('level')?.value;if(lvl&&Number(lvl)>0)$('h38-level').value=Math.min(300,Number(lvl));}
+function h38Mode(mode,btn){h38CurrentMode=mode;document.querySelectorAll('#h38-chips button').forEach(b=>b.classList.toggle('on',b===btn));h38Render();}
+function h38Render(){const d=h38Data(),level=Math.max(1,Number($('h38-level').value)||1),range=Number($('h38-range').value),query=$('h38-search').value.trim().toLowerCase();let rows=[...H38_PLACES,...d.custom];rows=rows.filter(p=>{if(h38CurrentMode==='favorite'&&!d.favorites[p.id])return false;if(h38CurrentMode==='custom'&&!p.custom)return false;if(h38CurrentMode==='recommended'&&Math.max(p.min-level,level-p.max,0)>range)return false;return (p.name+' '+p.region+' '+p.note+' '+(d.notes[p.id]||'')).toLowerCase().includes(query)});rows.sort((a,b)=>Math.max(a.min-level,level-a.max,0)-Math.max(b.min-level,level-b.max,0)||a.min-b.min);$('h38-summary').textContent=`${rows.length}개 사냥터 표시 · 기준 레벨 ${level} · 레벨 범위는 참고용`;const target=$('h38-results');target.innerHTML=rows.length?rows.map(p=>`<article class="h38-item"><div class="h38-tags"><span>Lv.${p.min}~${p.max} 참고</span><span>${h38Safe(p.region)}</span>${p.custom?'<span>내가 추가함</span>':'<span>구현 미확인</span>'}</div><h3>${h38Safe(p.name)}</h3><p>${h38Safe(p.note)}</p>${d.notes[p.id]?`<p>📝 ${h38Safe(d.notes[p.id])}</p>`:''}<div class="h38-actions"><button class="h38-star" onclick="h38Favorite('${p.id}')">${d.favorites[p.id]?'★ 즐겨찾기':'☆ 즐겨찾기'}</button><button onclick="h38Note('${p.id}')">📝 메모</button>${p.custom?`<button onclick="h38Delete('${p.id}')">삭제</button>`:''}</div></article>`).join(''):'<div class="h38-empty">조건에 맞는 사냥터가 없어. 범위를 넓히거나 전체 목록을 선택해 줘.</div>';}
+function h38Favorite(id){const d=h38Data();d.favorites[id]=!d.favorites[id];h38Save(d);h38Render();}
+function h38Note(id){const d=h38Data();const v=prompt('직접 확인한 사냥 정보 메모 (취소하면 유지)',d.notes[id]||'');if(v===null)return;d.notes[id]=v.slice(0,400);h38Save(d);h38Render();}
+function h38Add(e){e.preventDefault();const d=h38Data(),name=$('h38-add-name').value.trim(),min=Number($('h38-add-min').value),max=Number($('h38-add-max').value);if(!name||!Number.isInteger(min)||!Number.isInteger(max)||min<1||max>300||min>max){alert('이름과 레벨 범위를 확인해 줘.');return;}d.custom.push({id:'own'+Date.now()+Math.floor(Math.random()*1000),name,region:$('h38-add-region').value.trim()||'내 사냥터',min,max,note:$('h38-add-note').value.trim()||'내가 등록한 사냥터',custom:true});h38Save(d);e.target.reset();h38CurrentMode='custom';document.querySelectorAll('#h38-chips button').forEach(b=>b.classList.toggle('on',b.textContent.includes('내 사냥터')));h38Render();}
+function h38Delete(id){if(!confirm('이 사냥터를 삭제할까?'))return;const d=h38Data();d.custom=d.custom.filter(p=>p.id!==id);delete d.favorites[id];delete d.notes[id];h38Save(d);h38Render();}
 
 async function init(){
   dateKey=localDate();
