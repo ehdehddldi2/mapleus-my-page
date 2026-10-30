@@ -110,10 +110,13 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 .character-tile h3{margin:8px 0}.character-tile p{color:#aebfda;font-size:13px}
 .character-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .character-fields label{display:block}
+
+/* 3.7 boss & quest planner */
+#bosses .b37-tools{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}#bosses .b37-tools>*{flex:1;min-width:135px}#bosses .b37-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}#bosses .b37-summary>div{background:#17283f;border:1px solid #334963;border-radius:12px;padding:14px}#bosses .b37-summary b{display:block;font-size:23px;color:#ffd08a;margin-top:5px}#bosses .b37-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:11px}#bosses .b37-item{background:#14243a;border:1px solid #34475f;border-radius:13px;padding:14px}#bosses .b37-head{display:flex;align-items:start;justify-content:space-between;gap:8px}#bosses .b37-head strong{font-size:16px}#bosses .b37-item select{margin:8px 0;width:100%}#bosses .b37-actions{display:flex;gap:8px;align-items:center;justify-content:space-between}#bosses .b37-actions label{display:flex;align-items:center;gap:7px;font-size:13px}#bosses .b37-actions input{width:auto}#bosses .b37-tag{font-size:11px;color:#adc1dc}#bosses .b37-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}#bosses .b37-tabs button{background:#22364e}#bosses .b37-tabs button.on{background:#f3b766;color:#152137}#bosses .b37-quest{border:1px solid #354a62;border-radius:12px;padding:15px;margin:10px 0;background:#14243a}#bosses .b37-quest summary{cursor:pointer;font-weight:750}#bosses .b37-quest p{margin:9px 0;color:#b9cbe0;font-size:13px}#bosses .b37-quest label{display:inline-flex;align-items:center;gap:7px;font-size:13px}#bosses .b37-quest input[type=checkbox]{width:auto}#bosses .b37-note{color:#aebfda;font-size:12px;line-height:1.6}#bosses .b37-empty{padding:25px;text-align:center;color:#adc1dc}#bosses input,#bosses select{max-width:100%}@media(max-width:580px){#bosses .b37-summary{grid-template-columns:1fr 1fr 1fr}#bosses .b37-summary b{font-size:18px}}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('characters',this)">👥 캐릭터 관리</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('characters',this)">👥 캐릭터 관리</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('bosses',this)">👹 보스·길뚫</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
 <section id="home" class="show">
@@ -216,6 +219,15 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
  <p class="ledger-small">기존 쌀먹 거래 내역과 별도로 관리돼. 중복 집계되지 않도록 자동 연동하지 않았어.</p></div>
  <details class="card"><summary style="cursor:pointer;font-weight:700;color:#ffcc86">🔧 처음 한 번만: Supabase 저장 설정</summary><p class="muted">가계부 기록을 여러 기기에서 유지하려면 아래 SQL을 Supabase SQL Editor에서 한 번 실행해야 해. 기존 테이블은 변경하지 않아.</p><button id="lg_copy_sql" type="button">SQL 복사</button><pre id="lg_sql_view" style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;color:#c3d3e8;background:#101b2c;padding:14px;border-radius:10px"></pre></details>
 </section>
+<section id="bosses"><h2>👹 보스 · 길뚫 관리 <span class="pill">3.7</span></h2>
+<p class="section-note">일간/주간/기타 분류를 직접 바꾸고, 캐릭터별 클리어 및 길뚫을 체크해요. 기본 목록은 메이플스토리 전반의 후보 목록이며 메이플어스 실제 구현 여부·입장 조건·보상은 확인이 필요해요.</p>
+<div class="card"><h3>🎮 관리 중인 캐릭터: <span id="b37-character">미선택</span></h3><p class="b37-note">저장 위치: 현재 브라우저 · 캐릭터별 분리. 다른 기기와 자동 동기화되지 않아요. 기존 Supabase 테이블과 데이터는 변경하지 않습니다.</p>
+<div class="b37-tabs"><button id="b37-tab-boss" class="on" onclick="b37Tab('boss')">👹 보스 체크</button><button id="b37-tab-quest" onclick="b37Tab('quest')">🗺️ 길뚫 공략</button></div>
+<div id="b37-boss-panel"><div class="b37-summary"><div><small>관리 대상</small><b id="b37-total">0</b></div><div><small>이번 주 완료</small><b id="b37-done">0</b></div><div><small>진행률</small><b id="b37-pct">0%</b></div></div>
+<div class="b37-tools"><input id="b37-search" placeholder="🔎 보스 검색" oninput="b37Render()"><select id="b37-filter" onchange="b37Render()"><option value="all">전체 분류</option><option value="daily">일간</option><option value="weekly">주간</option><option value="other">기타</option><option value="hidden">숨긴 보스</option></select><select id="b37-status" onchange="b37Render()"><option value="all">전체 상태</option><option value="todo">미완료만</option><option value="done">완료만</option></select></div>
+<div id="b37-boss-list" class="b37-list"></div><div class="b37-tools"><input id="b37-new-name" placeholder="직접 보스 추가"><select id="b37-new-cycle"><option value="other">기타</option><option value="daily">일간</option><option value="weekly">주간</option></select><button onclick="b37AddBoss()">＋ 보스 추가</button></div></div>
+<div id="b37-quest-panel" style="display:none"><p class="b37-note">보상은 경험치·메소 같은 일반 퀘스트 보상이 아니라, 확인 가능한 주요 해금·이용 혜택 위주로 표시해요. 서버별 세부 보상과 퀘스트 이름은 다를 수 있어요.</p><div class="b37-tools"><input id="b37-quest-search" placeholder="🔎 길뚫 / 지역 / 보스 검색" oninput="b37RenderQuests()"><select id="b37-quest-filter" onchange="b37RenderQuests()"><option value="all">전체 길뚫</option><option value="todo">미완료</option><option value="done">완료</option></select></div><div id="b37-quest-list"></div></div>
+</div></section>
 <section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
 <p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
 <label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
@@ -243,7 +255,7 @@ let taskTemplates=[],weeklyRows=[],weekKey="";
 function status(message){$("globalStatus").textContent=message;}
 function errorMessage(e){status("오류: "+(e?.message||String(e)));}
 function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
+function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(id==="bosses")b37Render();}
 function requireLogin(){if(!client||!user){status("먼저 로그인 및 연결 메뉴에서 연결하고 로그인해 주세요.");return false;}return true;}
 function localDate(){let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
 function mondayKey(){const d=new Date();d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
@@ -677,6 +689,41 @@ lg('export').addEventListener('click',ledgerExport);
 lg('copy_sql').addEventListener('click',()=>navigator.clipboard.writeText(LEDGER_SQL).then(()=>lg('message').textContent='SQL 복사 완료').catch(()=>prompt('SQL을 복사해 줘',LEDGER_SQL)));
 ledgerCategoryOptions();ledgerRender();
 
+
+// Boss & prequest tracker 3.7. Browser-local and scoped to signed-in user + active character.
+const B37_BOSSES=[
+'자쿰','카오스 자쿰','혼테일','카오스 혼테일','힐라','하드 힐라','반 레온','아카이럼','핑크빈','카오스 핑크빈','매그너스','하드 매그너스','파풀라투스','카오스 파풀라투스','피에르','반반','블러디 퀸','벨룸','카오스 피에르','카오스 반반','카오스 블러디 퀸','카오스 벨룸','시그너스','노멀 시그너스','스우','데미안','루시드','윌','더스크','진 힐라','듄켈','검은 마법사','선택받은 세렌','칼로스','카링','림보','발드릭스','가디언 엔젤 슬라임','카오스 가디언 엔젤 슬라임','우르스','발록','크림슨 발록','자쿰(이지)','혼테일(이지)','매그너스(이지)','반 레온(이지)','아카이럼(이지)','파풀라투스(이지)','핑크빈(노멀)','힐라(노멀)','루시드(이지)','윌(이지)','스우(하드)','데미안(하드)','루시드(하드)','윌(하드)','더스크(카오스)','듄켈(하드)','세렌(하드)','검은 마법사(하드)','카웅','크세르크세스','렉스','드래곤 라이더','타르가','스칼리온','킹 캐슬 골렘','마왕 발록','오멘','파왕 우르스'];
+const B37_QUESTS=[
+{id:'zakum',name:'자쿰 입장 준비',area:'폐광 / 엘나스',start:'자쿰 관련 입장 퀘스트·직업별 진행 조건 확인',reward:'자쿰 입장 및 보스 도전',note:'구버전과 현재 버전의 입장 절차가 크게 다를 수 있음'},
+{id:'horntail',name:'혼테일 입장 준비',area:'리프레 / 생명의 동굴',start:'혼테일 관련 입장 절차 및 재료 확인',reward:'혼테일 도전 가능',note:'입장 재료·파티 조건은 서버별 확인 필요'},
+{id:'lion',name:'사자왕의 성',area:'엘나스 / 사자왕의 성',start:'사자왕의 성 지역 연계 퀘스트',reward:'반 레온 관련 콘텐츠 접근',note:'반 레온 입장 조건과 퀘스트 순서는 서버에 따라 다름'},
+{id:'ark',name:'아카이럼 선행 퀘스트',area:'시간의 신전 / 크로스 헌터',start:'크로스 헌터 및 아카이럼 관련 연계 퀘스트 확인',reward:'아카이럼 보스 접근',note:'구버전과 현재 버전의 선행 요구 차이 확인'},
+{id:'pink',name:'시간의 신전 / 핑크빈',area:'시간의 신전',start:'추억·후회·망각의 길 연계 퀘스트 확인',reward:'핑크빈 관련 지역 및 보스 접근',note:'입장 재료와 보스 선행 조건은 서버별로 확인'},
+{id:'magnus',name:'헬리시움 / 매그너스',area:'판테온 / 헬리시움',start:'헬리시움 지역 스토리와 매그너스 관련 퀘스트',reward:'매그너스 보스 접근',note:'난이도별 입장 요구는 별도 확인'},
+{id:'root',name:'루타비스',area:'루타비스',start:'루타비스 입장 및 네 명의 수호자 관련 퀘스트',reward:'피에르·반반·블러디 퀸·벨룸 보스 콘텐츠',note:'카오스 난이도 해금 조건은 버전마다 다를 수 있음'},
+{id:'cygnus',name:'시그너스 / 기사단의 요새',area:'미래의 문 / 기사단의 요새',start:'미래의 문 지역 및 기사단의 요새 관련 퀘스트',reward:'시그너스 보스 접근',note:'입장 선행 여부와 방식 확인'},
+{id:'lotus',name:'블랙헤븐',area:'블랙헤븐',start:'블랙헤븐 스토리 진행',reward:'스우 관련 스토리 및 보스 콘텐츠 해금(버전별 상이)',note:'스우 선행 조건은 현재 서버에 맞춰 확인'},
+{id:'damien',name:'히어로즈 오브 메이플',area:'영웅 스토리',start:'히어로즈 오브 메이플 스토리',reward:'데미안 관련 스토리 및 보스 콘텐츠 해금(버전별 상이)',note:'서버별 선행 조건 확인'},
+{id:'arcane',name:'소멸의 여로',area:'아케인 리버',start:'아케인 리버 첫 지역 스토리',reward:'지역 콘텐츠·아케인심볼 등(적용 서버에 한함)',note:'메이플어스 구현 여부 미확인'},
+{id:'lach',name:'레헬른 / 루시드',area:'아케인 리버 / 레헬른',start:'레헬른 지역 스토리',reward:'레헬른 콘텐츠 및 루시드 관련 접근(적용 서버에 한함)',note:'메이플어스 구현 여부 미확인'},
+{id:'esfera',name:'에스페라 / 윌',area:'아케인 리버 / 에스페라',start:'에스페라 지역 스토리',reward:'윌 관련 콘텐츠 접근(적용 서버에 한함)',note:'메이플어스 구현 여부 미확인'},
+{id:'tenebris',name:'테네브리스 / 검은 마법사',area:'테네브리스',start:'테네브리스 지역 스토리 및 연계 퀘스트',reward:'상위 보스 관련 콘텐츠 접근(적용 서버에 한함)',note:'메이플어스 구현 여부 미확인'},
+{id:'grandis',name:'그란디스 지역 스토리',area:'그란디스',start:'세르니움 등 지역별 스토리',reward:'그란디스 지역 및 상위 보스 관련 콘텐츠(적용 서버에 한함)',note:'메이플어스 구현 여부 미확인'}];
+let b37View='boss';
+function b37Key(){return 'mapleus37_'+(user?.id||'guest')+'_'+(characterId||'no-character');}
+function b37Read(){try{return JSON.parse(localStorage.getItem(b37Key())||'{}')||{};}catch(e){return {};}}
+function b37Save(v){try{localStorage.setItem(b37Key(),JSON.stringify(v));}catch(e){status('브라우저 저장 공간을 사용할 수 없어.');}}
+function b37BossCycle(s,n){return s.cycle?.[n]||'other';}
+function b37Week(){return mondayKey();}
+function b37Done(s,n){const c=b37BossCycle(s,n),stamp=c==='daily'?localDate():c==='weekly'?b37Week():'permanent';return !!s.done?.[n]?.[stamp];}
+function b37Tab(v){b37View=v;document.getElementById('b37-boss-panel').style.display=v==='boss'?'':'none';document.getElementById('b37-quest-panel').style.display=v==='quest'?'':'none';document.getElementById('b37-tab-boss').classList.toggle('on',v==='boss');document.getElementById('b37-tab-quest').classList.toggle('on',v==='quest');b37Render();}
+function b37Render(){const el=document.getElementById('b37-boss-list');if(!el)return;const s=b37Read(),all=[...new Set([...B37_BOSSES,...(s.extra||[])])];const visible=all.filter(n=>!s.hidden?.[n]);const completed=visible.filter(n=>b37Done(s,n)).length;document.getElementById('b37-character').textContent=characters.find(c=>String(c.id)===String(characterId))?.nickname||'미선택';document.getElementById('b37-total').textContent=visible.length;document.getElementById('b37-done').textContent=completed;document.getElementById('b37-pct').textContent=visible.length?Math.round(completed/visible.length*100)+'%':'0%';const term=document.getElementById('b37-search').value.trim().toLowerCase(),f=document.getElementById('b37-filter').value,st=document.getElementById('b37-status').value;const rows=all.filter(n=>n.toLowerCase().includes(term)).filter(n=>f==='hidden'?s.hidden?.[n]:!s.hidden?.[n]&&(f==='all'||b37BossCycle(s,n)===f)).filter(n=>st==='all'||((st==='done')===b37Done(s,n)));el.innerHTML=rows.length?rows.map(n=>{const done=b37Done(s,n),hidden=!!s.hidden?.[n],cycle=b37BossCycle(s,n);return `<article class="b37-item"><div class="b37-head"><strong>${safe(n)}</strong><span class="b37-tag">${hidden?'숨김':cycle==='daily'?'☀️ 일간':cycle==='weekly'?'🗓️ 주간':'📌 기타'}</span></div><select data-b37-cycle="${safe(n)}" aria-label="${safe(n)} 분류"><option value="other" ${cycle==='other'?'selected':''}>📌 기타</option><option value="daily" ${cycle==='daily'?'selected':''}>☀️ 일간</option><option value="weekly" ${cycle==='weekly'?'selected':''}>🗓️ 주간</option></select><div class="b37-actions"><label><input type="checkbox" data-b37-done="${safe(n)}" ${done?'checked':''}>${done?'완료':'클리어 체크'}</label><button type="button" data-b37-hide="${safe(n)}">${hidden?'표시':'숨기기'}</button></div></article>`}).join(''):'<p class="b37-empty">해당하는 보스가 없어.</p>';b37RenderQuests();}
+function b37RenderQuests(){const el=document.getElementById('b37-quest-list');if(!el)return;const s=b37Read(),term=document.getElementById('b37-quest-search').value.trim().toLowerCase(),f=document.getElementById('b37-quest-filter').value;const rows=B37_QUESTS.filter(q=>(q.name+' '+q.area+' '+q.start).toLowerCase().includes(term)).filter(q=>f==='all'||((f==='done')===!!s.quests?.[q.id]));el.innerHTML=rows.length?rows.map(q=>`<details class="b37-quest"><summary>${s.quests?.[q.id]?'✅':'⬜'} ${safe(q.name)} <span class="b37-tag">${safe(q.area)}</span></summary><p><b>진행할 퀘스트:</b> ${safe(q.start)}</p><p><b>주요 해금·혜택:</b> ${safe(q.reward)}</p><p><b>확인할 점:</b> ${safe(q.note)}</p><label><input type="checkbox" data-b37-quest="${safe(q.id)}" ${s.quests?.[q.id]?'checked':''}>이 캐릭터 길뚫 완료</label></details>`).join(''):'<p class="b37-empty">해당하는 길뚫이 없어.</p>';}
+function b37AddBoss(){const input=document.getElementById('b37-new-name'),n=input.value.trim();if(!n){status('추가할 보스 이름을 입력해 줘.');return;}const s=b37Read();if([...B37_BOSSES,...(s.extra||[])].includes(n)){status('이미 목록에 있는 보스야.');return;}s.extra=[...(s.extra||[]),n];s.cycle={...(s.cycle||{}),[n]:document.getElementById('b37-new-cycle').value};b37Save(s);input.value='';b37Render();}
+document.getElementById('b37-boss-list').addEventListener('change',e=>{const n=e.target.dataset.b37Cycle||e.target.dataset.b37Done;if(!n)return;const s=b37Read();if(e.target.dataset.b37Cycle){s.cycle={...(s.cycle||{}),[n]:e.target.value};}else{const c=b37BossCycle(s,n),stamp=c==='daily'?localDate():c==='weekly'?b37Week():'permanent';s.done=s.done||{};s.done[n]=s.done[n]||{};s.done[n][stamp]=e.target.checked;}b37Save(s);b37Render();});
+document.getElementById('b37-boss-list').addEventListener('click',e=>{const n=e.target.closest('[data-b37-hide]')?.dataset.b37Hide;if(!n)return;const s=b37Read();s.hidden=s.hidden||{};s.hidden[n]=!s.hidden[n];b37Save(s);b37Render();});
+document.getElementById('b37-quest-list').addEventListener('change',e=>{const id=e.target.dataset.b37Quest;if(!id)return;const s=b37Read();s.quests={...(s.quests||{}),[id]:e.target.checked};b37Save(s);b37RenderQuests();});
+
 async function init(){
   dateKey=localDate();
   weekKey=mondayKey();
@@ -685,6 +732,7 @@ async function init(){
   renderCharacters();
   mesoRender();
   updateDashboard();
+  b37Render();
 
   $("projectUrl").value=AUTO_SUPABASE.url;
   $("publishableKey").value=AUTO_SUPABASE.key;
