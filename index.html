@@ -84,6 +84,10 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <script>
 "use strict";
 const $=id=>document.getElementById(id), legacy="mapleus_v1_";
+ const AUTO_SUPABASE = {
+  url: "https://ubxnfnqyqoyhmjxbmish.supabase.co",
+  key: "sb_publishable_o93dRI3nRt9SvLdsqzFx-Q_6Ccun2KL"
+};
 let client=null,user=null,characterId=null,gears=[],taskRows=[],custom=[],dateKey="";
 const defaults=["현재 레벨 육성 목표 확인","장비 강화·잠재옵션 확인","경매장 시세 확인","진행 중인 길뚫 확인"];
 function status(message){$("globalStatus").textContent=message;}
@@ -210,9 +214,19 @@ function filterGuides(){
  document.querySelectorAll(".guide-card").forEach(el=>el.style.display=el.textContent.toLowerCase().includes(q)||el.dataset.search.includes(q)?"":"none");
 }
 function calculate(){const r=Number($("rate").value),a=Number($("amount").value);$("result").textContent=Number.isFinite(r*a)?`${(r*a).toLocaleString()}원 / ${(a*1000000).toLocaleString()}메소`:"숫자를 입력해 주세요.";}
+
 async function init(){
- dateKey=localDate();$("today").textContent="오늘: "+dateKey;renderTasks();calculate();updateDashboard();
- const config=localStorage.getItem("mapleus_supabase_config");if(config){try{const c=JSON.parse(config);$("projectUrl").value=c.url;$("publishableKey").value=c.key;await connect();}catch(e){errorMessage(e);}}
+  dateKey=localDate();
+  $("today").textContent="오늘: "+dateKey;
+  renderTasks();
+  calculate();
+  updateDashboard();
+
+  $("projectUrl").value=AUTO_SUPABASE.url;
+  $("publishableKey").value=AUTO_SUPABASE.key;
+
+  await connect();
 }
+
 init();
 </script></body></html>
