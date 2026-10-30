@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>메이플어스 | 나만의 공략집</title>
+<style>
+:root{--bg:#0b1120;--panel:#18243a;--panel2:#202e48;--line:#33435e;--text:#eef3ff;--muted:#a7b7d3;--accent:#ffbc62;--green:#71dfba}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 80% 0%,#243454 0,transparent 37%),var(--bg);color:var(--text);font-family:"Malgun Gothic",Pretendard,Arial,sans-serif;line-height:1.55}
+header{padding:35px 22px 27px;background:linear-gradient(115deg,#243650,#152137);border-bottom:1px solid #52617a;text-align:center}
+header .eyebrow{font-size:12px;letter-spacing:.2em;color:#ffcd8b;font-weight:700}h1{font-size:clamp(25px,4vw,39px);margin:5px 0;color:var(--accent);letter-spacing:.025em}header p{color:var(--muted);margin:4px}
+nav{position:sticky;top:0;z-index:4;display:flex;gap:7px;padding:12px max(12px,calc((100vw - 1100px)/2));overflow-x:auto;background:#101b2dec;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+button{cursor:pointer;border:1px solid transparent;border-radius:10px;padding:10px 15px;background:#30425f;color:white;font:inherit;transition:.15s}
+button:hover,button.active{background:#e9a848;color:#121c2d}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+nav button{flex:0 0 auto;white-space:nowrap;font-size:13px}
+main{max-width:1120px;margin:auto;padding:22px 18px 55px}section{display:none}section.show{display:block}
+.card{background:linear-gradient(150deg,#1d2a43,#17243a);padding:21px;border:1px solid var(--line);border-radius:16px;margin-bottom:16px;box-shadow:0 8px 22px #070c1720}
+h2{color:var(--accent);font-size:24px;margin:0 0 16px}h3{color:#e0eaff;margin:4px 0 12px}
+input,textarea,select{background:#111c30;color:white;border:1px solid #536581;border-radius:9px;padding:10px;max-width:100%;margin:5px}
+input[type=checkbox]{accent-color:#eeb055;width:17px;height:17px;vertical-align:middle}textarea{width:100%;min-height:90px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}.grid .card{margin-bottom:0}
+small,.muted{color:var(--muted)}a{color:var(--accent)}.task{display:block;padding:11px;border-bottom:1px solid #39465e}
+img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a40;border:1px solid #34546c;border-radius:10px;margin-bottom:20px;white-space:pre-wrap;font-size:13px}
+.hidden{display:none}.wide{width:min(100%,520px)}.danger{background:#713e51}
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:18px}.hero .card{margin:0}
+.hero-title{font-size:24px;font-weight:800;color:#fff;margin:5px 0}.pill{display:inline-block;background:#384b68;color:#dceaff;border-radius:50px;padding:4px 10px;font-size:12px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.metric{background:#101d32;border:1px solid #354966;border-radius:12px;padding:13px}.metric strong{display:block;font-size:22px;color:#ffcb7e}.metric span{font-size:12px;color:#b2c0d8}
+.progress{height:10px;border-radius:20px;background:#0b1729;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:linear-gradient(90deg,#eaa84c,#73e1bd);transition:width .2s}
+.section-note{color:#b9c7dd;font-size:13px;margin-top:-8px;margin-bottom:18px}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar input{flex:1;min-width:160px}
+.guide-card{position:relative}.guide-card .tag{font-size:11px;color:#f4c98b;letter-spacing:.03em}
+.guide-card p{font-size:14px;color:#c1cee2}.guide-card details{margin-top:12px;border-top:1px solid #3a4a64;padding-top:10px}
+.guide-card summary{cursor:pointer;color:#ffd28d;font-weight:700}
+.guide-card li{margin:6px 0;font-size:13px;color:#c9d4e8}
+.mini{font-size:12px;color:#a8b9d3}.notice{padding:12px;background:#132d37;border:1px solid #315b60;border-radius:10px;font-size:13px}
+@media(max-width:730px){.hero{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}.metric strong{font-size:17px}main{padding:14px 12px 45px}.card{padding:16px}nav{padding:9px}}
+
+#meso .grid label{display:block;font-size:13px;color:#b8c9e2}#meso .grid input,#meso .grid select{width:100%;margin:7px 0}
+#meso .result{background:#101c2e;padding:16px;border-radius:12px;margin:12px 0}#meso .result strong{font-size:25px;color:#ffc16a}
+#meso table{width:100%;border-collapse:collapse}#meso th,#meso td{padding:10px;border-bottom:1px solid #3b4b65;text-align:left;font-size:12px;white-space:nowrap}
+#meso .scroll{overflow-x:auto}#meso .pill{margin:3px}#meso .result p{margin:8px 0}#meso button{margin:4px}
+
+/* 직업 도감 */
+.job-panel{border:1px solid #445572;border-radius:15px;padding:18px;background:#14223a;margin-bottom:17px}
+.job-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.job-controls button{padding:7px 11px;font-size:12px}
+.job-controls button.selected{background:#ffbc62;color:#142034}.job-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px;margin:13px 0}
+.job-tile{text-align:left;background:#223451;border:1px solid #3c526f;padding:12px;border-radius:11px}.job-tile.selected{border-color:#ffbc62;background:#4a3e35}
+.job-tile small{display:block;font-size:11px;margin-top:3px}.job-detail{background:#101c30;border:1px solid #405572;padding:18px;border-radius:14px;margin-top:15px}
+.job-detail h3{color:#ffcd8b}.job-detail .grid{margin-top:12px}.job-detail .card{padding:14px;background:#1c2a42}
+.job-detail ul{padding-left:19px}.job-detail li{margin:5px 0}.job-tag{display:inline-block;padding:4px 9px;border-radius:20px;background:#364b67;color:#d7e6fb;font-size:12px;margin-right:6px}
+
+/* 3.1 장비 비교 및 토드 계산기 */
+.calc-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px}
+.calc-fields label{display:flex;flex-direction:column;font-size:12px;color:#c0cee3}
+.calc-fields input,.calc-fields select{width:100%;margin:5px 0}
+.calc-result{padding:16px;border:1px solid #50627d;border-radius:13px;background:#101d32;margin:13px 0}
+.calc-result strong{color:#ffcc85;font-size:20px}
+.calc-table{width:100%;border-collapse:collapse}.calc-table th,.calc-table td{border-bottom:1px solid #3b4b65;padding:9px;text-align:left;font-size:13px}
+.calc-hint{font-size:12px;color:#b7c7df}.calc-good{color:#78e5bd}.calc-warn{color:#ffd087}
+
+/* 3.4: 계산 도구를 한 화면에 하나씩 표시하는 정돈된 UI */
+#compare{--tool-accent:#ffbf70}
+#compare .tool-intro{background:linear-gradient(120deg,#233653,#18283f);border:1px solid #456181;border-radius:18px;padding:20px 22px;margin-bottom:16px}
+#compare .tool-intro h2{margin:0 0 5px;font-size:25px}
+#compare .tool-intro p{margin:0;color:#b9c9df;font-size:13px}
+#compare .tool-switcher{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0 0 18px}
+#compare .tool-switcher button{padding:15px 8px;text-align:left;border:1px solid #3d536e;background:#19283f;border-radius:13px;color:#d8e6f9;min-height:86px}
+#compare .tool-switcher button strong{display:block;font-size:14px;margin-bottom:5px}
+#compare .tool-switcher button span{font-size:11px;color:#a8bad1}
+#compare .tool-switcher button.active{background:#443a34;border-color:#f3b66a;color:#ffe3b5;box-shadow:inset 0 0 0 1px #f3b66a}
+#compare .tool-switcher button.active span{color:#f5d5a9}
+#compare .tool-panel{display:none}
+#compare .tool-panel.active{display:block}
+#compare .tool-panel>.card{padding:23px 24px;margin-bottom:14px}
+#compare .tool-panel>.card>h3{font-size:19px;margin-bottom:8px}
+#compare .calc-fields{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+#compare .calc-fields label{font-size:13px;color:#d6e1f0;font-weight:600}
+#compare .calc-fields input{margin:6px 0 0;padding:12px;background:#0f1c30;border-color:#425a77}
+#compare .calc-result{background:#101f33;border-color:#3c5977;border-left:3px solid #f3b66a;padding:18px;margin-top:20px}
+#compare .calc-hint{line-height:1.7;color:#a8bad1}
+#compare .tool-panel .section-note{margin:8px 0 16px}
+#compare .tool-panel .toolbar a{display:inline-block;padding:9px 12px;background:#23354d;border-radius:9px;text-decoration:none;font-size:12px}
+#compare .tool-panel .toolbar a:hover{background:#354d6b}
+@media(max-width:720px){#compare .tool-switcher{grid-template-columns:repeat(2,minmax(0,1fr))}#compare .tool-panel>.card{padding:16px}#compare .tool-intro{padding:17px}#compare .tool-switcher button{min-height:76px}}
+</style></head><body>
+<header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
+<nav id="menu">
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+</nav>
+<main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
+<section id="home" class="show">
+<div class="hero"><div class="card"><span class="pill">🩸 데몬어벤져 육성 중</span><div class="hero-title">오늘도 한 단계 성장 🍁</div><p class="muted">캐릭터와 장비 정보를 안전하게 기록하고, 오늘의 목표를 확인해 보세요.</p><button onclick="tab('daily',document.querySelectorAll('#menu button')[2])">오늘의 메할일 보기 →</button></div>
+<div class="card"><h3>📊 성장 대시보드</h3><div class="metrics"><div class="metric"><strong id="dashLevel">—</strong><span>현재 레벨</span></div><div class="metric"><strong id="dashGear">0</strong><span>등록 장비</span></div><div class="metric"><strong id="dashTasks">0/4</strong><span>오늘 완료</span></div></div><div class="progress"><div id="dashProgress" style="width:0%"></div></div><span class="mini" id="dashHint">로그인하면 온라인 기록을 표시합니다.</span></div></div>
+<h2>내 캐릭터</h2><div class="card">
+<p>직업: 데몬어벤져</p>
+<label>닉네임 <input id="nickname" placeholder="닉네임"></label>
+<label>레벨 <input id="level" type="number" min="1" max="300" placeholder="레벨"></label>
+<label>HP <input id="hp" type="number" min="0" placeholder="최대 HP"></label>
+<label>스공 <input id="power" type="number" min="0" placeholder="스공"></label>
+<h3>현재 성장 목표</h3><textarea id="goal">사자성 길뚫 진행, 원킬 사냥 스펙 확보</textarea>
+<button onclick="saveCharacter()">캐릭터 정보 저장</button></div>
+<div class="card"><h3>🍁 공식 메이플어스</h3><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">공식 홈페이지 방문</a></p><p><a href="https://mapleus.co.kr/site/auction/" target="_blank" rel="noopener noreferrer">공식 경매장 확인</a></p></div></section>
+<section id="gear"><h2>🛡️ 나의 템셋팅</h2><p class="section-note">장비는 로그인 계정의 Supabase에 저장됩니다. 사진은 현재 미리보기만 지원해요.</p><div class="card">
+<p>장비별 잠재옵션과 강화 상태를 기록해 보세요.</p>
+<select id="slot"><option>무기</option><option>보조무기</option><option>엠블렘</option><option>모자</option><option>상의</option><option>하의</option><option>장갑</option><option>신발</option><option>망토</option><option>어깨장식</option><option>반지</option><option>귀고리</option><option>목걸이</option><option>벨트</option></select>
+<input id="itemname" placeholder="장비 이름"><input id="potential" placeholder="잠재옵션"><input id="stars" type="number" min="0" max="30" placeholder="스타포스">
+<p>장비 스크린샷 첨부 (미리보기만 가능)</p><input id="gearphoto" type="file" accept="image/*"><p><small>AI 자동 판독 및 사진 클라우드 저장은 아직 연결 전입니다.</small></p><img id="preview" style="display:none;max-height:250px" alt="장비 사진 미리보기">
+<p><button onclick="addGear()">장비 기록 저장</button></p></div><div class="toolbar"><input id="gearSearch" placeholder="🔎 장비명·부위·잠재 검색" oninput="renderGear()"><span id="gearCount" class="pill">0개 장비</span></div><div id="gearlist" class="grid"></div></section>
+<section id="daily"><h2>✅ 메할일 2.0</h2><p class="section-note">일일 목록은 매일, 주간 목록은 매주 월요일에 새 체크 기록으로 시작해요. 이전 기록은 삭제되지 않아요.</p>
+<div class="grid"><div class="card"><h3>☀️ 일일 메할일</h3><p class="mini" id="today"></p><strong id="taskProgressText">0 / 4 완료</strong><div class="progress"><div id="taskProgressBar" style="width:0%"></div></div><div id="tasks"></div></div>
+<div class="card"><h3>🗓️ 주간 메할일</h3><p class="mini" id="weekLabel"></p><strong id="weeklyProgressText">0 / 3 완료</strong><div class="progress"><div id="weeklyProgressBar" style="width:0%"></div></div><div id="weeklyTasks"></div></div></div>
+<div class="card"><h3>➕ 반복 메할일 추가</h3><div class="toolbar"><select id="newTaskCategory"><option value="daily">매일 반복</option><option value="weekly">매주 반복</option></select><input id="newtask" placeholder="예: 일일 보스 / 주간 보스"><button onclick="addTask()">추가하기</button></div><p class="mini">직접 추가한 항목은 삭제할 수 있어요. 기본 제공 항목은 삭제되지 않아요.</p></div>
+<p class="muted">로그인 후 Supabase에 저장돼요. 게임 내 완료 여부를 자동으로 감지하지는 않아요.</p></section>
+<section id="guide"><h2>📚 메이플어스 공략 도서관</h2><p class="section-note">현재는 핵심 개념과 체크 포인트를 정리했어요. 메이플어스 서버별 적용 여부와 정확한 수치는 공식 정보로 검증 후 확정합니다.</p>
+<div class="job-panel" id="jobAtlas">
+<h2>⚔️ 전체 직업 도감</h2>
+<p class="section-note">직업을 하나씩 선택해 전용 육성 노트를 확인하세요. 아래 목록은 <b>원작 메이플스토리 기반 후보</b>이며, 메이플어스 실제 구현 여부는 검증 전입니다. 스킬·장비 수치는 임의로 만들지 않았어요.</p>
+<div class="toolbar"><input id="jobSearch" placeholder="🔎 직업 검색: 데벤져, 불독, 비숍..." aria-label="직업 검색"><span class="pill" id="jobCount"></span></div>
+<div id="jobGroups" class="job-controls"></div>
+<div id="jobList" class="job-list"></div>
+<div id="jobDetail" class="job-detail" aria-live="polite"></div>
+</div>
+<div class="toolbar"><input id="guideSearch" placeholder="🔎 토드, 사냥터, 마빌, 퀘스트 검색" oninput="filterGuides()"><button onclick="document.getElementById('guideSearch').value='';filterGuides()">전체 보기</button></div>
+<div class="grid" id="guideCards">
+<div class="card guide-card" data-search="토드 망치 전승 잠재 스타포스"><span class="tag">장비 강화</span><h3>🔨 토드의 망치</h3><p>장비를 교체할 때 잠재능력과 강화 상태를 어떻게 이어갈지 계획해요.</p><details><summary>준비 체크리스트</summary><ul><li>출발·도착 장비의 레벨과 부위 확인</li><li>잠재 등급과 옵션 확인</li><li>스타포스 및 전승 후 변화 확인</li><li>재료 가격과 완제품 가격 비교</li></ul><p class="mini">실제 전승 가능 레벨 간격과 계승 규칙은 메이플어스에서 확인 필요</p></details></div>
+<div class="card guide-card" data-search="필수 퀘스트 사자성 반레온 길뚫"><span class="tag">성장 동선</span><h3>🏰 필수 퀘스트</h3><p>진행 중인 사자성 길뚫과 보스 선행 퀘스트를 정리해요.</p><details><summary>길뚫 기록 가이드</summary><ul><li>시작 레벨과 선행 조건 확인</li><li>현재 진행 단계 메모</li><li>완료 보상과 보스 입장 조건 확인</li><li>메할일에 다음 진행 단계 추가</li></ul></details></div>
+<div class="card guide-card" data-search="레벨 사냥터 원킬 경험치 몬스터"><span class="tag">레벨업</span><h3>⚔️ 레벨별 사냥터</h3><p>레벨뿐 아니라 원킬 여부와 이동 편의성까지 비교해요.</p><details><summary>사냥터 선택 기준</summary><ul><li>몬스터 레벨과 캐릭터 레벨 차이</li><li>원킬·투킬 여부</li><li>지형, 이동 동선, 리젠 속도</li><li>물약 소모량과 메소 수급</li></ul><p class="mini">레벨별 실제 추천 지도 목록은 서버 정보 검증 후 추가 예정</p></details></div>
+<div class="card guide-card" data-search="마빌 마이스터빌 채집 채광 장신구 제작 연금술 합성"><span class="tag">전문기술</span><h3>⚒️ 마이스터빌(마빌)</h3><p>채집·채광·제작·합성으로 장비 성장과 메소 수익을 함께 관리해요.</p><details><summary>초보자 시작 순서</summary><ul><li>현재 서버에서 가능한 전문기술 확인</li><li>채집·채광 재료와 경매장 가격 비교</li><li>제작 재료비 + 수수료 + 완제품 시세 계산</li><li>제작 성공률·숙련도·피로도 등 서버 규칙 확인</li></ul><p class="mini">실제 수익은 서버 시세에 따라 달라집니다.</p></details></div>
+<div class="card guide-card" data-search="데몬어벤져 HP 공격력 잠재 장비"><span class="tag">직업 육성</span><h3>🩸 데몬어벤져</h3><p>HP 기반 육성에 맞춰 장비 옵션과 성장 우선순위를 기록해요.</p><details><summary>장비 점검 순서</summary><ul><li>무기 공격력 및 잠재옵션</li><li>HP 관련 잠재옵션 효율</li><li>장비 레벨과 강화 비용</li><li>사냥 원킬 달성 여부</li></ul></details></div>
+<div class="card guide-card" data-search="패치 업데이트 공지 2014 2015 2016"><span class="tag">패치노트</span><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 정보를 구분해서 관리해요.</p><details><summary>공식 정보</summary><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">메이플어스 공식 홈페이지 열기</a></p><p class="mini">현재 자동 수집 기능은 연결되지 않았습니다.</p></details></div>
+</div></section>
+
+<section id="compare"><div class="tool-intro"><h2>⚖️ 장비 연구소</h2><p>필요한 계산기만 선택해서 사용해 봐. 입력값과 계산 방식은 이전 버전 그대로 유지했어.</p></div><div class="tool-switcher" role="group" aria-label="계산기 선택"><button type="button" data-tool="equipment" class="active" aria-pressed="true"><strong>🛡️ 장비 비교</strong><span>매물 A와 B 비교</span></button><button type="button" data-tool="todd" aria-pressed="false"><strong>🔨 토드 제작비</strong><span>제작 vs 완제품</span></button><button type="button" data-tool="star" aria-pressed="false"><strong>⭐ 스타포스</strong><span>목표 강화 비용</span></button><button type="button" data-tool="cube" aria-pressed="false"><strong>🎲 큐브 확률</strong><span>천장 · 예상 비용</span></button></div>
+<div class="card"><h3>📊 메이플어스 공식 확률 자료</h3>
+<p class="section-note" style="margin-top:0">공식 확률 공시는 현재 게임에 적용되는 값을 보여 주며, 실제 확률 확인은 실서비스 누적 기록을 집계합니다. 아래 계산기는 공식 수치를 임의로 고정하지 않습니다.</p>
+<div class="toolbar"><a href="https://mapleus.co.kr/site/guide/odds.html" target="_blank" rel="noopener noreferrer">📜 공식 확률 공시 ↗</a><a href="https://mapleus.co.kr/site/guide/odds-live.html" target="_blank" rel="noopener noreferrer">📈 실제 확률 확인 ↗</a><a href="https://mapleus.co.kr/site/guide/odds-live.html#starforce" target="_blank" rel="noopener noreferrer">⭐ 스타포스 실제 기록 ↗</a></div>
+<p class="calc-hint">큐브는 등급 상승 확률·보장 횟수·2~3번째 줄 등급·장비 레벨별 옵션 확률을 따로 확인해야 합니다. 실제 통계는 과거 기록이므로 다음 시도의 성공을 보장하지 않습니다.</p></div>
+<div class="card" id="officialSim"><h3>⭐ 스타포스 목표 달성 예상 비용 3.3</h3><p class="calc-hint">공식 공시에서 해당 장비의 <b>단계별 성공·유지·하락·파괴 확률</b>을 확인해 붙여넣으세요. 공식 수치는 서버에서 변경될 수 있으므로 자동으로 임의 입력하지 않습니다. 파괴 시 계산을 종료하는 <b>파괴 전 목표 달성 확률</b>과, 파괴 시 시작 단계로 복구해 재도전한다는 가정의 <b>기대 비용</b>을 계산합니다.</p><div class="calc-fields"><label>시작 스타포스<input id="s_start" type="number" min="0" max="29" value="0"></label><label>목표 스타포스<input id="s_goal" type="number" min="1" max="30" value="5"></label><label>1회 강화 비용 (메소)<input id="s_cost" type="number" min="0" value="100000"></label><label>파괴 시 복구 비용 (메소)<input id="s_restore" type="number" min="0" value="0"></label></div><p class="mini">한 줄에 <code>현재 성,성공%,유지%,하락%,파괴%</code> 입력. 예: <code>0,95,5,0,0</code>는 <b>입력 형식 예시일 뿐 실제 확률이 아닙니다.</b> 목표까지 모든 단계가 필요합니다.</p><textarea id="s_rows" rows="6" placeholder="0,성공%,유지%,하락%,파괴%&#10;1,성공%,유지%,하락%,파괴%"></textarea><div class="toolbar"><button type="button" id="s_calc">⭐ 목표 비용 계산</button><button type="button" id="s_example">입력 형식 보기</button><a href="https://mapleus.co.kr/site/guide/odds.html#starforce" target="_blank" rel="noopener noreferrer">공식 스타포스 확률표</a></div><div class="calc-result" id="s_result" aria-live="polite">공식 단계별 확률을 입력하면 계산합니다.</div><p class="calc-hint">계산 가정: 실패(하락)는 1성 하락(0성 아래로 내려가지 않음), 파괴 시 복구하여 시작 성부터 재도전, 스타캐치·파괴 방지·찬스 타임은 입력 확률에 이미 반영된 경우에만 적용. 단계별 실제 강화 비용이 다르면 단일 비용 입력은 참고치입니다.</p></div><div class="card"><h3>🎲 큐브 천장 포함 기대 비용 3.3</h3><p class="calc-hint">공식 큐브 종류·현재 등급에 해당하는 <b>1회 상승 확률과 등급 상승 보장 횟수</b>를 입력하세요. 이미 누적된 실패 횟수도 반영합니다.</p><div class="calc-fields"><label>1회 상승 확률 (%)<input id="q_prob" type="number" min="0" max="100" step="any" placeholder="공식 확률"></label><label>보장 횟수 (없으면 0)<input id="q_pity" type="number" min="0" max="100000" value="0"></label><label>현재 연속 실패 횟수<input id="q_fail" type="number" min="0" value="0"></label><label>큐브 개당 가격 (메소)<input id="q_cost" type="number" min="0" value="100000"></label><label>예산상 큐브 사용 횟수<input id="q_attempts" type="number" min="1" max="100000" value="20"></label></div><button type="button" id="q_calc">🎲 천장 포함 계산</button><div class="calc-result" id="q_result" aria-live="polite">공식 큐브 확률을 입력해 주세요.</div><p class="calc-hint">등급 상승 1단계 기준. 목표 옵션 2줄·3줄 획득 확률과 블랙 큐브 결과 선택 여부는 포함하지 않습니다.</p></div>
+<div class="card"><h3>🎲 큐브 등급 상승 확률 참고 계산</h3><p class="calc-hint">공식 공시에서 <b>해당 큐브·현재 등급의 상승 확률</b>을 직접 확인해 입력하세요. 독립 시행을 가정한 참고 계산으로, 천장·옵션 출현 확률은 반영하지 않습니다.</p>
+<div class="calc-fields"><label>1회 등급 상승 확률 (%)<input id="c_prob" type="number" min="0" max="100" step="0.0001" placeholder="공식 수치 입력"></label><label>사용할 큐브 수 (개)<input id="c_attempts" type="number" min="1" step="1" value="10"></label></div><div id="c_probability_result" class="calc-result" aria-live="polite"></div><p class="calc-hint">※ 보장 횟수에 도달하면 실제 확률 구조가 달라집니다. 특정 잠재옵션 2줄·3줄을 얻을 확률은 이 계산 결과와 다릅니다.</p></div>
+<p class="section-note">실제 메이플어스 서버 옵션 효율·토드 가능 여부는 확인되지 않았어요. 아래 계산은 입력값 비교와 비용 합산용입니다.</p>
+<div class="card"><h3>🛡️ 장비 A vs 장비 B</h3><p class="calc-hint">장비의 표시 수치를 직접 입력해 주세요. HP%와 MP%는 절대 합산하지 않으며, 공격력·HP%의 실제 스공 환산은 하지 않아요.</p>
+<div class="grid"><div><h3>장비 A · 현재/후보</h3><div class="calc-fields">
+<label>장비 이름<input id="c_a_name" value="현재 장비" maxlength="80"></label><label>가격 (만 메소)<input id="c_a_price" type="number" min="0" value="0"></label>
+<label>공격력 +<input id="c_a_att" type="number" value="0"></label><label>마력 +<input id="c_a_matt" type="number" value="0"></label>
+<label>HP %<input id="c_a_hp" type="number" value="0"></label><label>MP %<input id="c_a_mp" type="number" value="0"></label>
+<label>올스탯 %<input id="c_a_all" type="number" value="0"></label><label>스타포스 (성)<input id="c_a_star" type="number" min="0" max="30" value="0"></label>
+</div></div><div><h3>장비 B · 비교 매물</h3><div class="calc-fields">
+<label>장비 이름<input id="c_b_name" value="경매장 매물" maxlength="80"></label><label>가격 (만 메소)<input id="c_b_price" type="number" min="0" value="0"></label>
+<label>공격력 +<input id="c_b_att" type="number" value="0"></label><label>마력 +<input id="c_b_matt" type="number" value="0"></label>
+<label>HP %<input id="c_b_hp" type="number" value="0"></label><label>MP %<input id="c_b_mp" type="number" value="0"></label>
+<label>올스탯 %<input id="c_b_all" type="number" value="0"></label><label>스타포스 (성)<input id="c_b_star" type="number" min="0" max="30" value="0"></label>
+</div></div></div><div id="c_compare_result" class="calc-result" aria-live="polite"></div>
+<button type="button" id="c_swap">A ↔ B 교환</button><button type="button" id="c_reset">입력 초기화</button>
+<p class="calc-hint">※ 장비 공격력과 잠재 공격력%는 서로 다른 수치입니다. 여기에 입력하는 공격력은 표시된 고정 수치(+), HP%·MP%는 퍼센트 수치예요. 스탯별 가치 판단은 직접 해 주세요.</p></div>
+<div class="card"><h3>🔨 토드·잠재 제작비 vs 완제품</h3><p class="calc-hint">토드 가능 여부·잠재 전승 규칙·옵션 등급은 서버에서 직접 확인해야 해요. 큐브는 개당 가격 × 예상 개수로만 계산하며 성공 확률을 가정하지 않아요.</p>
+<div class="calc-fields">
+<label>재료 장비 (만 메소)<input id="c_material" type="number" min="0" value="0"></label><label>토드용 중간 장비 (만 메소)<input id="c_middle" type="number" min="0" value="0"></label>
+<label>최종 장비 (만 메소)<input id="c_target" type="number" min="0" value="0"></label><label>큐브 1개 가격 (만 메소)<input id="c_cubeprice" type="number" min="0" value="10"></label>
+<label>예상 큐브 개수<input id="c_cubes" type="number" min="0" step="1" value="0"></label><label>강화·기타 비용 (만 메소)<input id="c_upgrade" type="number" min="0" value="0"></label>
+<label>완제품 경매장 가격 (만 메소)<input id="c_finished" type="number" min="0" value="0"></label>
+</div><div id="c_todd_result" class="calc-result" aria-live="polite"></div>
+<p class="calc-hint">※ 입력한 예상 큐브 개수에 따라 제작비가 달라집니다. 확률형 결과를 보장하지 않으며, 거래 수수료·토드 관련 실제 비용은 강화·기타 비용에 추가하세요.</p></div>
+</section>
+<section id="meso"><h2>💰 쌀먹 계산기 3.0</h2><p class="muted">1통 = 100만 메소 · 시세 370:1 = 1통당 370원 · 메이플어스 게임 내 실제 수수료율은 확인되지 않아 직접 설정합니다.</p><div class="card"><h2>💰 거래 계산</h2><div class="grid"><label>거래 유형<select id="m_type"><option value="sell">판매자</option><option value="buy">구매자</option></select></label><label>거래 방식<select id="m_method"><option>택배</option><option>경매장</option><option>직접거래</option></select></label><label>시세 (원/통)<input id="m_rate" min="0" type="number" value="370"/></label><label>거래량 (통)<input id="m_amount" min="0" step="any" type="number" value="100"/></label><label>게임 수수료 (%)<input id="m_fee" max="99" min="0" step="any" type="number" value="0"/></label><label>수수료 부담<select id="m_payer"><option value="seller">판매자 부담 (구매자 정량 수령)</option><option value="buyer">구매자 부담 (보낸 금액에서 차감)</option></select></label><label>별도 현금 수수료 (원)<input id="m_cashFee" min="0" type="number" value="0"/></label><label>거래 상대 / 메모<input id="m_memo" placeholder="선택 사항"/></label></div><div class="result" id="m_out"></div><button id="m_copy">계산 결과 복사</button><button id="m_save">거래 완료 기록</button><p class="muted">계산은 게임 수수료를 비율로 차감한다고 가정합니다. 게임의 반올림·최소 수수료·최대 송금액 규칙이 다르면 실제 결과와 차이가 날 수 있습니다.</p></div><div class="card"><h2>🏦 보유 메소 관리</h2><label>현재 보유 메소 (통)<input id="m_balance" min="0" step="any" type="number" value="0"/></label><div class="result" id="m_balanceOut"></div><p class="muted">보유 메소는 로그인 계정에 저장됩니다. 거래 기록을 저장해도 보유량은 자동 차감되지 않습니다.</p></div><div class="card"><h2>📊 시세 비교</h2><label>비교 시세 (쉼표 구분)<input id="m_rates" value="350,370,400,450,500"/></label><div class="scroll" id="m_compare"></div></div><div class="card"><h2>📒 거래 내역</h2><div class="result" id="m_stats"></div><div class="scroll"><table><thead><tr><th>일시</th><th>유형/방식</th><th>시세</th><th>통</th><th>현금</th><th>보낸 메소</th><th>수수료 메소</th><th>메모</th><th></th></tr></thead><tbody id="m_history"></tbody></table></div><button id="m_csv">CSV 내보내기</button><button id="m_clear">거래 기록 전체 삭제</button><p class="muted">거래 내역과 보유 메소는 로그인한 계정의 Supabase에 저장됩니다. 처음 한 번 아래 SQL 설정이 필요합니다.</p></div></section>
+<section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
+<p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
+<label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
+<label>Publishable key<br><input class="wide" id="publishableKey" placeholder="sb_publishable_..."></label><br>
+<button onclick="connect()">연결 설정 저장</button><p class="muted">연결 정보는 현재 브라우저에 저장됩니다. 로그인한 데이터만 Supabase에 기록됩니다.</p></div>
+<div class="card"><p id="loginState">로그인되지 않았습니다.</p>
+<label>이메일<br><input class="wide" id="email" type="email" autocomplete="email"></label><br>
+<label>비밀번호<br><input class="wide" id="password" type="password" autocomplete="current-password"></label><br>
+<button onclick="signUp()">회원가입</button> <button onclick="signIn()">로그인</button> <button onclick="signOut()">로그아웃</button>
+<p class="muted">회원가입 후 인증 이메일이 도착하면 인증을 완료하고 로그인하세요.</p></div>
+<div class="card"><h3>기존 기록 가져오기</h3><p>이전 홈페이지에서 저장한 브라우저 기록을 로그인한 계정으로 <b>수동 가져오기</b> 합니다. 기존 기록은 삭제하지 않습니다.</p><button onclick="importLegacy()">이전 기록 가져오기</button><p class="muted">이미 온라인 기록이 있다면 중복될 수 있습니다. 한 번만 실행하세요.</p></div></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+"use strict";
+const $=id=>document.getElementById(id), legacy="mapleus_v1_";
+ const AUTO_SUPABASE = {
+  url: "https://ubxnfnqyqoyhmjxbmish.supabase.co",
+  key: "sb_publishable_o93dRI3nRt9SvLdsqzFx-Q_6Ccun2KL"
+};
+let client=null,user=null,characterId=null,gears=[],taskRows=[],custom=[],dateKey="";
+const defaults=["현재 레벨 육성 목표 확인","장비 강화·잠재옵션 확인","경매장 시세 확인","진행 중인 길뚫 확인"];
+const weeklyDefaults=["주간 보스 진행 확인","주간 퀘스트 확인","이번 주 메소 수익 정리"];
+let taskTemplates=[],weeklyRows=[],weekKey="";
+function status(message){$("globalStatus").textContent=message;}
+function errorMessage(e){status("오류: "+(e?.message||String(e)));}
+function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
+function requireLogin(){if(!client||!user){status("먼저 로그인 및 연결 메뉴에서 연결하고 로그인해 주세요.");return false;}return true;}
+function localDate(){let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
+function mondayKey(){const d=new Date();d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
+function validNumber(id,defaultValue=0){const v=$(id).value.trim();const n=Number(v||defaultValue);if(!Number.isSafeInteger(n)||n<0)throw Error(id+"에는 0 이상의 정수를 입력해 주세요.");return n;}
+async function connect(){
+ try{
+ const url=$("projectUrl").value.trim().replace(/\/+$/,""),k=$("publishableKey").value.trim();
+ if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(url)||!k.startsWith("sb_publishable_"))throw Error("Supabase URL과 Publishable key를 확인해 주세요.");
+ if(!window.supabase)throw Error("Supabase 라이브러리를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.");
+ client=window.supabase.createClient(url,k,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ localStorage.setItem("mapleus_supabase_config",JSON.stringify({url,key:k}));
+ const {data,error}=await client.auth.getUser();if(error&&error.name!=="AuthSessionMissingError")throw error;
+ user=data?.user||null;updateLogin();if(user){await loadAll();await mesoLoad();}else status("연결 설정 완료! 이메일로 회원가입하거나 로그인해 주세요.");
+ }catch(e){errorMessage(e);}
+}
+function updateLogin(){$("loginState").textContent=user?"로그인: "+user.email:"로그인되지 않았습니다.";}
+async function signUp(){
+ try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {error}=await client.auth.signUp({email:$("email").value.trim(),password:$("password").value,emailRedirectTo:location.origin+location.pathname});if(error)throw error;status("회원가입 요청 완료. 이메일 인증 안내를 확인해 주세요. 기존 계정 여부에 따라 안내가 달라질 수 있어요.");}catch(e){errorMessage(e);}
+}
+async function signIn(){
+ try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();await mesoLoad();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
+}
+async function signOut(){
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];weeklyRows=[];taskTemplates=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+}
+function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
+async function loadAll(){
+ if(!requireLogin())return;
+ const [c,g,t,w,tt]=await Promise.all([
+ client.from("characters").select("*").eq("user_id",user.id).order("created_at",{ascending:true}).limit(1),
+ client.from("equipment").select("*").eq("user_id",user.id).order("created_at",{ascending:false}),
+ client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",dateKey).eq("category","daily").order("created_at",{ascending:true}),
+  client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",weekKey).eq("category","weekly").order("created_at",{ascending:true}),
+  client.from("task_templates").select("*").eq("user_id",user.id).order("created_at",{ascending:true})
+ ]);
+ for(const r of [c,g,t,w,tt])if(r.error)throw r.error;
+ const character=c.data[0];characterId=character?.id||null;
+ if(character){$("nickname").value=character.nickname;$("level").value=character.level;$("hp").value=character.hp;$("power").value=character.combat_power;$("goal").value=character.goal||"";}else clearInputs();
+ gears=g.data||[];taskRows=t.data||[];weeklyRows=w.data||[];taskTemplates=tt.data||[];
+  // 이전 버전에서 추가한 오늘의 사용자 항목도 반복 목록에 보존합니다.
+  const legacyTitles=taskRows.map(x=>x.title).filter(x=>!defaults.includes(x)&&!taskTemplates.some(y=>y.title===x&&y.category==='daily'));
+  if(legacyTitles.length){const {error}=await client.from('task_templates').insert([...new Set(legacyTitles)].map(title=>({user_id:user.id,title,category:'daily'})));if(error)throw error;const fresh=await client.from('task_templates').select('*').eq('user_id',user.id).order('created_at',{ascending:true});if(fresh.error)throw fresh.error;taskTemplates=fresh.data||[];}
+  renderGear();renderTasks();updateDashboard();
+}
+async function saveCharacter(){
+ try{if(!requireLogin())return;const nickname=$("nickname").value.trim();if(!nickname)throw Error("닉네임을 입력해 주세요.");
+ const level=validNumber("level",1);if(level<1||level>300)throw Error("레벨은 1~300으로 입력해 주세요.");
+ const row={user_id:user.id,nickname,job:"데몬어벤져",level,hp:validNumber("hp"),combat_power:validNumber("power"),goal:$("goal").value};
+ const q=characterId?client.from("characters").update(row).eq("id",characterId).eq("user_id",user.id).select().single():client.from("characters").insert(row).select().single();
+ const {data,error}=await q;if(error)throw error;characterId=data.id;updateDashboard();status("캐릭터 정보가 Supabase에 저장됐어요.");
+ }catch(e){errorMessage(e);}
+}
+async function addGear(){
+ try{if(!requireLogin())return;const name=$("itemname").value.trim();if(!name)throw Error("장비 이름을 입력해 주세요.");const stars=validNumber("stars");if(stars>30)throw Error("스타포스는 0~30으로 입력해 주세요.");
+ const row={user_id:user.id,character_id:characterId,slot:$("slot").value,item_name:name,potential:$("potential").value,stars};
+ const {error}=await client.from("equipment").insert(row);if(error)throw error;
+ $("itemname").value="";$("potential").value="";$("stars").value="";await loadAll();status("장비 기록이 온라인에 저장됐어요. 사진은 저장되지 않았습니다.");
+ }catch(e){errorMessage(e);}
+}
+function renderGear(){
+ const query=($("gearSearch")?.value||"").trim().toLowerCase();
+ const visible=gears.filter(g=>[g.slot,g.item_name,g.potential].join(" ").toLowerCase().includes(query));
+ if($("gearCount"))$("gearCount").textContent=visible.length+"개 장비";
+ $("gearlist").innerHTML=visible.map(g=>`<div class="card"><h3>${safe(g.slot)}</h3><p>${safe(g.item_name)}</p><p>잠재: ${safe(g.potential)}</p><p>스타포스: ${safe(g.stars)}성</p><button data-delete-gear="${safe(g.id)}" class="danger">삭제</button></div>`).join("");
+}
+$("gearlist").addEventListener("click",async e=>{
+ const id=e.target.closest("[data-delete-gear]")?.dataset.deleteGear;if(!id||!requireLogin())return;
+ try{const {error}=await client.from("equipment").delete().eq("id",id).eq("user_id",user.id);if(error)throw error;await loadAll();status("장비 기록을 삭제했어요.");}catch(err){errorMessage(err);}
+});
+$("gearphoto").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);$("preview").onload=()=>URL.revokeObjectURL(url);$("preview").src=url;$("preview").style.display="block";});
+function taskItems(category){const base=category==='daily'?defaults:weeklyDefaults;return [...base,...new Set(taskTemplates.filter(x=>x.category===category).map(x=>x.title))];}
+function renderTasks(){
+ for(const category of ['daily','weekly']){
+  const items=taskItems(category),rows=category==='daily'?taskRows:weeklyRows;
+  const done=items.filter(t=>rows.some(x=>x.title===t&&x.completed)).length;
+  const prefix=category==='daily'?'task':'weekly';
+  $(prefix+'ProgressText').textContent=done+' / '+items.length+' 완료';
+  $(prefix+'ProgressBar').style.width=(items.length?Math.round(done/items.length*100):0)+'%';
+  $(category==='daily'?'tasks':'weeklyTasks').innerHTML=items.map(title=>{
+   const checked=rows.some(x=>x.title===title&&x.completed),custom=taskTemplates.find(x=>x.title===title&&x.category===category);
+   return `<div class="task"><label><input type="checkbox" data-task="${safe(title)}" data-category="${category}" ${checked?'checked':''} ${!user?'disabled':''}> ${safe(title)}</label>${custom?` <button class="danger" style="float:right;padding:3px 8px;font-size:12px" data-template-delete="${safe(custom.id)}">삭제</button>`:''}</div>`;
+  }).join('');
+ }
+ $('today').textContent='오늘: '+dateKey;
+ $('weekLabel').textContent='이번 주 시작: '+weekKey+' (월요일 기준)';
+}
+for(const containerId of ['tasks','weeklyTasks']){
+ $(containerId).addEventListener('change',async e=>{
+  const input=e.target.closest('[data-task]');if(!input||!requireLogin())return;
+  const title=input.dataset.task,category=input.dataset.category,key=category==='daily'?dateKey:weekKey;
+  const rows=category==='daily'?taskRows:weeklyRows,old=rows.find(t=>t.title===title);
+  try{
+   const q=old?client.from('tasks').update({completed:input.checked}).eq('id',old.id).eq('user_id',user.id):client.from('tasks').insert({user_id:user.id,title,category,task_date:key,completed:input.checked});
+   const {error}=await q;if(error)throw error;await loadAll();status('메할일 체크가 온라인에 저장됐어요.');
+  }catch(err){input.checked=!input.checked;errorMessage(err);}
+ });
+ $(containerId).addEventListener('click',async e=>{
+  const id=e.target.closest('[data-template-delete]')?.dataset.templateDelete;if(!id||!requireLogin())return;
+  if(!confirm('이 반복 메할일을 목록에서 삭제할까요? 이전 체크 기록은 유지됩니다.'))return;
+  try{const {error}=await client.from('task_templates').delete().eq('id',id).eq('user_id',user.id);if(error)throw error;await loadAll();status('반복 메할일을 삭제했어요.');}catch(err){errorMessage(err);}
+ });
+}
+async function addTask(){
+ try{if(!requireLogin())return;const title=$('newtask').value.trim(),category=$('newTaskCategory').value;
+  if(!title)return;if(title.length>120)throw Error('메할일은 120자 이내로 적어 주세요.');
+  if(taskItems(category).includes(title))throw Error('이미 있는 메할일이에요.');
+  const {error}=await client.from('task_templates').insert({user_id:user.id,title,category});if(error)throw error;
+  $('newtask').value='';await loadAll();status('반복 메할일을 온라인에 저장했어요.');
+ }catch(e){errorMessage(e);}
+}
+async function importLegacy(){
+ try{
+ if(!requireLogin())return;
+ if(!confirm("현재 브라우저의 이전 기록을 온라인 계정에 가져올까요? 중복 기록이 생길 수 있습니다."))return;
+ const nickname=localStorage.getItem(legacy+"nickname");
+ if(nickname&&!characterId){
+ $("nickname").value=nickname;["level","hp","power","goal"].forEach(id=>{const v=localStorage.getItem(legacy+id);if(v!==null)$(id).value=v;});
+ await saveCharacter();if(!characterId)throw Error("캐릭터 저장에 실패했습니다.");
+ }
+ const oldGears=JSON.parse(localStorage.getItem(legacy+"gears")||"[]");
+ for(const g of oldGears){const {error}=await client.from("equipment").insert({user_id:user.id,character_id:characterId,slot:String(g.slot||"기타"),item_name:String(g.name||"이름 없음"),potential:String(g.potential||""),stars:Math.max(0,Math.min(30,Number(g.stars)||0))});if(error)throw error;}
+ const oldTasks=JSON.parse(localStorage.getItem(legacy+"customTasks")||"[]");
+ for(const title of [...defaults,...oldTasks]){
+ const index=[...defaults,...oldTasks].indexOf(title),completed=localStorage.getItem(legacy+"done_"+dateKey+"_"+index)==="1";
+ if(!taskRows.some(t=>t.title===title)){const {error}=await client.from("tasks").insert({user_id:user.id,title,category:"daily",task_date:dateKey,completed});if(error)throw error;}
+ }
+ await loadAll();status("이전 기록 가져오기 완료! 기존 브라우저 기록은 유지됐어요. 다시 실행하면 장비가 중복될 수 있습니다.");
+ }catch(e){errorMessage(e);}
+}
+function updateDashboard(){
+ const items=taskItems("daily");
+ const done=items.filter(t=>taskRows.find(x=>x.title===t)?.completed).length;
+ $("dashLevel").textContent=user?($("level").value||"—"):"—";
+ $("dashGear").textContent=user?gears.length:"0";
+ $("dashTasks").textContent=user?(done+"/"+items.length):"0/4";
+ $("dashProgress").style.width=(user&&items.length?Math.round(done/items.length*100):0)+"%";
+ $("dashHint").textContent=user?"오늘 메할일 달성률을 표시합니다.":"로그인하면 온라인 기록을 표시합니다.";
+}
+function filterGuides(){
+ const q=$("guideSearch").value.trim().toLowerCase();
+ document.querySelectorAll(".guide-card").forEach(el=>el.style.display=el.textContent.toLowerCase().includes(q)||el.dataset.search.includes(q)?"":"none");
+}
+
+let mesoRecords=[];
+const m=id=>document.getElementById('m_'+id);
+const mesoFmt=n=>Math.round(n).toLocaleString('ko-KR');
+function mesoCalc(){
+ const rate=Math.max(0,Number(m('rate').value)||0),amount=Math.max(0,Number(m('amount').value)||0),fee=Math.min(99,Math.max(0,Number(m('fee').value)||0))/100;
+ const payer=m('payer').value,send=payer==='seller'?Math.ceil(amount*1e6/(1-fee)):Math.ceil(amount*1e6);
+ const received=Math.floor(send*(1-fee)),gameFee=send-received,cash=rate*amount,cashFee=Math.max(0,Number(m('cashFee').value)||0),isSell=m('type').value==='sell';
+ const balance=Math.max(0,Number(m('balance').value)||0)*1e6;
+ return {rate,amount,fee:fee*100,payer,send,received,gameFee,cash,cashFee,net:isSell?cash-cashFee:cash+cashFee,isSell,balance,method:m('method').value,memo:m('memo').value.trim()};
+}
+function mesoRender(){
+ const v=mesoCalc();
+ m('out').innerHTML=`<div class="muted">${v.isSell?'판매자가 받을 예상 현금':'구매자가 지불할 예상 현금'}</div><strong>${mesoFmt(v.net)}원</strong><p>보낼 메소: <b>${mesoFmt(v.send)} 메소</b> (${(v.send/1e6).toLocaleString('ko-KR',{maximumFractionDigits:6})}통)</p><p>구매자 수령: <b>${mesoFmt(v.received)} 메소</b> · 게임 수수료: <b>${mesoFmt(v.gameFee)} 메소</b></p><p>거래 원금: ${mesoFmt(v.cash)}원 · 별도 현금 수수료: ${mesoFmt(v.cashFee)}원</p>`;
+ m('balanceOut').textContent=`보유 ${mesoFmt(v.balance)} 메소 · 판매 후 예상 잔액 ${mesoFmt(v.balance-v.send)} 메소${v.isSell&&v.send>v.balance?' ⚠️ 잔액 부족':''}`;
+ const rates=m('rates').value.split(',').map(x=>Number(x.trim())).filter(x=>Number.isFinite(x)&&x>=0).slice(0,20);
+ m('compare').innerHTML='<table><thead><tr><th>시세</th><th>거래 금액</th><th>현재 시세와 차이</th></tr></thead><tbody>'+rates.map(r=>`<tr><td>${mesoFmt(r)}:1</td><td>${mesoFmt(r*v.amount)}원</td><td>${mesoFmt((r-v.rate)*v.amount)}원</td></tr>`).join('')+'</tbody></table>';
+ const sells=mesoRecords.filter(r=>r.isSell),sum=(arr,key)=>arr.reduce((n,r)=>n+(Number(r[key])||0),0);
+ m('stats').innerHTML=`<span class="pill">총 ${mesoRecords.length}건</span><span class="pill">판매 ${mesoFmt(sum(sells,'amount'))}통</span><span class="pill">판매 실수령 ${mesoFmt(sum(sells,'net'))}원</span><span class="pill">게임 수수료 ${mesoFmt(sum(sells,'gameFee'))}메소</span>`;
+ m('history').innerHTML=mesoRecords.map(r=>`<tr><td>${safe(new Date(r.created_at).toLocaleString('ko-KR'))}</td><td>${r.isSell?'판매':'구매'} / ${safe(r.method)}</td><td>${mesoFmt(r.rate)}:1</td><td>${safe(r.amount)}</td><td>${mesoFmt(r.net)}원</td><td>${mesoFmt(r.send)}</td><td>${mesoFmt(r.gameFee)}</td><td>${safe(r.memo)}</td><td><button data-meso-delete="${safe(r.id)}" class="danger">삭제</button></td></tr>`).join('');
+}
+async function mesoLoad(){
+ if(!user||!client){mesoRecords=[];mesoRender();return;}
+ const [a,b]=await Promise.all([client.from('meso_trades').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),client.from('meso_settings').select('balance,rate').eq('user_id',user.id).maybeSingle()]);
+ if(a.error||b.error){status('쌀먹 온라인 저장 설정이 필요해요. 제공한 Supabase SQL을 먼저 실행해 주세요. '+(a.error||b.error).message);return;}
+ mesoRecords=(a.data||[]).map(r=>({...r,...r.details}));
+ if(b.data){m('balance').value=b.data.balance??0;m('rate').value=b.data.rate??370;}
+ mesoRender();
+}
+async function mesoSaveSettings(){
+ if(!requireLogin())return;
+ const {error}=await client.from('meso_settings').upsert({user_id:user.id,balance:Math.max(0,Number(m('balance').value)||0),rate:Math.max(0,Number(m('rate').value)||0)},{onConflict:'user_id'});
+ if(error)errorMessage(error);else status('보유 메소와 시세가 온라인에 저장됐어요.');
+}
+async function mesoSave(){
+ if(!requireLogin())return;
+ const v=mesoCalc();if(v.rate<=0||v.amount<=0||!Number.isFinite(v.send)||v.send>Number.MAX_SAFE_INTEGER){status('시세와 통 수를 올바르게 입력해 주세요.');return;}
+ if(!confirm('이 거래를 완료 기록으로 저장할까요?'))return;
+ const {error}=await client.from('meso_trades').insert({user_id:user.id,details:v});
+ if(error)errorMessage(error);else{await mesoLoad();status('거래 내역을 온라인에 저장했어요.');}
+}
+async function mesoDelete(id){
+ if(!requireLogin()||!confirm('이 거래 기록을 삭제할까요?'))return;
+ const {error}=await client.from('meso_trades').delete().eq('id',id).eq('user_id',user.id);
+ if(error)errorMessage(error);else{await mesoLoad();status('거래 기록을 삭제했어요.');}
+}
+async function mesoClear(){
+ if(!requireLogin()||!confirm('거래 기록을 모두 삭제할까요? 복구할 수 없습니다.'))return;
+ const {error}=await client.from('meso_trades').delete().eq('user_id',user.id);
+ if(error)errorMessage(error);else{await mesoLoad();status('거래 기록을 모두 삭제했어요.');}
+}
+function mesoCSV(){
+ const rows=[['일시','유형','방식','시세','통','현금','보낼메소','수령메소','게임수수료','메모'],...mesoRecords.map(r=>[r.created_at,r.isSell?'판매':'구매',r.method,r.rate,r.amount,r.net,r.send,r.received,r.gameFee,r.memo])];
+ const csv='\ufeff'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='mapleus-meso-history.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+for(const el of document.querySelectorAll('#meso input,#meso select'))el.addEventListener('input',mesoRender);
+m('save').addEventListener('click',mesoSave);
+m('copy').addEventListener('click',()=>{const v=mesoCalc(),t=`${v.isSell?'판매':'구매'} ${v.method} / ${v.rate}:1 / ${v.amount}통\n보낼 메소 ${mesoFmt(v.send)} / 수령 메소 ${mesoFmt(v.received)} / 수수료 ${mesoFmt(v.gameFee)} / 현금 ${mesoFmt(v.net)}원`;navigator.clipboard.writeText(t).then(()=>status('계산 결과를 복사했어요.')).catch(()=>prompt('복사할 내용',t));});
+m('balance').insertAdjacentHTML('afterend','<button type="button" id="m_saveBalance">보유량·시세 온라인 저장</button>');
+m('saveBalance').addEventListener('click',mesoSaveSettings);
+m('history').addEventListener('click',e=>{const id=e.target.closest('[data-meso-delete]')?.dataset.mesoDelete;if(id)mesoDelete(id);});
+m('clear').addEventListener('click',mesoClear);
+m('csv').addEventListener('click',mesoCSV);
+
+
+// 원작 직업을 바탕으로 한 후보 도감. 메이플어스 구현 여부는 별도 검증 전입니다.
+const jobFamilies=[
+ {name:'모험가',jobs:[['히어로','전사'],['팔라딘','전사'],['다크나이트','전사'],['아크메이지(불,독)','마법사'],['아크메이지(썬,콜)','마법사'],['비숍','마법사'],['보우마스터','궁수'],['신궁','궁수'],['패스파인더','궁수'],['나이트로드','도적'],['섀도어','도적'],['듀얼블레이드','도적'],['바이퍼','해적'],['캡틴','해적'],['캐논슈터','해적']]},
+ {name:'시그너스 기사단',jobs:[['소울마스터','전사'],['플레임위자드','마법사'],['윈드브레이커','궁수'],['나이트워커','도적'],['스트라이커','해적'],['미하일','전사']]},
+ {name:'영웅',jobs:[['아란','전사'],['에반','마법사'],['메르세데스','궁수'],['팬텀','도적'],['루미너스','마법사'],['은월','해적']]},
+ {name:'레지스탕스 · 데몬',jobs:[['블래스터','전사'],['배틀메이지','마법사'],['와일드헌터','궁수'],['메카닉','해적'],['데몬슬레이어','전사'],['데몬어벤져','전사'],['제논','하이브리드']]},
+ {name:'노바',jobs:[['카이저','전사'],['엔젤릭버스터','해적'],['카데나','도적'],['카인','궁수']]},
+ {name:'그란디스 · 기타',jobs:[['제로','전사'],['키네시스','마법사'],['아델','전사'],['일리움','마법사'],['아크','해적'],['호영','도적'],['라라','마법사'],['칼리','도적']]}
+];
+const jobAliases={'데몬어벤져':'데벤져 데벤','아크메이지(불,독)':'불독 불/독','아크메이지(썬,콜)':'썬콜 썬/콜','듀얼블레이드':'듀블','나이트로드':'나로','소울마스터':'소마','윈드브레이커':'윈브','나이트워커':'나워','데몬슬레이어':'데슬','엔젤릭버스터':'엔버','보우마스터':'보마','다크나이트':'닼나'};
+const jobHints={
+ '데몬어벤져':['HP를 활용하는 전사 계열 직업으로, 일반적인 STR 장비와 구분해 확인하세요.','HP 관련 잠재옵션과 무기 공격력 옵션을 따로 비교하세요.','현재 캐릭터 유엘의 장비·원킬 여부를 기준으로 메모해 보세요.'],
+ '아크메이지(불,독)':['불·독 속성 계열 마법사 직업입니다.','마법 공격력과 INT 관련 장비 옵션을 확인하세요.','서버에서 제공하는 스킬 단계·지속 피해 규칙을 확인하세요.'],
+ '비숍':['파티 지원과 마법 공격을 함께 고려하는 마법사 직업입니다.','INT·마법 공격력 장비와 파티용 스킬을 확인하세요.','서버 버전에 따른 보조 스킬 차이를 확인하세요.'],
+ '나이트로드':['도적 계열 직업으로 표창과 공격 관련 장비를 점검하세요.','LUK·공격력·표창 수급을 함께 고려하세요.','서버에서 제공하는 사냥 및 보스 스킬 구성을 확인하세요.']
+};
+const jobStats={'전사':'STR 중심인 직업이 많지만 예외가 있어 직업별 확인 필요','마법사':'대체로 INT · 마법 공격력 중심','궁수':'대체로 DEX · 공격력 중심','도적':'대체로 LUK · 공격력 중심','해적':'직업에 따라 STR/DEX 등 달라짐','하이브리드':'직업 전용 스탯 체계 확인 필요'};
+let selectedJob='데몬어벤져',selectedJobGroup='전체';
+function renderJobAtlas(){
+ const q=$('jobSearch').value.trim().toLowerCase();
+ $('jobGroups').innerHTML=['전체',...jobFamilies.map(f=>f.name)].map(g=>`<button type="button" class="${g===selectedJobGroup?'selected':''}" data-job-group="${safe(g)}">${safe(g)}</button>`).join('');
+ const found=jobFamilies.flatMap(f=>f.jobs.map(j=>({name:j[0],type:j[1],family:f.name}))).filter(j=>(selectedJobGroup==='전체'||selectedJobGroup===j.family)&&[j.name,j.type,j.family,jobAliases[j.name]||''].join(' ').toLowerCase().includes(q));
+ $('jobCount').textContent=found.length+'개 직업';
+ $('jobList').innerHTML=found.length?found.map(j=>`<button type="button" class="job-tile ${j.name===selectedJob?'selected':''}" data-job-name="${safe(j.name)}"><b>${safe(j.name)}</b><small>${safe(j.family)} · ${safe(j.type)}</small></button>`).join(''):'<p class="muted">검색 결과가 없어요.</p>';
+ const chosen=jobFamilies.flatMap(f=>f.jobs.map(j=>({name:j[0],type:j[1],family:f.name}))).find(j=>j.name===selectedJob);
+ if(!chosen)return;
+ const hints=jobHints[chosen.name]||[`${chosen.type} 계열 직업입니다. 서버에서 제공하는 실제 스킬과 주스탯을 확인하세요.`,jobStats[chosen.type]||'직업별 스탯 확인 필요','사냥 원킬 여부와 장비 가격을 함께 비교하세요.'];
+ $('jobDetail').innerHTML=`<span class="job-tag">${safe(chosen.family)}</span><span class="job-tag">${safe(chosen.type)}</span><h3>🍁 ${safe(chosen.name)} 전용 공략</h3><p class="mini">상태: 원작 기반 기초 안내 · 메이플어스 적용 여부 검증 전</p><div class="grid"><div class="card"><h3>📌 직업 이해</h3><ul>${hints.map(x=>`<li>${safe(x)}</li>`).join('')}</ul></div><div class="card"><h3>🛡️ 장비·잠재</h3><ul><li>무기 종류 및 주스탯 확인</li><li>잠재옵션과 공격력/마력 효율 비교</li><li>토드 가능 여부와 재료비 확인</li></ul></div><div class="card"><h3>⚔️ 스킬·사냥</h3><ul><li>1~4차 및 하이퍼 스킬: 서버 기준 검증 후 기입</li><li>레벨별 사냥터: 원킬·경험치·동선 비교</li><li>보스용 스킬과 사냥용 스킬 구분</li></ul></div><div class="card"><h3>🏰 성장 체크</h3><ul><li>필수 선행 퀘스트와 길뚫 확인</li><li>주간 보스·메할일과 연결해 진행</li><li>서버 패치에 따른 변경 여부 확인</li></ul></div></div><p class="mini">※ 상세 스킬트리·하이퍼 스킬 순서·장비 수치는 아직 입력되지 않았습니다. 확인되지 않은 공략을 확정 정보처럼 표시하지 않습니다.</p>`;
+}
+$('jobSearch').addEventListener('input',renderJobAtlas);
+$('jobGroups').addEventListener('click',e=>{const b=e.target.closest('[data-job-group]');if(!b)return;selectedJobGroup=b.dataset.jobGroup;renderJobAtlas();});
+$('jobList').addEventListener('click',e=>{const b=e.target.closest('[data-job-name]');if(!b)return;selectedJob=b.dataset.jobName;renderJobAtlas();$('jobDetail').scrollIntoView({behavior:'smooth',block:'nearest'});});
+renderJobAtlas();
+
+
+// 3.1: 입력값 기반 독립 계산기. 기존 Supabase 테이블과 데이터는 변경하지 않습니다.
+const calcFmt=n=>Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2}):'—';
+const calcValue=id=>{const x=Number($(id).value);return Number.isFinite(x)?x:0;};
+function calcEquipment(){
+ const fields=[['price','가격','만 메소'],['att','공격력 +',''],['matt','마력 +',''],['hp','HP','%'],['mp','MP','%'],['all','올스탯','%'],['star','스타포스','성']];
+ const a=$('c_a_name').value.trim()||'장비 A',b=$('c_b_name').value.trim()||'장비 B';
+ const rows=fields.map(([key,label,unit])=>{const av=calcValue('c_a_'+key),bv=calcValue('c_b_'+key),delta=bv-av;return `<tr><th>${label}</th><td>${calcFmt(av)}${unit}</td><td>${calcFmt(bv)}${unit}</td><td class="${delta>0?'calc-good':delta<0?'calc-warn':''}">${delta>0?'+':''}${calcFmt(delta)}${unit}</td></tr>`;}).join('');
+ const priceA=calcValue('c_a_price'),priceB=calcValue('c_b_price');
+ const bad=['a','b'].some(k=>['price','star'].some(f=>calcValue('c_'+k+'_'+f)<0))||['a','b'].some(k=>calcValue('c_'+k+'_star')>30);
+ $('c_compare_result').innerHTML=`<h3>${safe(a)} ↔ ${safe(b)}</h3>${bad?'<p class="calc-warn">가격은 0 이상, 스타포스는 0~30으로 입력해 주세요.</p>':''}<div style="overflow-x:auto"><table class="calc-table"><thead><tr><th>항목</th><th>A</th><th>B</th><th>B−A</th></tr></thead><tbody>${rows}</tbody></table></div><p>가격 차이: <strong>${calcFmt(priceB-priceA)}만 메소</strong> (B − A)</p><p class="calc-hint">각 수치의 차이만 보여 줍니다. 실제 전투력·효율 우열 판정은 하지 않아요.</p>`;
+}
+function calcTodd(){
+ const ids=['material','middle','target','cubeprice','cubes','upgrade','finished'];const vals=Object.fromEntries(ids.map(k=>[k,calcValue('c_'+k)]));
+ const invalid=ids.some(k=>vals[k]<0)||!Number.isInteger(vals.cubes);
+ const cube=vals.cubeprice*vals.cubes,build=vals.material+vals.middle+vals.target+cube+vals.upgrade,diff=vals.finished-build;
+ const msg=diff>0?`입력값 기준 직접 제작이 ${calcFmt(diff)}만 메소 저렴`:diff<0?`입력값 기준 완제품 구매가 ${calcFmt(-diff)}만 메소 저렴`:'입력값 기준 비용이 같아요';
+ $('c_todd_result').innerHTML=`${invalid?'<p class="calc-warn">비용은 0 이상, 큐브 개수는 0 이상의 정수로 입력해 주세요.</p>':''}<p>큐브 비용: <b>${calcFmt(cube)}만 메소</b></p><p>직접 제작 예상 합계: <strong>${calcFmt(build)}만 메소</strong></p><p>완제품 구매가: <strong>${calcFmt(vals.finished)}만 메소</strong></p><p class="calc-good">${msg}</p><p class="calc-hint">재료 장비 + 중간 장비 + 최종 장비 + 큐브 + 강화·기타 비용의 단순 합계입니다.</p>`;
+}
+for(const el of document.querySelectorAll('#compare input'))el.addEventListener('input',()=>{calcEquipment();calcTodd();});
+$('c_swap').addEventListener('click',()=>{for(const k of ['name','price','att','matt','hp','mp','all','star']){const a=$('c_a_'+k),b=$('c_b_'+k),v=a.value;a.value=b.value;b.value=v;}calcEquipment();});
+$('c_reset').addEventListener('click',()=>{for(const k of ['a','b'])for(const f of ['price','att','matt','hp','mp','all','star'])$('c_'+k+'_'+f).value='0';$('c_a_name').value='현재 장비';$('c_b_name').value='경매장 매물';calcEquipment();});
+calcEquipment();calcTodd();
+
+function calcProbability(){
+ const raw=$('c_prob').value.trim(),n=Number($('c_attempts').value),p=Number(raw);
+ const out=$('c_probability_result');
+ if(!raw){out.textContent='공식 공시의 1회 확률을 입력하면 결과가 표시됩니다.';return;}
+ if(!Number.isFinite(p)||p<0||p>100||!Number.isSafeInteger(n)||n<1||n>1000000){out.textContent='확률은 0~100%, 횟수는 1~1,000,000 사이 정수로 입력해 주세요.';return;}
+ const atLeast=100*(-Math.expm1(n*Math.log1p(-p/100)));
+ out.innerHTML=`<p>${n.toLocaleString('ko-KR')}회 중 <b>한 번 이상 등급 상승</b>할 참고 확률: <strong>${atLeast.toLocaleString('ko-KR',{maximumFractionDigits:4})}%</strong></p><p class="calc-hint">매 시도 확률이 동일하고 독립적이라는 가정. 보장 횟수 및 큐브별 특수 규칙 제외.</p>`;
+}
+$('c_prob').addEventListener('input',calcProbability);
+$('c_attempts').addEventListener('input',calcProbability);
+calcProbability();
+
+
+// 3.3: Official-odds manual-input probability tools (no fabricated game rates).
+function probFmt(x){return (x*100).toLocaleString('ko-KR',{maximumFractionDigits:5})+'%';}
+function moneyFmt(x){return Number.isFinite(x)?Math.round(x).toLocaleString('ko-KR')+' 메소':'계산 불가';}
+function cube33(){
+ const out=$('q_result'),p=Number($('q_prob').value)/100,pity=Number($('q_pity').value),fail=Number($('q_fail').value),cost=Number($('q_cost').value),n=Number($('q_attempts').value);
+ if($('q_prob').value.trim()===''){out.textContent='공식 확률을 입력해 주세요.';return;}
+ if(![p,pity,fail,cost,n].every(Number.isFinite)||p<0||p>1||![pity,fail,n].every(Number.isSafeInteger)||pity<0||fail<0||n<1||n>100000||cost<0||pity>100000|| (pity>0&&fail>=pity)){out.textContent='입력값을 확인해 주세요. 실패 횟수는 보장 횟수보다 작아야 합니다.';return;}
+ const remain=pity>0?pity-fail:Infinity;let survive=1,expected=0;
+ const max=pity>0?remain:Math.min(n,100000);
+ for(let i=1;i<=max;i++){expected+=survive;survive*=i===remain?0:(1-p);}
+ let expectation=pity>0?expected:(p>0?1/p:Infinity);
+ let chance=1-Math.pow(1-p,Math.min(n,remain));if(pity>0&&n>=remain)chance=1;
+ out.innerHTML='<p>입력 횟수 내 등급 상승 확률: <strong>'+probFmt(chance)+'</strong></p><p>상승까지 기대 큐브: <b>'+(Number.isFinite(expectation)?expectation.toLocaleString('ko-KR',{maximumFractionDigits:3})+'개':'무한대')+'</b></p><p>기대 큐브 비용: <b>'+moneyFmt(expectation*cost)+'</b></p><p class="mini">'+(pity?'남은 보장 횟수 '+remain+'회 · ':'보장 횟수 없음 · ')+'매 시도 동일 확률을 가정</p>';
+}
+function star33(){
+ const out=$('s_result'),start=Number($('s_start').value),goal=Number($('s_goal').value),cost=Number($('s_cost').value),restore=Number($('s_restore').value);
+ if(![start,goal,cost,restore].every(Number.isFinite)||!Number.isInteger(start)||!Number.isInteger(goal)||start<0||goal>30||goal<=start||cost<0||restore<0){out.textContent='시작·목표 단계와 비용을 확인해 주세요.';return;}
+ let rates={};try{for(const line of $('s_rows').value.trim().split(/\n+/)){if(!line.trim())continue;const v=line.split(/[\t,]/).map(x=>Number(x.trim()));if(v.length!==5||v.some(x=>!Number.isFinite(x)))throw Error('각 줄은 단계와 네 가지 확률, 총 다섯 숫자가 필요합니다.');const [k,...a]=v;if(!Number.isInteger(k)||k<0||k>=goal||rates[k]||a.some(x=>x<0||x>100)||Math.abs(a.reduce((x,y)=>x+y,0)-100)>0.01)throw Error(k+'성 확률의 합계가 100%인지 확인해 주세요.');rates[k]=a.map(x=>x/100);}}
+ catch(e){out.textContent=e.message;return;}
+ for(let k=0;k<goal;k++)if(!rates[k]){out.textContent=k+'성 단계 확률이 필요해요. 하락으로 낮은 단계에 도달할 수 있어 0성부터 입력해 주세요.';return;}
+ // Linear equations for expected attempts (destruction resets to start) and probability of reaching goal before first destruction.
+ function solve(matrix,b){const n=b.length;for(let k=0;k<n;k++){let m=k;for(let i=k+1;i<n;i++)if(Math.abs(matrix[i][k])>Math.abs(matrix[m][k]))m=i;if(Math.abs(matrix[m][k])<1e-12)return null;[matrix[k],matrix[m]]=[matrix[m],matrix[k]];[b[k],b[m]]=[b[m],b[k]];const d=matrix[k][k];for(let j=k;j<n;j++)matrix[k][j]/=d;b[k]/=d;for(let i=0;i<n;i++)if(i!==k){const f=matrix[i][k];for(let j=k;j<n;j++)matrix[i][j]-=f*matrix[k][j];b[i]-=f*b[k];}}return b;}
+ function system(reset){const A=[],B=[];for(let i=0;i<goal;i++){const [success,hold,down,boom]=rates[i],row=Array(goal).fill(0);row[i]=1-hold;if(i+1<goal)row[i+1]-=success;row[Math.max(0,i-1)]-=down;if(reset)row[start]-=boom;A.push(row);B.push(reset?cost+boom*restore:success*(i+1===goal?1:0));}return solve(A,B);}
+ const expense=system(true),chance=system(false);
+ if(!expense||!chance||!Number.isFinite(expense[start])||expense[start]<0){out.textContent='목표에 도달할 수 없는 확률 구성입니다. 입력값을 확인해 주세요.';return;}
+ out.innerHTML='<p>파괴 전 목표 도달 확률: <strong>'+probFmt(Math.max(0,Math.min(1,chance[start])))+'</strong></p><p>파괴 후 재도전 가정 기대 비용: <strong>'+moneyFmt(expense[start])+'</strong></p><p class="mini">시작 '+start+'성 → 목표 '+goal+'성 · 입력한 공시 확률과 단일 시도 비용 기준</p>';
+}
+$('q_calc').addEventListener('click',cube33);
+$('s_calc').addEventListener('click',star33);
+$('s_example').addEventListener('click',()=>{$('s_rows').value='0,95,5,0,0\n1,90,10,0,0\n2,85,15,0,0\n3,80,20,0,0\n4,75,25,0,0';$('s_result').textContent='입력 형식 예시입니다. 실제 메이플어스 확률이 아니므로 공식 표 수치로 교체하세요.';});
+
+
+// 화면 재배치 전용: 기존 계산기 요소와 이벤트/ID는 변경하지 않습니다.
+(function initToolLayout(){
+ const section=document.getElementById('compare');
+ if(!section)return;
+ const children=Array.from(section.children);
+ const cards=children.filter(el=>el.classList.contains('card'));
+ // 기존 순서: 공식자료, 스타포스, 큐브 천장, 큐브 단순, 장비 비교, 토드
+ if(cards.length!==6)return;
+ const groups={equipment:[cards[4]],todd:[cards[5]],star:[cards[1]],cube:[cards[2],cards[3],cards[0]]};
+ for(const [name,items] of Object.entries(groups)){
+   const panel=document.createElement('div');panel.className='tool-panel'+(name==='equipment'?' active':'');panel.dataset.toolPanel=name;
+   items.forEach(item=>panel.appendChild(item));section.appendChild(panel);
+ }
+ // 이전 버전의 중복 안내 문구는 별도 화면에 노출하지 않되 삭제하지 않습니다.
+ const note=children.find(el=>el.classList.contains('section-note'));
+ if(note)note.remove();
+ section.querySelector('.tool-switcher').addEventListener('click',e=>{
+   const btn=e.target.closest('[data-tool]');if(!btn)return;
+   section.querySelectorAll('[data-tool]').forEach(b=>{const selected=b===btn;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
+   section.querySelectorAll('[data-tool-panel]').forEach(p=>p.classList.toggle('active',p.dataset.toolPanel===btn.dataset.tool));
+ });
+})();
+
+async function init(){
+  dateKey=localDate();
+  weekKey=mondayKey();
+  $("today").textContent="오늘: "+dateKey;
+  renderTasks();
+  mesoRender();
+  updateDashboard();
+
+  $("projectUrl").value=AUTO_SUPABASE.url;
+  $("publishableKey").value=AUTO_SUPABASE.key;
+
+  await connect();
+}
+
+init();
+// 날짜 변경을 감지해 새 일일/주간 체크 상태를 자동으로 불러옵니다.
+setInterval(async()=>{const d=localDate(),w=mondayKey();if(d!==dateKey||w!==weekKey){dateKey=d;weekKey=w;if(user){try{await loadAll();status('새 날짜/주차의 메할일을 불러왔어요.');}catch(e){errorMessage(e);}}else{renderTasks();updateDashboard();}}},30000);
+</script></body></html>
