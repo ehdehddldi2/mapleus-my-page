@@ -55,10 +55,35 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 .calc-result strong{color:#ffcc85;font-size:20px}
 .calc-table{width:100%;border-collapse:collapse}.calc-table th,.calc-table td{border-bottom:1px solid #3b4b65;padding:9px;text-align:left;font-size:13px}
 .calc-hint{font-size:12px;color:#b7c7df}.calc-good{color:#78e5bd}.calc-warn{color:#ffd087}
+
+/* 3.4: 계산 도구를 한 화면에 하나씩 표시하는 정돈된 UI */
+#compare{--tool-accent:#ffbf70}
+#compare .tool-intro{background:linear-gradient(120deg,#233653,#18283f);border:1px solid #456181;border-radius:18px;padding:20px 22px;margin-bottom:16px}
+#compare .tool-intro h2{margin:0 0 5px;font-size:25px}
+#compare .tool-intro p{margin:0;color:#b9c9df;font-size:13px}
+#compare .tool-switcher{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0 0 18px}
+#compare .tool-switcher button{padding:15px 8px;text-align:left;border:1px solid #3d536e;background:#19283f;border-radius:13px;color:#d8e6f9;min-height:86px}
+#compare .tool-switcher button strong{display:block;font-size:14px;margin-bottom:5px}
+#compare .tool-switcher button span{font-size:11px;color:#a8bad1}
+#compare .tool-switcher button.active{background:#443a34;border-color:#f3b66a;color:#ffe3b5;box-shadow:inset 0 0 0 1px #f3b66a}
+#compare .tool-switcher button.active span{color:#f5d5a9}
+#compare .tool-panel{display:none}
+#compare .tool-panel.active{display:block}
+#compare .tool-panel>.card{padding:23px 24px;margin-bottom:14px}
+#compare .tool-panel>.card>h3{font-size:19px;margin-bottom:8px}
+#compare .calc-fields{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+#compare .calc-fields label{font-size:13px;color:#d6e1f0;font-weight:600}
+#compare .calc-fields input{margin:6px 0 0;padding:12px;background:#0f1c30;border-color:#425a77}
+#compare .calc-result{background:#101f33;border-color:#3c5977;border-left:3px solid #f3b66a;padding:18px;margin-top:20px}
+#compare .calc-hint{line-height:1.7;color:#a8bad1}
+#compare .tool-panel .section-note{margin:8px 0 16px}
+#compare .tool-panel .toolbar a{display:inline-block;padding:9px 12px;background:#23354d;border-radius:9px;text-decoration:none;font-size:12px}
+#compare .tool-panel .toolbar a:hover{background:#354d6b}
+@media(max-width:720px){#compare .tool-switcher{grid-template-columns:repeat(2,minmax(0,1fr))}#compare .tool-panel>.card{padding:16px}#compare .tool-intro{padding:17px}#compare .tool-switcher button{min-height:76px}}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 계산</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
 <section id="home" class="show">
@@ -103,7 +128,14 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <div class="card guide-card" data-search="패치 업데이트 공지 2014 2015 2016"><span class="tag">패치노트</span><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 정보를 구분해서 관리해요.</p><details><summary>공식 정보</summary><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">메이플어스 공식 홈페이지 열기</a></p><p class="mini">현재 자동 수집 기능은 연결되지 않았습니다.</p></details></div>
 </div></section>
 
-<section id="compare"><h2>⚖️ 장비 비교 · 토드 계산기 3.1</h2>
+<section id="compare"><div class="tool-intro"><h2>⚖️ 장비 연구소</h2><p>필요한 계산기만 선택해서 사용해 봐. 입력값과 계산 방식은 이전 버전 그대로 유지했어.</p></div><div class="tool-switcher" role="group" aria-label="계산기 선택"><button type="button" data-tool="equipment" class="active" aria-pressed="true"><strong>🛡️ 장비 비교</strong><span>매물 A와 B 비교</span></button><button type="button" data-tool="todd" aria-pressed="false"><strong>🔨 토드 제작비</strong><span>제작 vs 완제품</span></button><button type="button" data-tool="star" aria-pressed="false"><strong>⭐ 스타포스</strong><span>목표 강화 비용</span></button><button type="button" data-tool="cube" aria-pressed="false"><strong>🎲 큐브 확률</strong><span>천장 · 예상 비용</span></button></div>
+<div class="card"><h3>📊 메이플어스 공식 확률 자료</h3>
+<p class="section-note" style="margin-top:0">공식 확률 공시는 현재 게임에 적용되는 값을 보여 주며, 실제 확률 확인은 실서비스 누적 기록을 집계합니다. 아래 계산기는 공식 수치를 임의로 고정하지 않습니다.</p>
+<div class="toolbar"><a href="https://mapleus.co.kr/site/guide/odds.html" target="_blank" rel="noopener noreferrer">📜 공식 확률 공시 ↗</a><a href="https://mapleus.co.kr/site/guide/odds-live.html" target="_blank" rel="noopener noreferrer">📈 실제 확률 확인 ↗</a><a href="https://mapleus.co.kr/site/guide/odds-live.html#starforce" target="_blank" rel="noopener noreferrer">⭐ 스타포스 실제 기록 ↗</a></div>
+<p class="calc-hint">큐브는 등급 상승 확률·보장 횟수·2~3번째 줄 등급·장비 레벨별 옵션 확률을 따로 확인해야 합니다. 실제 통계는 과거 기록이므로 다음 시도의 성공을 보장하지 않습니다.</p></div>
+<div class="card" id="officialSim"><h3>⭐ 스타포스 목표 달성 예상 비용 3.3</h3><p class="calc-hint">공식 공시에서 해당 장비의 <b>단계별 성공·유지·하락·파괴 확률</b>을 확인해 붙여넣으세요. 공식 수치는 서버에서 변경될 수 있으므로 자동으로 임의 입력하지 않습니다. 파괴 시 계산을 종료하는 <b>파괴 전 목표 달성 확률</b>과, 파괴 시 시작 단계로 복구해 재도전한다는 가정의 <b>기대 비용</b>을 계산합니다.</p><div class="calc-fields"><label>시작 스타포스<input id="s_start" type="number" min="0" max="29" value="0"></label><label>목표 스타포스<input id="s_goal" type="number" min="1" max="30" value="5"></label><label>1회 강화 비용 (메소)<input id="s_cost" type="number" min="0" value="100000"></label><label>파괴 시 복구 비용 (메소)<input id="s_restore" type="number" min="0" value="0"></label></div><p class="mini">한 줄에 <code>현재 성,성공%,유지%,하락%,파괴%</code> 입력. 예: <code>0,95,5,0,0</code>는 <b>입력 형식 예시일 뿐 실제 확률이 아닙니다.</b> 목표까지 모든 단계가 필요합니다.</p><textarea id="s_rows" rows="6" placeholder="0,성공%,유지%,하락%,파괴%&#10;1,성공%,유지%,하락%,파괴%"></textarea><div class="toolbar"><button type="button" id="s_calc">⭐ 목표 비용 계산</button><button type="button" id="s_example">입력 형식 보기</button><a href="https://mapleus.co.kr/site/guide/odds.html#starforce" target="_blank" rel="noopener noreferrer">공식 스타포스 확률표</a></div><div class="calc-result" id="s_result" aria-live="polite">공식 단계별 확률을 입력하면 계산합니다.</div><p class="calc-hint">계산 가정: 실패(하락)는 1성 하락(0성 아래로 내려가지 않음), 파괴 시 복구하여 시작 성부터 재도전, 스타캐치·파괴 방지·찬스 타임은 입력 확률에 이미 반영된 경우에만 적용. 단계별 실제 강화 비용이 다르면 단일 비용 입력은 참고치입니다.</p></div><div class="card"><h3>🎲 큐브 천장 포함 기대 비용 3.3</h3><p class="calc-hint">공식 큐브 종류·현재 등급에 해당하는 <b>1회 상승 확률과 등급 상승 보장 횟수</b>를 입력하세요. 이미 누적된 실패 횟수도 반영합니다.</p><div class="calc-fields"><label>1회 상승 확률 (%)<input id="q_prob" type="number" min="0" max="100" step="any" placeholder="공식 확률"></label><label>보장 횟수 (없으면 0)<input id="q_pity" type="number" min="0" max="100000" value="0"></label><label>현재 연속 실패 횟수<input id="q_fail" type="number" min="0" value="0"></label><label>큐브 개당 가격 (메소)<input id="q_cost" type="number" min="0" value="100000"></label><label>예산상 큐브 사용 횟수<input id="q_attempts" type="number" min="1" max="100000" value="20"></label></div><button type="button" id="q_calc">🎲 천장 포함 계산</button><div class="calc-result" id="q_result" aria-live="polite">공식 큐브 확률을 입력해 주세요.</div><p class="calc-hint">등급 상승 1단계 기준. 목표 옵션 2줄·3줄 획득 확률과 블랙 큐브 결과 선택 여부는 포함하지 않습니다.</p></div>
+<div class="card"><h3>🎲 큐브 등급 상승 확률 참고 계산</h3><p class="calc-hint">공식 공시에서 <b>해당 큐브·현재 등급의 상승 확률</b>을 직접 확인해 입력하세요. 독립 시행을 가정한 참고 계산으로, 천장·옵션 출현 확률은 반영하지 않습니다.</p>
+<div class="calc-fields"><label>1회 등급 상승 확률 (%)<input id="c_prob" type="number" min="0" max="100" step="0.0001" placeholder="공식 수치 입력"></label><label>사용할 큐브 수 (개)<input id="c_attempts" type="number" min="1" step="1" value="10"></label></div><div id="c_probability_result" class="calc-result" aria-live="polite"></div><p class="calc-hint">※ 보장 횟수에 도달하면 실제 확률 구조가 달라집니다. 특정 잠재옵션 2줄·3줄을 얻을 확률은 이 계산 결과와 다릅니다.</p></div>
 <p class="section-note">실제 메이플어스 서버 옵션 효율·토드 가능 여부는 확인되지 않았어요. 아래 계산은 입력값 비교와 비용 합산용입니다.</p>
 <div class="card"><h3>🛡️ 장비 A vs 장비 B</h3><p class="calc-hint">장비의 표시 수치를 직접 입력해 주세요. HP%와 MP%는 절대 합산하지 않으며, 공격력·HP%의 실제 스공 환산은 하지 않아요.</p>
 <div class="grid"><div><h3>장비 A · 현재/후보</h3><div class="calc-fields">
@@ -422,6 +454,74 @@ for(const el of document.querySelectorAll('#compare input'))el.addEventListener(
 $('c_swap').addEventListener('click',()=>{for(const k of ['name','price','att','matt','hp','mp','all','star']){const a=$('c_a_'+k),b=$('c_b_'+k),v=a.value;a.value=b.value;b.value=v;}calcEquipment();});
 $('c_reset').addEventListener('click',()=>{for(const k of ['a','b'])for(const f of ['price','att','matt','hp','mp','all','star'])$('c_'+k+'_'+f).value='0';$('c_a_name').value='현재 장비';$('c_b_name').value='경매장 매물';calcEquipment();});
 calcEquipment();calcTodd();
+
+function calcProbability(){
+ const raw=$('c_prob').value.trim(),n=Number($('c_attempts').value),p=Number(raw);
+ const out=$('c_probability_result');
+ if(!raw){out.textContent='공식 공시의 1회 확률을 입력하면 결과가 표시됩니다.';return;}
+ if(!Number.isFinite(p)||p<0||p>100||!Number.isSafeInteger(n)||n<1||n>1000000){out.textContent='확률은 0~100%, 횟수는 1~1,000,000 사이 정수로 입력해 주세요.';return;}
+ const atLeast=100*(-Math.expm1(n*Math.log1p(-p/100)));
+ out.innerHTML=`<p>${n.toLocaleString('ko-KR')}회 중 <b>한 번 이상 등급 상승</b>할 참고 확률: <strong>${atLeast.toLocaleString('ko-KR',{maximumFractionDigits:4})}%</strong></p><p class="calc-hint">매 시도 확률이 동일하고 독립적이라는 가정. 보장 횟수 및 큐브별 특수 규칙 제외.</p>`;
+}
+$('c_prob').addEventListener('input',calcProbability);
+$('c_attempts').addEventListener('input',calcProbability);
+calcProbability();
+
+
+// 3.3: Official-odds manual-input probability tools (no fabricated game rates).
+function probFmt(x){return (x*100).toLocaleString('ko-KR',{maximumFractionDigits:5})+'%';}
+function moneyFmt(x){return Number.isFinite(x)?Math.round(x).toLocaleString('ko-KR')+' 메소':'계산 불가';}
+function cube33(){
+ const out=$('q_result'),p=Number($('q_prob').value)/100,pity=Number($('q_pity').value),fail=Number($('q_fail').value),cost=Number($('q_cost').value),n=Number($('q_attempts').value);
+ if($('q_prob').value.trim()===''){out.textContent='공식 확률을 입력해 주세요.';return;}
+ if(![p,pity,fail,cost,n].every(Number.isFinite)||p<0||p>1||![pity,fail,n].every(Number.isSafeInteger)||pity<0||fail<0||n<1||n>100000||cost<0||pity>100000|| (pity>0&&fail>=pity)){out.textContent='입력값을 확인해 주세요. 실패 횟수는 보장 횟수보다 작아야 합니다.';return;}
+ const remain=pity>0?pity-fail:Infinity;let survive=1,expected=0;
+ const max=pity>0?remain:Math.min(n,100000);
+ for(let i=1;i<=max;i++){expected+=survive;survive*=i===remain?0:(1-p);}
+ let expectation=pity>0?expected:(p>0?1/p:Infinity);
+ let chance=1-Math.pow(1-p,Math.min(n,remain));if(pity>0&&n>=remain)chance=1;
+ out.innerHTML='<p>입력 횟수 내 등급 상승 확률: <strong>'+probFmt(chance)+'</strong></p><p>상승까지 기대 큐브: <b>'+(Number.isFinite(expectation)?expectation.toLocaleString('ko-KR',{maximumFractionDigits:3})+'개':'무한대')+'</b></p><p>기대 큐브 비용: <b>'+moneyFmt(expectation*cost)+'</b></p><p class="mini">'+(pity?'남은 보장 횟수 '+remain+'회 · ':'보장 횟수 없음 · ')+'매 시도 동일 확률을 가정</p>';
+}
+function star33(){
+ const out=$('s_result'),start=Number($('s_start').value),goal=Number($('s_goal').value),cost=Number($('s_cost').value),restore=Number($('s_restore').value);
+ if(![start,goal,cost,restore].every(Number.isFinite)||!Number.isInteger(start)||!Number.isInteger(goal)||start<0||goal>30||goal<=start||cost<0||restore<0){out.textContent='시작·목표 단계와 비용을 확인해 주세요.';return;}
+ let rates={};try{for(const line of $('s_rows').value.trim().split(/\n+/)){if(!line.trim())continue;const v=line.split(/[\t,]/).map(x=>Number(x.trim()));if(v.length!==5||v.some(x=>!Number.isFinite(x)))throw Error('각 줄은 단계와 네 가지 확률, 총 다섯 숫자가 필요합니다.');const [k,...a]=v;if(!Number.isInteger(k)||k<0||k>=goal||rates[k]||a.some(x=>x<0||x>100)||Math.abs(a.reduce((x,y)=>x+y,0)-100)>0.01)throw Error(k+'성 확률의 합계가 100%인지 확인해 주세요.');rates[k]=a.map(x=>x/100);}}
+ catch(e){out.textContent=e.message;return;}
+ for(let k=0;k<goal;k++)if(!rates[k]){out.textContent=k+'성 단계 확률이 필요해요. 하락으로 낮은 단계에 도달할 수 있어 0성부터 입력해 주세요.';return;}
+ // Linear equations for expected attempts (destruction resets to start) and probability of reaching goal before first destruction.
+ function solve(matrix,b){const n=b.length;for(let k=0;k<n;k++){let m=k;for(let i=k+1;i<n;i++)if(Math.abs(matrix[i][k])>Math.abs(matrix[m][k]))m=i;if(Math.abs(matrix[m][k])<1e-12)return null;[matrix[k],matrix[m]]=[matrix[m],matrix[k]];[b[k],b[m]]=[b[m],b[k]];const d=matrix[k][k];for(let j=k;j<n;j++)matrix[k][j]/=d;b[k]/=d;for(let i=0;i<n;i++)if(i!==k){const f=matrix[i][k];for(let j=k;j<n;j++)matrix[i][j]-=f*matrix[k][j];b[i]-=f*b[k];}}return b;}
+ function system(reset){const A=[],B=[];for(let i=0;i<goal;i++){const [success,hold,down,boom]=rates[i],row=Array(goal).fill(0);row[i]=1-hold;if(i+1<goal)row[i+1]-=success;row[Math.max(0,i-1)]-=down;if(reset)row[start]-=boom;A.push(row);B.push(reset?cost+boom*restore:success*(i+1===goal?1:0));}return solve(A,B);}
+ const expense=system(true),chance=system(false);
+ if(!expense||!chance||!Number.isFinite(expense[start])||expense[start]<0){out.textContent='목표에 도달할 수 없는 확률 구성입니다. 입력값을 확인해 주세요.';return;}
+ out.innerHTML='<p>파괴 전 목표 도달 확률: <strong>'+probFmt(Math.max(0,Math.min(1,chance[start])))+'</strong></p><p>파괴 후 재도전 가정 기대 비용: <strong>'+moneyFmt(expense[start])+'</strong></p><p class="mini">시작 '+start+'성 → 목표 '+goal+'성 · 입력한 공시 확률과 단일 시도 비용 기준</p>';
+}
+$('q_calc').addEventListener('click',cube33);
+$('s_calc').addEventListener('click',star33);
+$('s_example').addEventListener('click',()=>{$('s_rows').value='0,95,5,0,0\n1,90,10,0,0\n2,85,15,0,0\n3,80,20,0,0\n4,75,25,0,0';$('s_result').textContent='입력 형식 예시입니다. 실제 메이플어스 확률이 아니므로 공식 표 수치로 교체하세요.';});
+
+
+// 화면 재배치 전용: 기존 계산기 요소와 이벤트/ID는 변경하지 않습니다.
+(function initToolLayout(){
+ const section=document.getElementById('compare');
+ if(!section)return;
+ const children=Array.from(section.children);
+ const cards=children.filter(el=>el.classList.contains('card'));
+ // 기존 순서: 공식자료, 스타포스, 큐브 천장, 큐브 단순, 장비 비교, 토드
+ if(cards.length!==6)return;
+ const groups={equipment:[cards[4]],todd:[cards[5]],star:[cards[1]],cube:[cards[2],cards[3],cards[0]]};
+ for(const [name,items] of Object.entries(groups)){
+   const panel=document.createElement('div');panel.className='tool-panel'+(name==='equipment'?' active':'');panel.dataset.toolPanel=name;
+   items.forEach(item=>panel.appendChild(item));section.appendChild(panel);
+ }
+ // 이전 버전의 중복 안내 문구는 별도 화면에 노출하지 않되 삭제하지 않습니다.
+ const note=children.find(el=>el.classList.contains('section-note'));
+ if(note)note.remove();
+ section.querySelector('.tool-switcher').addEventListener('click',e=>{
+   const btn=e.target.closest('[data-tool]');if(!btn)return;
+   section.querySelectorAll('[data-tool]').forEach(b=>{const selected=b===btn;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',String(selected));});
+   section.querySelectorAll('[data-tool-panel]').forEach(p=>p.classList.toggle('active',p.dataset.toolPanel===btn.dataset.tool));
+ });
+})();
 
 async function init(){
   dateKey=localDate();
