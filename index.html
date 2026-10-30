@@ -80,10 +80,33 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 #compare .tool-panel .toolbar a{display:inline-block;padding:9px 12px;background:#23354d;border-radius:9px;text-decoration:none;font-size:12px}
 #compare .tool-panel .toolbar a:hover{background:#354d6b}
 @media(max-width:720px){#compare .tool-switcher{grid-template-columns:repeat(2,minmax(0,1fr))}#compare .tool-panel>.card{padding:16px}#compare .tool-intro{padding:17px}#compare .tool-switcher button{min-height:76px}}
+
+/* 3.5 메소 가계부: 명료한 요약, 입력, 기록 */
+#ledger .ledger-hero{padding:23px;border:1px solid #52637b;background:linear-gradient(120deg,#263952,#18263c);border-radius:18px;margin-bottom:17px}
+#ledger .ledger-hero h2{margin-bottom:5px}
+#ledger .ledger-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:15px 0 19px}
+#ledger .ledger-metric{background:#16243b;border:1px solid #354964;padding:18px;border-radius:14px}
+#ledger .ledger-metric span{display:block;color:#afc0d8;font-size:12px}
+#ledger .ledger-metric strong{display:block;font-size:clamp(17px,2.6vw,27px);margin-top:5px;overflow-wrap:anywhere}
+#ledger .ledger-metric.income strong{color:#83e4c1}#ledger .ledger-metric.expense strong{color:#ffb5a8}#ledger .ledger-metric.net strong{color:#ffce83}
+#ledger .ledger-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+#ledger label{display:flex;flex-direction:column;font-size:13px;font-weight:600;color:#d6e1f0}
+#ledger input,#ledger select{width:100%;margin:6px 0 0;padding:12px}
+#ledger .ledger-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+#ledger .ledger-primary{background:#f3b766;color:#182338;font-weight:800}
+#ledger .ledger-filter{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+#ledger .ledger-filter select,#ledger .ledger-filter input{width:auto;margin:0;min-width:120px}
+#ledger .ledger-tablewrap{overflow-x:auto}
+#ledger table{width:100%;border-collapse:collapse;min-width:650px}
+#ledger th,#ledger td{padding:12px 10px;text-align:left;border-bottom:1px solid #364961;font-size:13px}
+#ledger th{color:#aebfda;font-size:12px}#ledger .ledger-empty{text-align:center;padding:32px;color:#b5c4db}
+#ledger .ledger-positive{color:#83e4c1;font-weight:700}#ledger .ledger-negative{color:#ffb5a8;font-weight:700}
+#ledger .ledger-small{font-size:12px;color:#b6c5db}#ledger .ledger-alert{background:#263044;border:1px solid #57627a;padding:12px;border-radius:10px;font-size:13px}
+@media(max-width:680px){#ledger .ledger-metrics{grid-template-columns:1fr}#ledger .ledger-fields{grid-template-columns:1fr}#ledger .ledger-metric{padding:13px}}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
 <section id="home" class="show">
@@ -161,6 +184,28 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <p class="calc-hint">※ 입력한 예상 큐브 개수에 따라 제작비가 달라집니다. 확률형 결과를 보장하지 않으며, 거래 수수료·토드 관련 실제 비용은 강화·기타 비용에 추가하세요.</p></div>
 </section>
 <section id="meso"><h2>💰 쌀먹 계산기 3.0</h2><p class="muted">1통 = 100만 메소 · 시세 370:1 = 1통당 370원 · 메이플어스 게임 내 실제 수수료율은 확인되지 않아 직접 설정합니다.</p><div class="card"><h2>💰 거래 계산</h2><div class="grid"><label>거래 유형<select id="m_type"><option value="sell">판매자</option><option value="buy">구매자</option></select></label><label>거래 방식<select id="m_method"><option>택배</option><option>경매장</option><option>직접거래</option></select></label><label>시세 (원/통)<input id="m_rate" min="0" type="number" value="370"/></label><label>거래량 (통)<input id="m_amount" min="0" step="any" type="number" value="100"/></label><label>게임 수수료 (%)<input id="m_fee" max="99" min="0" step="any" type="number" value="0"/></label><label>수수료 부담<select id="m_payer"><option value="seller">판매자 부담 (구매자 정량 수령)</option><option value="buyer">구매자 부담 (보낸 금액에서 차감)</option></select></label><label>별도 현금 수수료 (원)<input id="m_cashFee" min="0" type="number" value="0"/></label><label>거래 상대 / 메모<input id="m_memo" placeholder="선택 사항"/></label></div><div class="result" id="m_out"></div><button id="m_copy">계산 결과 복사</button><button id="m_save">거래 완료 기록</button><p class="muted">계산은 게임 수수료를 비율로 차감한다고 가정합니다. 게임의 반올림·최소 수수료·최대 송금액 규칙이 다르면 실제 결과와 차이가 날 수 있습니다.</p></div><div class="card"><h2>🏦 보유 메소 관리</h2><label>현재 보유 메소 (통)<input id="m_balance" min="0" step="any" type="number" value="0"/></label><div class="result" id="m_balanceOut"></div><p class="muted">보유 메소는 로그인 계정에 저장됩니다. 거래 기록을 저장해도 보유량은 자동 차감되지 않습니다.</p></div><div class="card"><h2>📊 시세 비교</h2><label>비교 시세 (쉼표 구분)<input id="m_rates" value="350,370,400,450,500"/></label><div class="scroll" id="m_compare"></div></div><div class="card"><h2>📒 거래 내역</h2><div class="result" id="m_stats"></div><div class="scroll"><table><thead><tr><th>일시</th><th>유형/방식</th><th>시세</th><th>통</th><th>현금</th><th>보낸 메소</th><th>수수료 메소</th><th>메모</th><th></th></tr></thead><tbody id="m_history"></tbody></table></div><button id="m_csv">CSV 내보내기</button><button id="m_clear">거래 기록 전체 삭제</button><p class="muted">거래 내역과 보유 메소는 로그인한 계정의 Supabase에 저장됩니다. 처음 한 번 아래 SQL 설정이 필요합니다.</p></div></section>
+
+<section id="ledger">
+ <div class="ledger-hero"><span class="pill">🍁 MAPLE US · 3.5</span><h2>📒 메소 가계부</h2><p class="muted">장비 구매부터 사냥 수익까지, 메소 흐름을 한눈에 관리해 봐.</p></div>
+ <div class="ledger-metrics" aria-live="polite">
+  <div class="ledger-metric income"><span>📈 총 수입</span><strong id="lg_income">0 메소</strong></div>
+  <div class="ledger-metric expense"><span>📉 총 지출</span><strong id="lg_expense">0 메소</strong></div>
+  <div class="ledger-metric net"><span>💰 순수익 (수입 − 지출)</span><strong id="lg_net">0 메소</strong></div>
+ </div>
+ <div class="card"><h3>✏️ 새 기록 추가</h3><p class="section-note">금액은 메소 기준이야. 예: 1500만 메소 → 15000000 입력</p>
+  <form id="lg_form"><div class="ledger-fields">
+   <label>거래 종류<select id="lg_kind"><option value="expense">📉 지출</option><option value="income">📈 수입</option></select></label>
+   <label>날짜<input type="date" id="lg_date" required></label>
+   <label>분류<select id="lg_category"><option>장비 구매</option><option>스타포스 강화</option><option>큐브·잠재</option><option>토드·제작</option><option>기타 지출</option></select></label>
+   <label>금액 (메소)<input id="lg_amount" type="number" min="1" max="9000000000000000" step="1" placeholder="예: 15000000" required></label>
+   <label style="grid-column:1/-1">메모 (선택)<input id="lg_note" maxlength="150" placeholder="예: 무스펠 장갑 구매"></label>
+  </div><div class="ledger-actions"><button class="ledger-primary" id="lg_save" type="submit">＋ 기록 저장</button><span id="lg_message" class="ledger-small" role="status">로그인 후 저장할 수 있어.</span></div></form>
+ </div>
+ <div class="card"><h3>📋 거래 내역</h3><div class="ledger-filter"><label>조회 기간<select id="lg_period"><option value="all">전체 기간</option><option value="month">이번 달</option></select></label><label>종류<select id="lg_filter"><option value="all">전체</option><option value="income">수입만</option><option value="expense">지출만</option></select></label><button id="lg_export" type="button">CSV 내보내기</button></div>
+ <div class="ledger-tablewrap"><table><thead><tr><th>날짜</th><th>종류</th><th>분류</th><th>금액</th><th>메모</th><th>관리</th></tr></thead><tbody id="lg_rows"><tr><td colspan="6" class="ledger-empty">로그인하면 가계부를 불러와.</td></tr></tbody></table></div>
+ <p class="ledger-small">기존 쌀먹 거래 내역과 별도로 관리돼. 중복 집계되지 않도록 자동 연동하지 않았어.</p></div>
+ <details class="card"><summary style="cursor:pointer;font-weight:700;color:#ffcc86">🔧 처음 한 번만: Supabase 저장 설정</summary><p class="muted">가계부 기록을 여러 기기에서 유지하려면 아래 SQL을 Supabase SQL Editor에서 한 번 실행해야 해. 기존 테이블은 변경하지 않아.</p><button id="lg_copy_sql" type="button">SQL 복사</button><pre id="lg_sql_view" style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;color:#c3d3e8;background:#101b2c;padding:14px;border-radius:10px"></pre></details>
+</section>
 <section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
 <p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
 <label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
@@ -201,7 +246,7 @@ async function connect(){
  client=window.supabase.createClient(url,k,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
  localStorage.setItem("mapleus_supabase_config",JSON.stringify({url,key:k}));
  const {data,error}=await client.auth.getUser();if(error&&error.name!=="AuthSessionMissingError")throw error;
- user=data?.user||null;updateLogin();if(user){await loadAll();await mesoLoad();}else status("연결 설정 완료! 이메일로 회원가입하거나 로그인해 주세요.");
+ user=data?.user||null;updateLogin();if(user){await loadAll();await mesoLoad();await ledgerLoad();}else status("연결 설정 완료! 이메일로 회원가입하거나 로그인해 주세요.");
  }catch(e){errorMessage(e);}
 }
 function updateLogin(){$("loginState").textContent=user?"로그인: "+user.email:"로그인되지 않았습니다.";}
@@ -209,10 +254,10 @@ async function signUp(){
  try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {error}=await client.auth.signUp({email:$("email").value.trim(),password:$("password").value,emailRedirectTo:location.origin+location.pathname});if(error)throw error;status("회원가입 요청 완료. 이메일 인증 안내를 확인해 주세요. 기존 계정 여부에 따라 안내가 달라질 수 있어요.");}catch(e){errorMessage(e);}
 }
 async function signIn(){
- try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();await mesoLoad();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
+ try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();await mesoLoad();await ledgerLoad();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
 }
 async function signOut(){
- try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];weeklyRows=[];taskTemplates=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];weeklyRows=[];taskTemplates=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();ledgerEntries=[];ledgerRender();lg("message").textContent="로그인 후 저장할 수 있어.";status("로그아웃했습니다.");}catch(e){errorMessage(e);}
 }
 function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
 async function loadAll(){
@@ -522,6 +567,80 @@ $('s_example').addEventListener('click',()=>{$('s_rows').value='0,95,5,0,0\n1,90
    section.querySelectorAll('[data-tool-panel]').forEach(p=>p.classList.toggle('active',p.dataset.toolPanel===btn.dataset.tool));
  });
 })();
+
+
+// 3.5: 별도 테이블에 저장하는 메소 가계부. 기존 거래/장비/메할일과 독립적입니다.
+const LEDGER_SQL=`create table if not exists public.meso_ledger (
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references auth.users(id) on delete cascade,
+ entry_date date not null default current_date,
+ kind text not null check (kind in ('income','expense')),
+ category text not null,
+ amount bigint not null check (amount > 0),
+ note text not null default '',
+ created_at timestamptz not null default now()
+);
+create index if not exists meso_ledger_user_date_idx on public.meso_ledger(user_id,entry_date desc);
+alter table public.meso_ledger enable row level security;
+drop policy if exists "meso_ledger_select_own" on public.meso_ledger;
+drop policy if exists "meso_ledger_insert_own" on public.meso_ledger;
+drop policy if exists "meso_ledger_delete_own" on public.meso_ledger;
+create policy "meso_ledger_select_own" on public.meso_ledger for select to authenticated using (auth.uid() = user_id);
+create policy "meso_ledger_insert_own" on public.meso_ledger for insert to authenticated with check (auth.uid() = user_id);
+create policy "meso_ledger_delete_own" on public.meso_ledger for delete to authenticated using (auth.uid() = user_id);`;
+let ledgerEntries=[];
+const lg=id=>document.getElementById('lg_'+id);
+const lgNum=n=>Number(n).toLocaleString('ko-KR')+' 메소';
+function ledgerCategoryOptions(){
+ const income=['사냥 수익','아이템 판매','보스 보상','메소 구매','기타 수입'];
+ const expense=['장비 구매','스타포스 강화','큐브·잠재','토드·제작','소모품','메소 판매','기타 지출'];
+ lg('category').innerHTML=(lg('kind').value==='income'?income:expense).map(v=>'<option>'+v+'</option>').join('');
+}
+function ledgerVisible(){
+ const period=lg('period').value,filter=lg('filter').value,month=new Date().toLocaleDateString('sv-SE').slice(0,7);
+ return ledgerEntries.filter(r=>(filter==='all'||r.kind===filter)&&(period==='all'||r.entry_date.slice(0,7)===month));
+}
+function ledgerRender(){
+ const list=ledgerVisible(),income=list.filter(x=>x.kind==='income').reduce((n,x)=>n+Number(x.amount),0),expense=list.filter(x=>x.kind==='expense').reduce((n,x)=>n+Number(x.amount),0);
+ lg('income').textContent=lgNum(income);lg('expense').textContent=lgNum(expense);lg('net').textContent=lgNum(income-expense);
+ const tbody=lg('rows');tbody.replaceChildren();
+ if(!list.length){const tr=tbody.insertRow(),td=tr.insertCell();td.colSpan=6;td.className='ledger-empty';td.textContent=user?'조건에 맞는 기록이 없어. 첫 거래를 추가해 봐!':'로그인하면 가계부를 불러와.';return;}
+ for(const r of list){const tr=tbody.insertRow();
+  const values=[r.entry_date,r.kind==='income'?'📈 수입':'📉 지출',r.category,(r.kind==='income'?'+':'−')+lgNum(r.amount),r.note||'—'];
+  values.forEach((v,i)=>{const td=tr.insertCell();td.textContent=v;if(i===3)td.className=r.kind==='income'?'ledger-positive':'ledger-negative';});
+  const td=tr.insertCell(),btn=document.createElement('button');btn.type='button';btn.className='danger';btn.textContent='삭제';btn.dataset.ledgerDelete=r.id;td.appendChild(btn);
+ }
+}
+async function ledgerLoad(){
+ if(!client||!user){ledgerEntries=[];ledgerRender();lg('message').textContent='로그인 후 저장할 수 있어.';return;}
+ const {data,error}=await client.from('meso_ledger').select('id,entry_date,kind,category,amount,note,created_at').eq('user_id',user.id).order('entry_date',{ascending:false}).order('created_at',{ascending:false}).limit(1000);
+ if(error){ledgerEntries=[];ledgerRender();lg('message').textContent=error.code==='42P01'||error.code==='PGRST205'?'먼저 아래 Supabase SQL을 실행해 줘.':'불러오기 실패: '+error.message;return;}
+ ledgerEntries=data||[];ledgerRender();lg('message').textContent='온라인 저장 연결 완료 · 최근 최대 1,000건 표시';
+}
+async function ledgerSave(e){
+ e.preventDefault();if(!user||!client){lg('message').textContent='로그인이 필요해.';return;}
+ const amount=Number(lg('amount').value),entry_date=lg('date').value,kind=lg('kind').value,category=lg('category').value,note=lg('note').value.trim();
+ if(!Number.isSafeInteger(amount)||amount<=0||!entry_date){lg('message').textContent='날짜와 1 이상의 정수 메소 금액을 입력해 줘.';return;}
+ const btn=lg('save');btn.disabled=true;lg('message').textContent='저장 중…';
+ try{const {error}=await client.from('meso_ledger').insert({user_id:user.id,entry_date,kind,category,amount,note});if(error)throw error;lg('amount').value='';lg('note').value='';await ledgerLoad();lg('message').textContent='저장 완료!';}catch(err){lg('message').textContent='저장 실패: '+err.message;}finally{btn.disabled=false;}
+}
+async function ledgerDelete(id){
+ if(!user||!client||!confirm('이 가계부 기록을 삭제할까?'))return;
+ const {error}=await client.from('meso_ledger').delete().eq('id',id).eq('user_id',user.id);
+ if(error)lg('message').textContent='삭제 실패: '+error.message;else await ledgerLoad();
+}
+function ledgerExport(){
+ const rows=[['날짜','종류','분류','금액(메소)','메모'],...ledgerVisible().map(r=>[r.entry_date,r.kind==='income'?'수입':'지출',r.category,r.amount,r.note])];
+ const csv='\ufeff'+rows.map(row=>row.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const a=document.createElement('a'),url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='mapleus-meso-ledger.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+lg('date').value=new Date().toLocaleDateString('sv-SE');lg('sql_view').textContent=LEDGER_SQL;
+lg('kind').addEventListener('change',ledgerCategoryOptions);lg('form').addEventListener('submit',ledgerSave);
+lg('period').addEventListener('change',ledgerRender);lg('filter').addEventListener('change',ledgerRender);
+lg('rows').addEventListener('click',e=>{const id=e.target.closest('[data-ledger-delete]')?.dataset.ledgerDelete;if(id)ledgerDelete(id);});
+lg('export').addEventListener('click',ledgerExport);
+lg('copy_sql').addEventListener('click',()=>navigator.clipboard.writeText(LEDGER_SQL).then(()=>lg('message').textContent='SQL 복사 완료').catch(()=>prompt('SQL을 복사해 줘',LEDGER_SQL)));
+ledgerCategoryOptions();ledgerRender();
 
 async function init(){
   dateKey=localDate();
