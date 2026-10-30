@@ -103,17 +103,24 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 #ledger .ledger-positive{color:#83e4c1;font-weight:700}#ledger .ledger-negative{color:#ffb5a8;font-weight:700}
 #ledger .ledger-small{font-size:12px;color:#b6c5db}#ledger .ledger-alert{background:#263044;border:1px solid #57627a;padding:12px;border-radius:10px;font-size:13px}
 @media(max-width:680px){#ledger .ledger-metrics{grid-template-columns:1fr}#ledger .ledger-fields{grid-template-columns:1fr}#ledger .ledger-metric{padding:13px}}
+
+.character-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.character-tile{background:#15243a;border:1px solid #364960;border-radius:14px;padding:18px}
+.character-tile.selected{border-color:#f4b75f;box-shadow:0 0 0 1px #f4b75f55}
+.character-tile h3{margin:8px 0}.character-tile p{color:#aebfda;font-size:13px}
+.character-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.character-fields label{display:block}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
-<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
+<button class="active" onclick="tab('home',this)">🏠 홈</button><button onclick="tab('characters',this)">👥 캐릭터 관리</button><button onclick="tab('gear',this)">🛡️ 템셋팅</button><button onclick="tab('daily',this)">✅ 메할일</button><button onclick="tab('guide',this)">📚 공략집</button><button onclick="tab('compare',this)">⚖️ 장비 연구소</button><button onclick="tab('meso',this)">💰 메소</button><button onclick="tab('ledger',this)">📒 메소 가계부</button><button onclick="tab('account',this)">🔐 로그인 및 연결</button>
 </nav>
 <main><div id="globalStatus" class="status" role="status">로그인 및 연결 메뉴에서 Supabase를 연결해 주세요. 연결 전에는 기존 브라우저 기록을 변경하지 않습니다.</div>
 <section id="home" class="show">
-<div class="hero"><div class="card"><span class="pill">🩸 데몬어벤져 육성 중</span><div class="hero-title">오늘도 한 단계 성장 🍁</div><p class="muted">캐릭터와 장비 정보를 안전하게 기록하고, 오늘의 목표를 확인해 보세요.</p><button onclick="tab('daily',document.querySelectorAll('#menu button')[2])">오늘의 메할일 보기 →</button></div>
+<div class="hero"><div class="card"><span class="pill">🩸 데몬어벤져 육성 중</span><div class="hero-title">오늘도 한 단계 성장 🍁</div><p class="muted">캐릭터와 장비 정보를 안전하게 기록하고, 오늘의 목표를 확인해 보세요.</p><button onclick="tab('daily',document.querySelector('#menu button[onclick*="daily"]'))">오늘의 메할일 보기 →</button></div>
 <div class="card"><h3>📊 성장 대시보드</h3><div class="metrics"><div class="metric"><strong id="dashLevel">—</strong><span>현재 레벨</span></div><div class="metric"><strong id="dashGear">0</strong><span>등록 장비</span></div><div class="metric"><strong id="dashTasks">0/4</strong><span>오늘 완료</span></div></div><div class="progress"><div id="dashProgress" style="width:0%"></div></div><span class="mini" id="dashHint">로그인하면 온라인 기록을 표시합니다.</span></div></div>
 <h2>내 캐릭터</h2><div class="card">
-<p>직업: 데몬어벤져</p>
+<p>현재 캐릭터: <strong id="activeCharLabel">데몬어벤져</strong></p>
 <label>닉네임 <input id="nickname" placeholder="닉네임"></label>
 <label>레벨 <input id="level" type="number" min="1" max="300" placeholder="레벨"></label>
 <label>HP <input id="hp" type="number" min="0" placeholder="최대 HP"></label>
@@ -121,8 +128,11 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <h3>현재 성장 목표</h3><textarea id="goal">사자성 길뚫 진행, 원킬 사냥 스펙 확보</textarea>
 <button onclick="saveCharacter()">캐릭터 정보 저장</button></div>
 <div class="card"><h3>🍁 공식 메이플어스</h3><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">공식 홈페이지 방문</a></p><p><a href="https://mapleus.co.kr/site/auction/" target="_blank" rel="noopener noreferrer">공식 경매장 확인</a></p></div></section>
+<section id="characters"><h2>👥 캐릭터 관리</h2><p class="section-note">캐릭터를 선택하면 홈과 장비 목록도 함께 전환돼요. 기존 유엘 기록은 그대로 유지됩니다.</p>
+<div class="card"><h3>내 캐릭터 목록</h3><div id="characterCards" class="character-grid"></div><p class="mini" id="characterMessage">캐릭터를 선택해 주세요.</p></div>
+<div class="card"><h3>➕ 새 캐릭터 등록</h3><div class="character-fields"><label>닉네임<input id="newCharName" maxlength="40" placeholder="예: 유엘부캐"></label><label>직업<input id="newCharJob" maxlength="50" placeholder="예: 아크메이지(불,독)"></label><label>레벨<input id="newCharLevel" type="number" min="1" max="300" value="1"></label></div><button onclick="createCharacter()">캐릭터 추가</button><p class="mini">기존 캐릭터를 삭제하지 않고 추가해요. 캐릭터별 장비를 따로 표시합니다.</p></div></section>
 <section id="gear"><h2>🛡️ 나의 템셋팅</h2><p class="section-note">장비는 로그인 계정의 Supabase에 저장됩니다. 사진은 현재 미리보기만 지원해요.</p><div class="card">
-<p>장비별 잠재옵션과 강화 상태를 기록해 보세요.</p>
+<p>선택한 캐릭터: <strong id="gearCharLabel">미선택</strong></p><p>장비별 잠재옵션과 강화 상태를 기록해 보세요.</p>
 <select id="slot"><option>무기</option><option>보조무기</option><option>엠블렘</option><option>모자</option><option>상의</option><option>하의</option><option>장갑</option><option>신발</option><option>망토</option><option>어깨장식</option><option>반지</option><option>귀고리</option><option>목걸이</option><option>벨트</option></select>
 <input id="itemname" placeholder="장비 이름"><input id="potential" placeholder="잠재옵션"><input id="stars" type="number" min="0" max="30" placeholder="스타포스">
 <p>장비 스크린샷 첨부 (미리보기만 가능)</p><input id="gearphoto" type="file" accept="image/*"><p><small>AI 자동 판독 및 사진 클라우드 저장은 아직 연결 전입니다.</small></p><img id="preview" style="display:none;max-height:250px" alt="장비 사진 미리보기">
@@ -226,7 +236,7 @@ const $=id=>document.getElementById(id), legacy="mapleus_v1_";
   url: "https://ubxnfnqyqoyhmjxbmish.supabase.co",
   key: "sb_publishable_o93dRI3nRt9SvLdsqzFx-Q_6Ccun2KL"
 };
-let client=null,user=null,characterId=null,gears=[],taskRows=[],custom=[],dateKey="";
+let client=null,user=null,characterId=null,characters=[],allGears=[],gears=[],taskRows=[],custom=[],dateKey="";
 const defaults=["현재 레벨 육성 목표 확인","장비 강화·잠재옵션 확인","경매장 시세 확인","진행 중인 길뚫 확인"];
 const weeklyDefaults=["주간 보스 진행 확인","주간 퀘스트 확인","이번 주 메소 수익 정리"];
 let taskTemplates=[],weeklyRows=[],weekKey="";
@@ -257,38 +267,63 @@ async function signIn(){
  try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();await mesoLoad();await ledgerLoad();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
 }
 async function signOut(){
- try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];weeklyRows=[];taskTemplates=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();ledgerEntries=[];ledgerRender();lg("message").textContent="로그인 후 저장할 수 있어.";status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;characters=[];allGears=[];gears=[];taskRows=[];weeklyRows=[];taskTemplates=[];updateLogin();clearInputs();renderGear();renderCharacters();renderTasks();updateDashboard();mesoRecords=[];mesoRender();ledgerEntries=[];ledgerRender();lg("message").textContent="로그인 후 저장할 수 있어.";status("로그아웃했습니다.");}catch(e){errorMessage(e);}
 }
 function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
 async function loadAll(){
  if(!requireLogin())return;
  const [c,g,t,w,tt]=await Promise.all([
- client.from("characters").select("*").eq("user_id",user.id).order("created_at",{ascending:true}).limit(1),
+ client.from("characters").select("*").eq("user_id",user.id).order("created_at",{ascending:true}),
  client.from("equipment").select("*").eq("user_id",user.id).order("created_at",{ascending:false}),
  client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",dateKey).eq("category","daily").order("created_at",{ascending:true}),
   client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",weekKey).eq("category","weekly").order("created_at",{ascending:true}),
   client.from("task_templates").select("*").eq("user_id",user.id).order("created_at",{ascending:true})
  ]);
  for(const r of [c,g,t,w,tt])if(r.error)throw r.error;
- const character=c.data[0];characterId=character?.id||null;
- if(character){$("nickname").value=character.nickname;$("level").value=character.level;$("hp").value=character.hp;$("power").value=character.combat_power;$("goal").value=character.goal||"";}else clearInputs();
- gears=g.data||[];taskRows=t.data||[];weeklyRows=w.data||[];taskTemplates=tt.data||[];
+ characters=c.data||[];
+ const savedId=localStorage.getItem('mapleus_active_character_'+user.id);
+ characterId=characters.some(x=>String(x.id)===savedId)?savedId:(characters[0]?.id||null);
+ allGears=g.data||[];
+ const character=characters.find(x=>String(x.id)===String(characterId));
+ if(character){$("nickname").value=character.nickname||'';$("level").value=character.level||1;$("hp").value=character.hp||0;$("power").value=character.combat_power||0;$("goal").value=character.goal||'';}else clearInputs();
+ gears=allGears.filter(x=>characterId&&String(x.character_id)===String(characterId));
+ taskRows=t.data||[];weeklyRows=w.data||[];taskTemplates=tt.data||[];
+ renderCharacters();
   // 이전 버전에서 추가한 오늘의 사용자 항목도 반복 목록에 보존합니다.
   const legacyTitles=taskRows.map(x=>x.title).filter(x=>!defaults.includes(x)&&!taskTemplates.some(y=>y.title===x&&y.category==='daily'));
   if(legacyTitles.length){const {error}=await client.from('task_templates').insert([...new Set(legacyTitles)].map(title=>({user_id:user.id,title,category:'daily'})));if(error)throw error;const fresh=await client.from('task_templates').select('*').eq('user_id',user.id).order('created_at',{ascending:true});if(fresh.error)throw fresh.error;taskTemplates=fresh.data||[];}
-  renderGear();renderTasks();updateDashboard();
+  renderGear();renderCharacters();renderTasks();updateDashboard();
 }
 async function saveCharacter(){
  try{if(!requireLogin())return;const nickname=$("nickname").value.trim();if(!nickname)throw Error("닉네임을 입력해 주세요.");
  const level=validNumber("level",1);if(level<1||level>300)throw Error("레벨은 1~300으로 입력해 주세요.");
- const row={user_id:user.id,nickname,job:"데몬어벤져",level,hp:validNumber("hp"),combat_power:validNumber("power"),goal:$("goal").value};
+ const current=characters.find(x=>String(x.id)===String(characterId));const row={user_id:user.id,nickname,job:current?.job||"데몬어벤져",level,hp:validNumber("hp"),combat_power:validNumber("power"),goal:$("goal").value};
  const q=characterId?client.from("characters").update(row).eq("id",characterId).eq("user_id",user.id).select().single():client.from("characters").insert(row).select().single();
- const {data,error}=await q;if(error)throw error;characterId=data.id;updateDashboard();status("캐릭터 정보가 Supabase에 저장됐어요.");
+ const {data,error}=await q;if(error)throw error;characterId=data.id;await loadAll();status("캐릭터 정보가 Supabase에 저장됐어요.");
  }catch(e){errorMessage(e);}
 }
+
+function renderCharacters(){
+ const box=$("characterCards");if(!box)return;
+ box.innerHTML=characters.length?characters.map(c=>`<div class="character-tile ${String(c.id)===String(characterId)?'selected':''}"><div class="mini">${safe(c.job||'직업 미설정')}</div><h3>${safe(c.nickname||'이름 없음')}</h3><p>Lv. ${safe(c.level||1)} · 장비 ${allGears.filter(g=>String(g.character_id)===String(c.id)).length}개</p><button data-char-select="${safe(c.id)}">${String(c.id)===String(characterId)?'✓ 선택 중':'이 캐릭터 선택'}</button></div>`).join(''):'<p class="muted">등록된 캐릭터가 없어요. 아래에서 추가해 주세요.</p>';
+ const current=characters.find(c=>String(c.id)===String(characterId));
+ if($("activeCharLabel"))$("activeCharLabel").textContent=current?(current.nickname+' · '+(current.job||'직업 미설정')):'미선택';
+ if($("gearCharLabel"))$("gearCharLabel").textContent=current?current.nickname:'미선택';
+ if($("characterMessage"))$("characterMessage").textContent=current?current.nickname+' 캐릭터를 관리 중이에요.':'캐릭터를 선택해 주세요.';
+}
+$("characterCards").addEventListener('click',async e=>{const id=e.target.closest('[data-char-select]')?.dataset.charSelect;if(!id||!user)return;try{if(!characters.some(c=>String(c.id)===id))return;characterId=id;localStorage.setItem('mapleus_active_character_'+user.id,id);await loadAll();status('캐릭터를 전환했어요.');}catch(err){errorMessage(err);}});
+async function createCharacter(){
+ try{if(!requireLogin())return;const nickname=$("newCharName").value.trim(),job=$("newCharJob").value.trim();const level=validNumber('newCharLevel',1);
+ if(!nickname||!job)throw Error('닉네임과 직업을 입력해 주세요.');if(level<1||level>300)throw Error('레벨은 1~300으로 입력해 주세요.');
+ const {data,error}=await client.from('characters').insert({user_id:user.id,nickname,job,level,hp:0,combat_power:0,goal:''}).select().single();if(error)throw error;
+ characterId=data.id;localStorage.setItem('mapleus_active_character_'+user.id,String(data.id));
+ $("newCharName").value='';$("newCharJob").value='';$("newCharLevel").value='1';await loadAll();status('새 캐릭터가 등록됐어요.');
+ }catch(err){errorMessage(err);}
+}
+
 async function addGear(){
  try{if(!requireLogin())return;const name=$("itemname").value.trim();if(!name)throw Error("장비 이름을 입력해 주세요.");const stars=validNumber("stars");if(stars>30)throw Error("스타포스는 0~30으로 입력해 주세요.");
- const row={user_id:user.id,character_id:characterId,slot:$("slot").value,item_name:name,potential:$("potential").value,stars};
+ if(!characterId)throw Error("먼저 캐릭터를 등록하거나 선택해 주세요.");const row={user_id:user.id,character_id:characterId,slot:$("slot").value,item_name:name,potential:$("potential").value,stars};
  const {error}=await client.from("equipment").insert(row);if(error)throw error;
  $("itemname").value="";$("potential").value="";$("stars").value="";await loadAll();status("장비 기록이 온라인에 저장됐어요. 사진은 저장되지 않았습니다.");
  }catch(e){errorMessage(e);}
@@ -647,6 +682,7 @@ async function init(){
   weekKey=mondayKey();
   $("today").textContent="오늘: "+dateKey;
   renderTasks();
+  renderCharacters();
   mesoRender();
   updateDashboard();
 
