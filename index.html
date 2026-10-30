@@ -61,7 +61,11 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <input id="itemname" placeholder="장비 이름"><input id="potential" placeholder="잠재옵션"><input id="stars" type="number" min="0" max="30" placeholder="스타포스">
 <p>장비 스크린샷 첨부 (미리보기만 가능)</p><input id="gearphoto" type="file" accept="image/*"><p><small>AI 자동 판독 및 사진 클라우드 저장은 아직 연결 전입니다.</small></p><img id="preview" style="display:none;max-height:250px" alt="장비 사진 미리보기">
 <p><button onclick="addGear()">장비 기록 저장</button></p></div><div class="toolbar"><input id="gearSearch" placeholder="🔎 장비명·부위·잠재 검색" oninput="renderGear()"><span id="gearCount" class="pill">0개 장비</span></div><div id="gearlist" class="grid"></div></section>
-<section id="daily"><h2>✅ 오늘의 메할일</h2><div class="card"><p id="today"></p><div class="toolbar"><strong id="taskProgressText">0 / 4 완료</strong><span class="mini">일일 기록은 날짜별로 보관돼요</span></div><div class="progress"><div id="taskProgressBar" style="width:0%"></div></div><div id="tasks"></div></div><div class="card"><h3>추가 메할일</h3><input id="newtask" placeholder="예: 사자성 길뚫"><button onclick="addTask()">추가하기</button></div><p class="muted">로그인 후 체크 기록이 날짜별로 저장됩니다. 게임에서 자동 확인되지는 않습니다.</p></section>
+<section id="daily"><h2>✅ 메할일 2.0</h2><p class="section-note">일일 목록은 매일, 주간 목록은 매주 월요일에 새 체크 기록으로 시작해요. 이전 기록은 삭제되지 않아요.</p>
+<div class="grid"><div class="card"><h3>☀️ 일일 메할일</h3><p class="mini" id="today"></p><strong id="taskProgressText">0 / 4 완료</strong><div class="progress"><div id="taskProgressBar" style="width:0%"></div></div><div id="tasks"></div></div>
+<div class="card"><h3>🗓️ 주간 메할일</h3><p class="mini" id="weekLabel"></p><strong id="weeklyProgressText">0 / 3 완료</strong><div class="progress"><div id="weeklyProgressBar" style="width:0%"></div></div><div id="weeklyTasks"></div></div></div>
+<div class="card"><h3>➕ 반복 메할일 추가</h3><div class="toolbar"><select id="newTaskCategory"><option value="daily">매일 반복</option><option value="weekly">매주 반복</option></select><input id="newtask" placeholder="예: 일일 보스 / 주간 보스"><button onclick="addTask()">추가하기</button></div><p class="mini">직접 추가한 항목은 삭제할 수 있어요. 기본 제공 항목은 삭제되지 않아요.</p></div>
+<p class="muted">로그인 후 Supabase에 저장돼요. 게임 내 완료 여부를 자동으로 감지하지는 않아요.</p></section>
 <section id="guide"><h2>📚 메이플어스 공략 도서관</h2><p class="section-note">현재는 핵심 개념과 체크 포인트를 정리했어요. 메이플어스 서버별 적용 여부와 정확한 수치는 공식 정보로 검증 후 확정합니다.</p>
 <div class="toolbar"><input id="guideSearch" placeholder="🔎 토드, 사냥터, 마빌, 퀘스트 검색" oninput="filterGuides()"><button onclick="document.getElementById('guideSearch').value='';filterGuides()">전체 보기</button></div>
 <div class="grid" id="guideCards">
@@ -95,12 +99,15 @@ const $=id=>document.getElementById(id), legacy="mapleus_v1_";
 };
 let client=null,user=null,characterId=null,gears=[],taskRows=[],custom=[],dateKey="";
 const defaults=["현재 레벨 육성 목표 확인","장비 강화·잠재옵션 확인","경매장 시세 확인","진행 중인 길뚫 확인"];
+const weeklyDefaults=["주간 보스 진행 확인","주간 퀘스트 확인","이번 주 메소 수익 정리"];
+let taskTemplates=[],weeklyRows=[],weekKey="";
 function status(message){$("globalStatus").textContent=message;}
 function errorMessage(e){status("오류: "+(e?.message||String(e)));}
 function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function tab(id,btn){document.querySelectorAll("main section").forEach(s=>s.classList.remove("show"));$(id).classList.add("show");document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
 function requireLogin(){if(!client||!user){status("먼저 로그인 및 연결 메뉴에서 연결하고 로그인해 주세요.");return false;}return true;}
 function localDate(){let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
+function mondayKey(){const d=new Date();d.setHours(12,0,0,0);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");}
 function validNumber(id,defaultValue=0){const v=$(id).value.trim();const n=Number(v||defaultValue);if(!Number.isSafeInteger(n)||n<0)throw Error(id+"에는 0 이상의 정수를 입력해 주세요.");return n;}
 async function connect(){
  try{
@@ -121,20 +128,26 @@ async function signIn(){
  try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();await mesoLoad();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
 }
 async function signOut(){
- try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];weeklyRows=[];taskTemplates=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
 }
 function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
 async function loadAll(){
  if(!requireLogin())return;
- const [c,g,t]=await Promise.all([
+ const [c,g,t,w,tt]=await Promise.all([
  client.from("characters").select("*").eq("user_id",user.id).order("created_at",{ascending:true}).limit(1),
  client.from("equipment").select("*").eq("user_id",user.id).order("created_at",{ascending:false}),
- client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",dateKey).order("created_at",{ascending:true})
+ client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",dateKey).eq("category","daily").order("created_at",{ascending:true}),
+  client.from("tasks").select("*").eq("user_id",user.id).eq("task_date",weekKey).eq("category","weekly").order("created_at",{ascending:true}),
+  client.from("task_templates").select("*").eq("user_id",user.id).order("created_at",{ascending:true})
  ]);
- for(const r of [c,g,t])if(r.error)throw r.error;
+ for(const r of [c,g,t,w,tt])if(r.error)throw r.error;
  const character=c.data[0];characterId=character?.id||null;
  if(character){$("nickname").value=character.nickname;$("level").value=character.level;$("hp").value=character.hp;$("power").value=character.combat_power;$("goal").value=character.goal||"";}else clearInputs();
- gears=g.data||[];taskRows=t.data||[];renderGear();renderTasks();updateDashboard();
+ gears=g.data||[];taskRows=t.data||[];weeklyRows=w.data||[];taskTemplates=tt.data||[];
+  // 이전 버전에서 추가한 오늘의 사용자 항목도 반복 목록에 보존합니다.
+  const legacyTitles=taskRows.map(x=>x.title).filter(x=>!defaults.includes(x)&&!taskTemplates.some(y=>y.title===x&&y.category==='daily'));
+  if(legacyTitles.length){const {error}=await client.from('task_templates').insert([...new Set(legacyTitles)].map(title=>({user_id:user.id,title,category:'daily'})));if(error)throw error;const fresh=await client.from('task_templates').select('*').eq('user_id',user.id).order('created_at',{ascending:true});if(fresh.error)throw fresh.error;taskTemplates=fresh.data||[];}
+  renderGear();renderTasks();updateDashboard();
 }
 async function saveCharacter(){
  try{if(!requireLogin())return;const nickname=$("nickname").value.trim();if(!nickname)throw Error("닉네임을 입력해 주세요.");
@@ -162,28 +175,44 @@ $("gearlist").addEventListener("click",async e=>{
  try{const {error}=await client.from("equipment").delete().eq("id",id).eq("user_id",user.id);if(error)throw error;await loadAll();status("장비 기록을 삭제했어요.");}catch(err){errorMessage(err);}
 });
 $("gearphoto").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);$("preview").onload=()=>URL.revokeObjectURL(url);$("preview").src=url;$("preview").style.display="block";});
+function taskItems(category){const base=category==='daily'?defaults:weeklyDefaults;return [...base,...new Set(taskTemplates.filter(x=>x.category===category).map(x=>x.title))];}
 function renderTasks(){
- const items=[...defaults,...new Set(taskRows.map(t=>t.title).filter(t=>!defaults.includes(t)))];
- const completed=items.filter(t=>taskRows.find(x=>x.title===t)?.completed).length;
- const ratio=items.length?Math.round(completed/items.length*100):0;
- if($("taskProgressText"))$("taskProgressText").textContent=completed+" / "+items.length+" 완료";
- if($("taskProgressBar"))$("taskProgressBar").style.width=ratio+"%";
- $("tasks").innerHTML=items.map(t=>{const row=taskRows.find(x=>x.title===t);return `<label class="task"><input type="checkbox" data-task="${safe(t)}" ${row?.completed?"checked":""} ${!user?"disabled":""}> ${safe(t)}</label>`;}).join("");
+ for(const category of ['daily','weekly']){
+  const items=taskItems(category),rows=category==='daily'?taskRows:weeklyRows;
+  const done=items.filter(t=>rows.some(x=>x.title===t&&x.completed)).length;
+  const prefix=category==='daily'?'task':'weekly';
+  $(prefix+'ProgressText').textContent=done+' / '+items.length+' 완료';
+  $(prefix+'ProgressBar').style.width=(items.length?Math.round(done/items.length*100):0)+'%';
+  $(category==='daily'?'tasks':'weeklyTasks').innerHTML=items.map(title=>{
+   const checked=rows.some(x=>x.title===title&&x.completed),custom=taskTemplates.find(x=>x.title===title&&x.category===category);
+   return `<div class="task"><label><input type="checkbox" data-task="${safe(title)}" data-category="${category}" ${checked?'checked':''} ${!user?'disabled':''}> ${safe(title)}</label>${custom?` <button class="danger" style="float:right;padding:3px 8px;font-size:12px" data-template-delete="${safe(custom.id)}">삭제</button>`:''}</div>`;
+  }).join('');
+ }
+ $('today').textContent='오늘: '+dateKey;
+ $('weekLabel').textContent='이번 주 시작: '+weekKey+' (월요일 기준)';
 }
-$("tasks").addEventListener("change",async e=>{
- const input=e.target.closest("[data-task]");if(!input||!requireLogin())return;const title=input.dataset.task;
- try{
- const old=taskRows.find(t=>t.title===title);
- const q=old?client.from("tasks").update({completed:input.checked}).eq("id",old.id).eq("user_id",user.id):
- client.from("tasks").insert({user_id:user.id,title,category:"daily",task_date:dateKey,completed:input.checked});
- const {error}=await q;if(error)throw error;await loadAll();status("메할일 체크가 온라인에 저장됐어요.");
- }catch(err){input.checked=!input.checked;errorMessage(err);}
-});
+for(const containerId of ['tasks','weeklyTasks']){
+ $(containerId).addEventListener('change',async e=>{
+  const input=e.target.closest('[data-task]');if(!input||!requireLogin())return;
+  const title=input.dataset.task,category=input.dataset.category,key=category==='daily'?dateKey:weekKey;
+  const rows=category==='daily'?taskRows:weeklyRows,old=rows.find(t=>t.title===title);
+  try{
+   const q=old?client.from('tasks').update({completed:input.checked}).eq('id',old.id).eq('user_id',user.id):client.from('tasks').insert({user_id:user.id,title,category,task_date:key,completed:input.checked});
+   const {error}=await q;if(error)throw error;await loadAll();status('메할일 체크가 온라인에 저장됐어요.');
+  }catch(err){input.checked=!input.checked;errorMessage(err);}
+ });
+ $(containerId).addEventListener('click',async e=>{
+  const id=e.target.closest('[data-template-delete]')?.dataset.templateDelete;if(!id||!requireLogin())return;
+  if(!confirm('이 반복 메할일을 목록에서 삭제할까요? 이전 체크 기록은 유지됩니다.'))return;
+  try{const {error}=await client.from('task_templates').delete().eq('id',id).eq('user_id',user.id);if(error)throw error;await loadAll();status('반복 메할일을 삭제했어요.');}catch(err){errorMessage(err);}
+ });
+}
 async function addTask(){
- try{if(!requireLogin())return;const title=$("newtask").value.trim();if(!title)return;
- if(taskRows.some(t=>t.title===title)||defaults.includes(title))throw Error("이미 있는 메할일이에요.");
- const {error}=await client.from("tasks").insert({user_id:user.id,title,category:"daily",task_date:dateKey,completed:false});if(error)throw error;
- $("newtask").value="";await loadAll();status("추가 메할일을 저장했어요.");
+ try{if(!requireLogin())return;const title=$('newtask').value.trim(),category=$('newTaskCategory').value;
+  if(!title)return;if(title.length>120)throw Error('메할일은 120자 이내로 적어 주세요.');
+  if(taskItems(category).includes(title))throw Error('이미 있는 메할일이에요.');
+  const {error}=await client.from('task_templates').insert({user_id:user.id,title,category});if(error)throw error;
+  $('newtask').value='';await loadAll();status('반복 메할일을 온라인에 저장했어요.');
  }catch(e){errorMessage(e);}
 }
 async function importLegacy(){
@@ -206,7 +235,7 @@ async function importLegacy(){
  }catch(e){errorMessage(e);}
 }
 function updateDashboard(){
- const items=[...defaults,...new Set(taskRows.map(t=>t.title).filter(t=>!defaults.includes(t)))];
+ const items=taskItems("daily");
  const done=items.filter(t=>taskRows.find(x=>x.title===t)?.completed).length;
  $("dashLevel").textContent=user?($("level").value||"—"):"—";
  $("dashGear").textContent=user?gears.length:"0";
@@ -297,4 +326,6 @@ async function init(){
 }
 
 init();
+// 날짜 변경을 감지해 새 일일/주간 체크 상태를 자동으로 불러옵니다.
+setInterval(async()=>{const d=localDate(),w=mondayKey();if(d!==dateKey||w!==weekKey){dateKey=d;weekKey=w;if(user){try{await loadAll();status('새 날짜/주차의 메할일을 불러왔어요.');}catch(e){errorMessage(e);}}else{renderTasks();updateDashboard();}}},30000);
 </script></body></html>
