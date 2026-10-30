@@ -32,6 +32,11 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 .guide-card li{margin:6px 0;font-size:13px;color:#c9d4e8}
 .mini{font-size:12px;color:#a8b9d3}.notice{padding:12px;background:#132d37;border:1px solid #315b60;border-radius:10px;font-size:13px}
 @media(max-width:730px){.hero{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}.metric strong{font-size:17px}main{padding:14px 12px 45px}.card{padding:16px}nav{padding:9px}}
+
+#meso .grid label{display:block;font-size:13px;color:#b8c9e2}#meso .grid input,#meso .grid select{width:100%;margin:7px 0}
+#meso .result{background:#101c2e;padding:16px;border-radius:12px;margin:12px 0}#meso .result strong{font-size:25px;color:#ffc16a}
+#meso table{width:100%;border-collapse:collapse}#meso th,#meso td{padding:10px;border-bottom:1px solid #3b4b65;text-align:left;font-size:12px;white-space:nowrap}
+#meso .scroll{overflow-x:auto}#meso .pill{margin:3px}#meso .result p{margin:8px 0}#meso button{margin:4px}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
@@ -67,7 +72,7 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <div class="card guide-card" data-search="데몬어벤져 HP 공격력 잠재 장비"><span class="tag">직업 육성</span><h3>🩸 데몬어벤져</h3><p>HP 기반 육성에 맞춰 장비 옵션과 성장 우선순위를 기록해요.</p><details><summary>장비 점검 순서</summary><ul><li>무기 공격력 및 잠재옵션</li><li>HP 관련 잠재옵션 효율</li><li>장비 레벨과 강화 비용</li><li>사냥 원킬 달성 여부</li></ul></details></div>
 <div class="card guide-card" data-search="패치 업데이트 공지 2014 2015 2016"><span class="tag">패치노트</span><h3>📜 업데이트 기록</h3><p>2014~2016년 원작 자료와 현재 메이플어스 정보를 구분해서 관리해요.</p><details><summary>공식 정보</summary><p><a href="https://mapleus.co.kr" target="_blank" rel="noopener noreferrer">메이플어스 공식 홈페이지 열기</a></p><p class="mini">현재 자동 수집 기능은 연결되지 않았습니다.</p></details></div>
 </div></section>
-<section id="meso"><h2>💰 메소 & 쌀먹 계산기</h2><div class="card"><p>1통 = 100만 메소</p><p class="mini">시세는 직접 입력한 값으로 계산합니다. 실시간 시세 연동은 아직 없습니다.</p><label>시세(원/통) <input id="rate" type="number" value="370"></label><label>통 수 <input id="amount" type="number" value="30"></label><button onclick="calculate()">계산하기</button><h2 id="result"></h2></div></section>
+<section id="meso"><h2>💰 쌀먹 계산기 3.0</h2><p class="muted">1통 = 100만 메소 · 시세 370:1 = 1통당 370원 · 메이플어스 게임 내 실제 수수료율은 확인되지 않아 직접 설정합니다.</p><div class="card"><h2>💰 거래 계산</h2><div class="grid"><label>거래 유형<select id="m_type"><option value="sell">판매자</option><option value="buy">구매자</option></select></label><label>거래 방식<select id="m_method"><option>택배</option><option>경매장</option><option>직접거래</option></select></label><label>시세 (원/통)<input id="m_rate" min="0" type="number" value="370"/></label><label>거래량 (통)<input id="m_amount" min="0" step="any" type="number" value="100"/></label><label>게임 수수료 (%)<input id="m_fee" max="99" min="0" step="any" type="number" value="0"/></label><label>수수료 부담<select id="m_payer"><option value="seller">판매자 부담 (구매자 정량 수령)</option><option value="buyer">구매자 부담 (보낸 금액에서 차감)</option></select></label><label>별도 현금 수수료 (원)<input id="m_cashFee" min="0" type="number" value="0"/></label><label>거래 상대 / 메모<input id="m_memo" placeholder="선택 사항"/></label></div><div class="result" id="m_out"></div><button id="m_copy">계산 결과 복사</button><button id="m_save">거래 완료 기록</button><p class="muted">계산은 게임 수수료를 비율로 차감한다고 가정합니다. 게임의 반올림·최소 수수료·최대 송금액 규칙이 다르면 실제 결과와 차이가 날 수 있습니다.</p></div><div class="card"><h2>🏦 보유 메소 관리</h2><label>현재 보유 메소 (통)<input id="m_balance" min="0" step="any" type="number" value="0"/></label><div class="result" id="m_balanceOut"></div><p class="muted">보유 메소는 로그인 계정에 저장됩니다. 거래 기록을 저장해도 보유량은 자동 차감되지 않습니다.</p></div><div class="card"><h2>📊 시세 비교</h2><label>비교 시세 (쉼표 구분)<input id="m_rates" value="350,370,400,450,500"/></label><div class="scroll" id="m_compare"></div></div><div class="card"><h2>📒 거래 내역</h2><div class="result" id="m_stats"></div><div class="scroll"><table><thead><tr><th>일시</th><th>유형/방식</th><th>시세</th><th>통</th><th>현금</th><th>보낸 메소</th><th>수수료 메소</th><th>메모</th><th></th></tr></thead><tbody id="m_history"></tbody></table></div><button id="m_csv">CSV 내보내기</button><button id="m_clear">거래 기록 전체 삭제</button><p class="muted">거래 내역과 보유 메소는 로그인한 계정의 Supabase에 저장됩니다. 처음 한 번 아래 SQL 설정이 필요합니다.</p></div></section>
 <section id="account"><h2>🔐 로그인 및 연결</h2><div class="card">
 <p>Supabase 프로젝트 URL과 <b>Publishable key</b>를 입력하세요. Secret key나 데이터베이스 비밀번호는 절대 입력하지 마세요.</p>
 <label>Project URL<br><input class="wide" id="projectUrl" placeholder="https://프로젝트.supabase.co"></label><br>
@@ -105,7 +110,7 @@ async function connect(){
  client=window.supabase.createClient(url,k,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
  localStorage.setItem("mapleus_supabase_config",JSON.stringify({url,key:k}));
  const {data,error}=await client.auth.getUser();if(error&&error.name!=="AuthSessionMissingError")throw error;
- user=data?.user||null;updateLogin();if(user)await loadAll();else status("연결 설정 완료! 이메일로 회원가입하거나 로그인해 주세요.");
+ user=data?.user||null;updateLogin();if(user){await loadAll();await mesoLoad();}else status("연결 설정 완료! 이메일로 회원가입하거나 로그인해 주세요.");
  }catch(e){errorMessage(e);}
 }
 function updateLogin(){$("loginState").textContent=user?"로그인: "+user.email:"로그인되지 않았습니다.";}
@@ -113,10 +118,10 @@ async function signUp(){
  try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {error}=await client.auth.signUp({email:$("email").value.trim(),password:$("password").value,emailRedirectTo:location.origin+location.pathname});if(error)throw error;status("회원가입 요청 완료. 이메일 인증 안내를 확인해 주세요. 기존 계정 여부에 따라 안내가 달라질 수 있어요.");}catch(e){errorMessage(e);}
 }
 async function signIn(){
- try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
+ try{if(!client)throw Error("먼저 연결 설정을 저장해 주세요.");const {data,error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;updateLogin();await loadAll();await mesoLoad();status("로그인 및 온라인 데이터 불러오기 완료!");}catch(e){errorMessage(e);}
 }
 async function signOut(){
- try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
+ try{if(client){const {error}=await client.auth.signOut();if(error)throw error;}user=null;characterId=null;gears=[];taskRows=[];updateLogin();clearInputs();renderGear();renderTasks();updateDashboard();mesoRecords=[];mesoRender();status("로그아웃했습니다.");}catch(e){errorMessage(e);}
 }
 function clearInputs(){["nickname","level","hp","power"].forEach(id=>$(id).value="");$("goal").value="사자성 길뚫 진행, 원킬 사냥 스펙 확보";}
 async function loadAll(){
@@ -213,13 +218,76 @@ function filterGuides(){
  const q=$("guideSearch").value.trim().toLowerCase();
  document.querySelectorAll(".guide-card").forEach(el=>el.style.display=el.textContent.toLowerCase().includes(q)||el.dataset.search.includes(q)?"":"none");
 }
-function calculate(){const r=Number($("rate").value),a=Number($("amount").value);$("result").textContent=Number.isFinite(r*a)?`${(r*a).toLocaleString()}원 / ${(a*1000000).toLocaleString()}메소`:"숫자를 입력해 주세요.";}
+
+let mesoRecords=[];
+const m=id=>document.getElementById('m_'+id);
+const mesoFmt=n=>Math.round(n).toLocaleString('ko-KR');
+function mesoCalc(){
+ const rate=Math.max(0,Number(m('rate').value)||0),amount=Math.max(0,Number(m('amount').value)||0),fee=Math.min(99,Math.max(0,Number(m('fee').value)||0))/100;
+ const payer=m('payer').value,send=payer==='seller'?Math.ceil(amount*1e6/(1-fee)):Math.ceil(amount*1e6);
+ const received=Math.floor(send*(1-fee)),gameFee=send-received,cash=rate*amount,cashFee=Math.max(0,Number(m('cashFee').value)||0),isSell=m('type').value==='sell';
+ const balance=Math.max(0,Number(m('balance').value)||0)*1e6;
+ return {rate,amount,fee:fee*100,payer,send,received,gameFee,cash,cashFee,net:isSell?cash-cashFee:cash+cashFee,isSell,balance,method:m('method').value,memo:m('memo').value.trim()};
+}
+function mesoRender(){
+ const v=mesoCalc();
+ m('out').innerHTML=`<div class="muted">${v.isSell?'판매자가 받을 예상 현금':'구매자가 지불할 예상 현금'}</div><strong>${mesoFmt(v.net)}원</strong><p>보낼 메소: <b>${mesoFmt(v.send)} 메소</b> (${(v.send/1e6).toLocaleString('ko-KR',{maximumFractionDigits:6})}통)</p><p>구매자 수령: <b>${mesoFmt(v.received)} 메소</b> · 게임 수수료: <b>${mesoFmt(v.gameFee)} 메소</b></p><p>거래 원금: ${mesoFmt(v.cash)}원 · 별도 현금 수수료: ${mesoFmt(v.cashFee)}원</p>`;
+ m('balanceOut').textContent=`보유 ${mesoFmt(v.balance)} 메소 · 판매 후 예상 잔액 ${mesoFmt(v.balance-v.send)} 메소${v.isSell&&v.send>v.balance?' ⚠️ 잔액 부족':''}`;
+ const rates=m('rates').value.split(',').map(x=>Number(x.trim())).filter(x=>Number.isFinite(x)&&x>=0).slice(0,20);
+ m('compare').innerHTML='<table><thead><tr><th>시세</th><th>거래 금액</th><th>현재 시세와 차이</th></tr></thead><tbody>'+rates.map(r=>`<tr><td>${mesoFmt(r)}:1</td><td>${mesoFmt(r*v.amount)}원</td><td>${mesoFmt((r-v.rate)*v.amount)}원</td></tr>`).join('')+'</tbody></table>';
+ const sells=mesoRecords.filter(r=>r.isSell),sum=(arr,key)=>arr.reduce((n,r)=>n+(Number(r[key])||0),0);
+ m('stats').innerHTML=`<span class="pill">총 ${mesoRecords.length}건</span><span class="pill">판매 ${mesoFmt(sum(sells,'amount'))}통</span><span class="pill">판매 실수령 ${mesoFmt(sum(sells,'net'))}원</span><span class="pill">게임 수수료 ${mesoFmt(sum(sells,'gameFee'))}메소</span>`;
+ m('history').innerHTML=mesoRecords.map(r=>`<tr><td>${safe(new Date(r.created_at).toLocaleString('ko-KR'))}</td><td>${r.isSell?'판매':'구매'} / ${safe(r.method)}</td><td>${mesoFmt(r.rate)}:1</td><td>${safe(r.amount)}</td><td>${mesoFmt(r.net)}원</td><td>${mesoFmt(r.send)}</td><td>${mesoFmt(r.gameFee)}</td><td>${safe(r.memo)}</td><td><button data-meso-delete="${safe(r.id)}" class="danger">삭제</button></td></tr>`).join('');
+}
+async function mesoLoad(){
+ if(!user||!client){mesoRecords=[];mesoRender();return;}
+ const [a,b]=await Promise.all([client.from('meso_trades').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),client.from('meso_settings').select('balance,rate').eq('user_id',user.id).maybeSingle()]);
+ if(a.error||b.error){status('쌀먹 온라인 저장 설정이 필요해요. 제공한 Supabase SQL을 먼저 실행해 주세요. '+(a.error||b.error).message);return;}
+ mesoRecords=(a.data||[]).map(r=>({...r,...r.details}));
+ if(b.data){m('balance').value=b.data.balance??0;m('rate').value=b.data.rate??370;}
+ mesoRender();
+}
+async function mesoSaveSettings(){
+ if(!requireLogin())return;
+ const {error}=await client.from('meso_settings').upsert({user_id:user.id,balance:Math.max(0,Number(m('balance').value)||0),rate:Math.max(0,Number(m('rate').value)||0)},{onConflict:'user_id'});
+ if(error)errorMessage(error);else status('보유 메소와 시세가 온라인에 저장됐어요.');
+}
+async function mesoSave(){
+ if(!requireLogin())return;
+ const v=mesoCalc();if(v.rate<=0||v.amount<=0||!Number.isFinite(v.send)||v.send>Number.MAX_SAFE_INTEGER){status('시세와 통 수를 올바르게 입력해 주세요.');return;}
+ if(!confirm('이 거래를 완료 기록으로 저장할까요?'))return;
+ const {error}=await client.from('meso_trades').insert({user_id:user.id,details:v});
+ if(error)errorMessage(error);else{await mesoLoad();status('거래 내역을 온라인에 저장했어요.');}
+}
+async function mesoDelete(id){
+ if(!requireLogin()||!confirm('이 거래 기록을 삭제할까요?'))return;
+ const {error}=await client.from('meso_trades').delete().eq('id',id).eq('user_id',user.id);
+ if(error)errorMessage(error);else{await mesoLoad();status('거래 기록을 삭제했어요.');}
+}
+async function mesoClear(){
+ if(!requireLogin()||!confirm('거래 기록을 모두 삭제할까요? 복구할 수 없습니다.'))return;
+ const {error}=await client.from('meso_trades').delete().eq('user_id',user.id);
+ if(error)errorMessage(error);else{await mesoLoad();status('거래 기록을 모두 삭제했어요.');}
+}
+function mesoCSV(){
+ const rows=[['일시','유형','방식','시세','통','현금','보낼메소','수령메소','게임수수료','메모'],...mesoRecords.map(r=>[r.created_at,r.isSell?'판매':'구매',r.method,r.rate,r.amount,r.net,r.send,r.received,r.gameFee,r.memo])];
+ const csv='\ufeff'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='mapleus-meso-history.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+for(const el of document.querySelectorAll('#meso input,#meso select'))el.addEventListener('input',mesoRender);
+m('save').addEventListener('click',mesoSave);
+m('copy').addEventListener('click',()=>{const v=mesoCalc(),t=`${v.isSell?'판매':'구매'} ${v.method} / ${v.rate}:1 / ${v.amount}통\n보낼 메소 ${mesoFmt(v.send)} / 수령 메소 ${mesoFmt(v.received)} / 수수료 ${mesoFmt(v.gameFee)} / 현금 ${mesoFmt(v.net)}원`;navigator.clipboard.writeText(t).then(()=>status('계산 결과를 복사했어요.')).catch(()=>prompt('복사할 내용',t));});
+m('balance').insertAdjacentHTML('afterend','<button type="button" id="m_saveBalance">보유량·시세 온라인 저장</button>');
+m('saveBalance').addEventListener('click',mesoSaveSettings);
+m('history').addEventListener('click',e=>{const id=e.target.closest('[data-meso-delete]')?.dataset.mesoDelete;if(id)mesoDelete(id);});
+m('clear').addEventListener('click',mesoClear);
+m('csv').addEventListener('click',mesoCSV);
 
 async function init(){
   dateKey=localDate();
   $("today").textContent="오늘: "+dateKey;
   renderTasks();
-  calculate();
+  mesoRender();
   updateDashboard();
 
   $("projectUrl").value=AUTO_SUPABASE.url;
