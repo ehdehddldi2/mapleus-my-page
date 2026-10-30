@@ -314,6 +314,7 @@ m('csv').addEventListener('click',mesoCSV);
 
 async function init(){
   dateKey=localDate();
+  weekKey=mondayKey();
   $("today").textContent="오늘: "+dateKey;
   renderTasks();
   mesoRender();
