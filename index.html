@@ -37,6 +37,15 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 #meso .result{background:#101c2e;padding:16px;border-radius:12px;margin:12px 0}#meso .result strong{font-size:25px;color:#ffc16a}
 #meso table{width:100%;border-collapse:collapse}#meso th,#meso td{padding:10px;border-bottom:1px solid #3b4b65;text-align:left;font-size:12px;white-space:nowrap}
 #meso .scroll{overflow-x:auto}#meso .pill{margin:3px}#meso .result p{margin:8px 0}#meso button{margin:4px}
+
+/* 직업 도감 */
+.job-panel{border:1px solid #445572;border-radius:15px;padding:18px;background:#14223a;margin-bottom:17px}
+.job-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.job-controls button{padding:7px 11px;font-size:12px}
+.job-controls button.selected{background:#ffbc62;color:#142034}.job-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px;margin:13px 0}
+.job-tile{text-align:left;background:#223451;border:1px solid #3c526f;padding:12px;border-radius:11px}.job-tile.selected{border-color:#ffbc62;background:#4a3e35}
+.job-tile small{display:block;font-size:11px;margin-top:3px}.job-detail{background:#101c30;border:1px solid #405572;padding:18px;border-radius:14px;margin-top:15px}
+.job-detail h3{color:#ffcd8b}.job-detail .grid{margin-top:12px}.job-detail .card{padding:14px;background:#1c2a42}
+.job-detail ul{padding-left:19px}.job-detail li{margin:5px 0}.job-tag{display:inline-block;padding:4px 9px;border-radius:20px;background:#364b67;color:#d7e6fb;font-size:12px;margin-right:6px}
 </style></head><body>
 <header><div class="eyebrow">PRIVATE MAPLE DASHBOARD</div><h1>🍁 MAPLE US MY PAGE</h1><p>유엘의 성장 기록 · 템셋팅 · 오늘의 메할일 · 공략 도서관</p></header>
 <nav id="menu">
@@ -67,6 +76,14 @@ img{max-width:100%;border-radius:10px}.status{padding:12px 15px;background:#182a
 <div class="card"><h3>➕ 반복 메할일 추가</h3><div class="toolbar"><select id="newTaskCategory"><option value="daily">매일 반복</option><option value="weekly">매주 반복</option></select><input id="newtask" placeholder="예: 일일 보스 / 주간 보스"><button onclick="addTask()">추가하기</button></div><p class="mini">직접 추가한 항목은 삭제할 수 있어요. 기본 제공 항목은 삭제되지 않아요.</p></div>
 <p class="muted">로그인 후 Supabase에 저장돼요. 게임 내 완료 여부를 자동으로 감지하지는 않아요.</p></section>
 <section id="guide"><h2>📚 메이플어스 공략 도서관</h2><p class="section-note">현재는 핵심 개념과 체크 포인트를 정리했어요. 메이플어스 서버별 적용 여부와 정확한 수치는 공식 정보로 검증 후 확정합니다.</p>
+<div class="job-panel" id="jobAtlas">
+<h2>⚔️ 전체 직업 도감</h2>
+<p class="section-note">직업을 하나씩 선택해 전용 육성 노트를 확인하세요. 아래 목록은 <b>원작 메이플스토리 기반 후보</b>이며, 메이플어스 실제 구현 여부는 검증 전입니다. 스킬·장비 수치는 임의로 만들지 않았어요.</p>
+<div class="toolbar"><input id="jobSearch" placeholder="🔎 직업 검색: 데벤져, 불독, 비숍..." aria-label="직업 검색"><span class="pill" id="jobCount"></span></div>
+<div id="jobGroups" class="job-controls"></div>
+<div id="jobList" class="job-list"></div>
+<div id="jobDetail" class="job-detail" aria-live="polite"></div>
+</div>
 <div class="toolbar"><input id="guideSearch" placeholder="🔎 토드, 사냥터, 마빌, 퀘스트 검색" oninput="filterGuides()"><button onclick="document.getElementById('guideSearch').value='';filterGuides()">전체 보기</button></div>
 <div class="grid" id="guideCards">
 <div class="card guide-card" data-search="토드 망치 전승 잠재 스타포스"><span class="tag">장비 강화</span><h3>🔨 토드의 망치</h3><p>장비를 교체할 때 잠재능력과 강화 상태를 어떻게 이어갈지 계획해요.</p><details><summary>준비 체크리스트</summary><ul><li>출발·도착 장비의 레벨과 부위 확인</li><li>잠재 등급과 옵션 확인</li><li>스타포스 및 전승 후 변화 확인</li><li>재료 가격과 완제품 가격 비교</li></ul><p class="mini">실제 전승 가능 레벨 간격과 계승 규칙은 메이플어스에서 확인 필요</p></details></div>
@@ -311,6 +328,41 @@ m('saveBalance').addEventListener('click',mesoSaveSettings);
 m('history').addEventListener('click',e=>{const id=e.target.closest('[data-meso-delete]')?.dataset.mesoDelete;if(id)mesoDelete(id);});
 m('clear').addEventListener('click',mesoClear);
 m('csv').addEventListener('click',mesoCSV);
+
+
+// 원작 직업을 바탕으로 한 후보 도감. 메이플어스 구현 여부는 별도 검증 전입니다.
+const jobFamilies=[
+ {name:'모험가',jobs:[['히어로','전사'],['팔라딘','전사'],['다크나이트','전사'],['아크메이지(불,독)','마법사'],['아크메이지(썬,콜)','마법사'],['비숍','마법사'],['보우마스터','궁수'],['신궁','궁수'],['패스파인더','궁수'],['나이트로드','도적'],['섀도어','도적'],['듀얼블레이드','도적'],['바이퍼','해적'],['캡틴','해적'],['캐논슈터','해적']]},
+ {name:'시그너스 기사단',jobs:[['소울마스터','전사'],['플레임위자드','마법사'],['윈드브레이커','궁수'],['나이트워커','도적'],['스트라이커','해적'],['미하일','전사']]},
+ {name:'영웅',jobs:[['아란','전사'],['에반','마법사'],['메르세데스','궁수'],['팬텀','도적'],['루미너스','마법사'],['은월','해적']]},
+ {name:'레지스탕스 · 데몬',jobs:[['블래스터','전사'],['배틀메이지','마법사'],['와일드헌터','궁수'],['메카닉','해적'],['데몬슬레이어','전사'],['데몬어벤져','전사'],['제논','하이브리드']]},
+ {name:'노바',jobs:[['카이저','전사'],['엔젤릭버스터','해적'],['카데나','도적'],['카인','궁수']]},
+ {name:'그란디스 · 기타',jobs:[['제로','전사'],['키네시스','마법사'],['아델','전사'],['일리움','마법사'],['아크','해적'],['호영','도적'],['라라','마법사'],['칼리','도적']]}
+];
+const jobAliases={'데몬어벤져':'데벤져 데벤','아크메이지(불,독)':'불독 불/독','아크메이지(썬,콜)':'썬콜 썬/콜','듀얼블레이드':'듀블','나이트로드':'나로','소울마스터':'소마','윈드브레이커':'윈브','나이트워커':'나워','데몬슬레이어':'데슬','엔젤릭버스터':'엔버','보우마스터':'보마','다크나이트':'닼나'};
+const jobHints={
+ '데몬어벤져':['HP를 활용하는 전사 계열 직업으로, 일반적인 STR 장비와 구분해 확인하세요.','HP 관련 잠재옵션과 무기 공격력 옵션을 따로 비교하세요.','현재 캐릭터 유엘의 장비·원킬 여부를 기준으로 메모해 보세요.'],
+ '아크메이지(불,독)':['불·독 속성 계열 마법사 직업입니다.','마법 공격력과 INT 관련 장비 옵션을 확인하세요.','서버에서 제공하는 스킬 단계·지속 피해 규칙을 확인하세요.'],
+ '비숍':['파티 지원과 마법 공격을 함께 고려하는 마법사 직업입니다.','INT·마법 공격력 장비와 파티용 스킬을 확인하세요.','서버 버전에 따른 보조 스킬 차이를 확인하세요.'],
+ '나이트로드':['도적 계열 직업으로 표창과 공격 관련 장비를 점검하세요.','LUK·공격력·표창 수급을 함께 고려하세요.','서버에서 제공하는 사냥 및 보스 스킬 구성을 확인하세요.']
+};
+const jobStats={'전사':'STR 중심인 직업이 많지만 예외가 있어 직업별 확인 필요','마법사':'대체로 INT · 마법 공격력 중심','궁수':'대체로 DEX · 공격력 중심','도적':'대체로 LUK · 공격력 중심','해적':'직업에 따라 STR/DEX 등 달라짐','하이브리드':'직업 전용 스탯 체계 확인 필요'};
+let selectedJob='데몬어벤져',selectedJobGroup='전체';
+function renderJobAtlas(){
+ const q=$('jobSearch').value.trim().toLowerCase();
+ $('jobGroups').innerHTML=['전체',...jobFamilies.map(f=>f.name)].map(g=>`<button type="button" class="${g===selectedJobGroup?'selected':''}" data-job-group="${safe(g)}">${safe(g)}</button>`).join('');
+ const found=jobFamilies.flatMap(f=>f.jobs.map(j=>({name:j[0],type:j[1],family:f.name}))).filter(j=>(selectedJobGroup==='전체'||selectedJobGroup===j.family)&&[j.name,j.type,j.family,jobAliases[j.name]||''].join(' ').toLowerCase().includes(q));
+ $('jobCount').textContent=found.length+'개 직업';
+ $('jobList').innerHTML=found.length?found.map(j=>`<button type="button" class="job-tile ${j.name===selectedJob?'selected':''}" data-job-name="${safe(j.name)}"><b>${safe(j.name)}</b><small>${safe(j.family)} · ${safe(j.type)}</small></button>`).join(''):'<p class="muted">검색 결과가 없어요.</p>';
+ const chosen=jobFamilies.flatMap(f=>f.jobs.map(j=>({name:j[0],type:j[1],family:f.name}))).find(j=>j.name===selectedJob);
+ if(!chosen)return;
+ const hints=jobHints[chosen.name]||[`${chosen.type} 계열 직업입니다. 서버에서 제공하는 실제 스킬과 주스탯을 확인하세요.`,jobStats[chosen.type]||'직업별 스탯 확인 필요','사냥 원킬 여부와 장비 가격을 함께 비교하세요.'];
+ $('jobDetail').innerHTML=`<span class="job-tag">${safe(chosen.family)}</span><span class="job-tag">${safe(chosen.type)}</span><h3>🍁 ${safe(chosen.name)} 전용 공략</h3><p class="mini">상태: 원작 기반 기초 안내 · 메이플어스 적용 여부 검증 전</p><div class="grid"><div class="card"><h3>📌 직업 이해</h3><ul>${hints.map(x=>`<li>${safe(x)}</li>`).join('')}</ul></div><div class="card"><h3>🛡️ 장비·잠재</h3><ul><li>무기 종류 및 주스탯 확인</li><li>잠재옵션과 공격력/마력 효율 비교</li><li>토드 가능 여부와 재료비 확인</li></ul></div><div class="card"><h3>⚔️ 스킬·사냥</h3><ul><li>1~4차 및 하이퍼 스킬: 서버 기준 검증 후 기입</li><li>레벨별 사냥터: 원킬·경험치·동선 비교</li><li>보스용 스킬과 사냥용 스킬 구분</li></ul></div><div class="card"><h3>🏰 성장 체크</h3><ul><li>필수 선행 퀘스트와 길뚫 확인</li><li>주간 보스·메할일과 연결해 진행</li><li>서버 패치에 따른 변경 여부 확인</li></ul></div></div><p class="mini">※ 상세 스킬트리·하이퍼 스킬 순서·장비 수치는 아직 입력되지 않았습니다. 확인되지 않은 공략을 확정 정보처럼 표시하지 않습니다.</p>`;
+}
+$('jobSearch').addEventListener('input',renderJobAtlas);
+$('jobGroups').addEventListener('click',e=>{const b=e.target.closest('[data-job-group]');if(!b)return;selectedJobGroup=b.dataset.jobGroup;renderJobAtlas();});
+$('jobList').addEventListener('click',e=>{const b=e.target.closest('[data-job-name]');if(!b)return;selectedJob=b.dataset.jobName;renderJobAtlas();$('jobDetail').scrollIntoView({behavior:'smooth',block:'nearest'});});
+renderJobAtlas();
 
 async function init(){
   dateKey=localDate();
